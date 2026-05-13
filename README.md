@@ -31,4 +31,4 @@ Decision Tree
 Gradient Boosting
 XGBoost
 Light GBM
-
+Whisper versions (Tiny, Base, Small)
