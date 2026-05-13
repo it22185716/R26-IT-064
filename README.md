@@ -12,4 +12,4 @@ AI-Driven School Management System with Real-Time Monitoring is an intelligent p
 
 2)An AI-based Meal Planning and Nutrition Management System that analyzes child health details such as BMI, allergies, medical conditions, and food preferences, generates personalized 14-day meal plans, filters unsafe foods, tracks nutrition progress, and adaptively updates meal plans based on child growth and health status.
 
-3)AI-Based Math Weak Student Detection- This component provides Grade 7 students with a 40-question MCQ-based mathematics quiz covering 9 sub-categories. Upon completion, the system automatically analyzes student performance and identifies the weakest mathematics sub category, enabling targeted academic support without requiring manual review by teachers.
+3)AI-Based Math Weak Student Detection- This component provides Grade 7 students with a 36 question MCQ-based mathematics quiz covering 9 sub-categories. Upon completion, the system automatically analyzes student performance and identifies the weakest mathematics sub category, enabling targeted academic support without requiring manual review by teachers.
