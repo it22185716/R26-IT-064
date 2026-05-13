@@ -57,6 +57,7 @@ Results and select page
 
 Improvements:
 The video content should displayed within the same user interface instead of opening it in a separate window or tab.
+Improve the model accuracy of AI-Based Meal Planning and Nutrition Management System and continue refining the remaining functionalities to enhance the overall system performance and user experience.
 
 
 
