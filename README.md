@@ -16,3 +16,19 @@ AI-Driven School Management System with Real-Time Monitoring is an intelligent p
 3)AI-Based Math Weak Student Detection- This component provides Grade 7 students with a 36 question MCQ-based mathematics quiz covering 9 sub-categories. Upon completion, the system automatically analyzes student performance and identifies the weakest mathematics sub category, enabling targeted academic support without requiring manual review by teachers.
 
 4) AI-Based Reading Assessment and Adaptive Reading System - This system is an AI-based English reading assessment platform for Grade 7 students. It uses the Whisper model to analyze student reading and pronunciation skills. Students read passages aloud, and the system detects errors, calculates accuracy scores, and provides feedback instantly. It also tracks student progress, stores performance history, generates reports, and helps identify students who need additional reading support.
+
+Technologies Used:
+Google Colab
+React.js
+Node.js
+Firebase
+
+Machine Learning Models:
+Random Forest
+Logistic Regression
+KNN
+Decision Tree
+Gradient Boosting
+XGBoost
+Light GBM
+
