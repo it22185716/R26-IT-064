@@ -36,5 +36,28 @@ Whisper versions (Tiny, Base, Small)
 Datasets:
 Student_content_delivery
 Passages
+dataset_wide_balanced
+Nutrition dataset
+
+Frontend UI:
+Personalized video recommendation page
+Post Test question pages
+Improvement page
+Personalized meal plan page 
+Student details page
+Allergy filtering page
+Meal plan Status page
+Quiz login page
+Quiz page
+Result page
+Dashboard page
+Login page
+Voice recording page
+Results and select page
+
+Improvements:
+The video content should displayed within the same user interface instead of opening it in a separate window or tab.
+
+
 
 
