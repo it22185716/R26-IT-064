@@ -56,9 +56,10 @@ Voice recording page
 Results and select page
 
 Improvements:
-The video content should displayed within the same user interface instead of opening it in a separate window or tab.
-Improve the model accuracy of AI-Based Meal Planning and Nutrition Management System and continue refining the remaining functionalities to enhance the overall system performance and user experience.
-
+1) The video content should displayed within the same user interface instead of opening it in a separate window or tab.
+2) Improve the model accuracy of AI-Based Meal Planning and Nutrition Management System and continue refining the remaining functionalities to enhance the overall system performance and user experience.
+3) The AI-Based Weak Student Detection quiz currently lacks a fixed one-hour time limit and may include more than 40 questions. It was recommended to restrict the quiz duration to one hour and limit the number of questions to 40 or fewer. Additionally, the subcategory of each question should not be displayed in the quiz UI to ensure fair evaluation
+4) The model comparison was conducted using only a single audio file (P0001.wav) to evaluate the Whisper models. This is insufficient to determine the best model version. Multiple audio files should be used to ensure a valid comparison.
 
 
 
