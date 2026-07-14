@@ -1,19 +1,14 @@
 # dependencies
 node_modules/
-frontend/node_modules/
 
 # next.js
 .next/
-frontend/.next/
 out/
 
 # env files (never commit secrets)
 .env
 .env.local
 .env*.local
-frontend/.env
-frontend/.env.local
-frontend/.env*.local
 
 # typescript
 *.tsbuildinfo
