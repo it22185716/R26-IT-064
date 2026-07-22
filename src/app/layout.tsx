@@ -1,8 +1,9 @@
 import '../styles/globals.css';
 
 export const metadata = {
-  title: 'Adaptive Math Diagnostics',
-  description: 'Adaptive testing and diagnostics for Grade 7 & 8',
+  title: 'Hayagiri International Buddhist College | AI Learning Platform',
+  description:
+    'An AI-powered learning platform for Hayagiri International Buddhist College, Kandy — personalized nutrition, math gap detection, reading assessment, and adaptive content delivery for Grade 7 students.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
