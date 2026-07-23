@@ -41,6 +41,17 @@ const STUDENT_NAV: NavItem[] = [
     href: '/dashboard/student/history',
     icon: <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />,
   },
+  {
+    label: 'Meal Plan',
+    href: '/dashboard/student/meal-plan',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8.25 3v18M4.5 3v6a3.75 3.75 0 007.5 0V3M19.5 3v18M19.5 3a3 3 0 013 3v3a3 3 0 01-3 3"
+      />
+    ),
+  },
 ];
 
 const TEACHER_NAV: NavItem[] = [
