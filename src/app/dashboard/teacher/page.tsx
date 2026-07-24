@@ -6,6 +6,7 @@ import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
 import { useAuthUser } from '../../../hooks/useAuthUser';
 import { useParallax } from '../../../components/home/useParallax';
+import { ScrollTrigger } from '../../../components/home/gsapClient';
 import DashboardShell from '../../../components/DashboardShell';
 import StatCard from '../../../components/StatCard';
 import GlassCard from '../../../components/dashboard/GlassCard';
@@ -46,6 +47,13 @@ export default function TeacherDashboard() {
       setAttempts(snap.docs.map((d) => ({ id: d.id, ...d.data() } as QuizAttempt)));
     });
   }, [profile]);
+
+  useEffect(() => {
+    // The students table's height changes once data loads, which can leave
+    // ScrollTrigger's cached trigger positions stale for anything below the
+    // fold. Recalculate them against the real, final layout.
+    if (students && attempts) ScrollTrigger.refresh();
+  }, [students, attempts]);
 
   if (loading || !user) {
     return (
