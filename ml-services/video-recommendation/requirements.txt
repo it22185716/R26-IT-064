@@ -1,0 +1,9 @@
+# NOTE: scikit-learn and numpy are pinned. The .pkl artifacts in models/ were
+# trained with scikit-learn 1.6.1 / numpy 1.26.4 and fail to unpickle cleanly
+# under numpy 2.x. Requires Python 3.12 or earlier (numpy 1.26.4 has no
+# Python 3.13+ wheels).
+flask
+flask-cors
+scikit-learn==1.6.1
+numpy==1.26.4
+pandas
