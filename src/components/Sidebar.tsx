@@ -2,9 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { signOut } from 'firebase/auth';
-import { auth } from '../lib/firebase';
+import { usePathname } from 'next/navigation';
 import { UserRole } from '../lib/types';
 
 type NavItem = {
@@ -90,95 +88,90 @@ const TEACHER_NAV: NavItem[] = [
   },
 ];
 
-function getInitials(name: string) {
-  const initials = name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase())
-    .join('');
-  return initials || '?';
+function NavLinks({ items, pathname, onNavigate }: { items: NavItem[]; pathname: string; onNavigate?: () => void }) {
+  return (
+    <nav className="flex-1 space-y-1.5 px-3 py-4">
+      {items.map((item) => {
+        const active = pathname === item.href;
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            onClick={onNavigate}
+            className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
+              active
+                ? 'bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-[0_2px_8px_rgba(79,70,229,0.25),0_10px_24px_rgba(79,70,229,0.28)]'
+                : 'text-slate-700 hover:translate-x-0.5 hover:bg-white/60 hover:text-slate-900'
+            }`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-5 w-5 shrink-0 transition-colors ${active ? 'text-white' : 'text-slate-400 group-hover:text-indigo-600'}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              {item.icon}
+            </svg>
+            {item.label}
+          </Link>
+        );
+      })}
+    </nav>
+  );
 }
 
 type Props = {
   role: UserRole;
-  userName: string;
+  mobileOpen: boolean;
+  onMobileClose: () => void;
 };
 
-export default function Sidebar({ role, userName }: Props) {
+export default function Sidebar({ role, mobileOpen, onMobileClose }: Props) {
   const pathname = usePathname();
-  const router = useRouter();
   const items = role === 'teacher' ? TEACHER_NAV : STUDENT_NAV;
 
-  async function handleSignOut() {
-    await signOut(auth);
-    router.replace('/auth');
-  }
-
   return (
-    <aside className="hidden md:flex w-64 shrink-0 flex-col border-r border-slate-100 bg-white">
-      <div className="flex items-center gap-2.5 px-6 py-5">
-        <div className="h-9 w-9 shrink-0 rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600 text-white flex items-center justify-center font-bold shadow-sm">
-          M
-        </div>
-        <span className="text-sm font-semibold text-slate-900 leading-tight">
-          Adaptive Math
-          <br />
-          Diagnostics
-        </span>
-      </div>
+    <>
+      {/* Desktop sidebar */}
+      <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 flex-col overflow-y-auto border-r border-white/40 bg-white/40 backdrop-blur-xl md:flex">
+        <NavLinks items={items} pathname={pathname} />
+      </aside>
 
-      <nav className="flex-1 px-3 py-4 space-y-1">
-        {items.map((item) => {
-          const active = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                active ? 'bg-sky-50 text-sky-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-              }`}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-5 w-5 shrink-0 ${active ? 'text-sky-600' : 'text-slate-400'}`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                {item.icon}
-              </svg>
-              {item.label}
-            </Link>
-          );
-        })}
-      </nav>
-
-      <div className="border-t border-slate-100 p-3">
-        <div className="flex items-center gap-3 rounded-lg px-3 py-2">
-          <div className="h-8 w-8 shrink-0 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-semibold">
-            {getInitials(userName)}
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium text-slate-800">{userName}</p>
-            <p className="text-xs text-slate-400 capitalize">{role}</p>
-          </div>
-        </div>
-        <button
-          onClick={handleSignOut}
-          className="mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-500 hover:bg-rose-50 hover:text-rose-600 transition-colors"
+      {/* Mobile drawer */}
+      <div
+        className={`fixed inset-0 z-40 md:hidden ${mobileOpen ? '' : 'pointer-events-none'}`}
+        aria-hidden={!mobileOpen}
+      >
+        <div
+          onClick={onMobileClose}
+          className={`absolute inset-0 bg-slate-950/40 backdrop-blur-sm transition-opacity duration-300 ${
+            mobileOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+        <aside
+          className={`absolute inset-y-0 left-0 flex w-72 max-w-[80vw] flex-col border-r border-white/40 bg-white/80 backdrop-blur-xl transition-transform duration-300 ease-out ${
+            mobileOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            />
-          </svg>
-          Sign out
-        </button>
+          <div className="flex items-center justify-between gap-2.5 px-5 py-4">
+            <span className="text-sm font-semibold leading-tight text-slate-900">Menu</span>
+            <button
+              type="button"
+              onClick={onMobileClose}
+              aria-label="Close navigation menu"
+              className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-white/60 hover:text-slate-800"
+            >
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <NavLinks items={items} pathname={pathname} onNavigate={onMobileClose} />
+        </aside>
       </div>
-    </aside>
+    </>
   );
 }
