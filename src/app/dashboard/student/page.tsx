@@ -49,6 +49,19 @@ const NAV_CARDS = [
       />
     ),
   },
+  {
+    href: '/dashboard/student/reading',
+    title: 'Reading Practice',
+    description: 'Read a passage aloud and get instant accuracy feedback from our AI model.',
+    accent: 'bg-gradient-to-br from-amber-500 to-orange-600',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+      />
+    ),
+  },
 ];
 
 export default function StudentDashboard() {
@@ -64,7 +77,8 @@ export default function StudentDashboard() {
   const navCardRef0 = useRef<HTMLAnchorElement>(null);
   const navCardRef1 = useRef<HTMLAnchorElement>(null);
   const navCardRef2 = useRef<HTMLAnchorElement>(null);
-  const navCardRefs = [navCardRef0, navCardRef1, navCardRef2];
+  const navCardRef3 = useRef<HTMLAnchorElement>(null);
+  const navCardRefs = [navCardRef0, navCardRef1, navCardRef2, navCardRef3];
 
   useParallax({ containerRef: mainRef, entranceRefs: [heroRef, statsRef, activityRef] });
   useStaggerReveal(navGridRef, navCardRefs);

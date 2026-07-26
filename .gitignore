@@ -20,3 +20,6 @@ next-env.d.ts
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# reading-assessment seed data (source content, not code — never commit)
+scripts/passages.json

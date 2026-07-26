@@ -56,3 +56,25 @@ export type MealPlan = {
   mealOptions: MealOptions;
   createdAt: number;
 };
+
+export type ReadingDifficulty = 'Easy' | 'Medium' | 'Hard';
+
+export type ReadingPassage = {
+  id: string;
+  passageId: string;
+  text: string;
+  difficulty: ReadingDifficulty;
+};
+
+export type ReadingAttempt = {
+  id: string;
+  studentId: string;
+  passageId: string;
+  difficulty: ReadingDifficulty;
+  accuracy: number;
+  level: 'HIGH' | 'MEDIUM' | 'LOW';
+  wrongWords: string[];
+  missingWords: string[];
+  extraWords: string[];
+  completedAt: number;
+};
