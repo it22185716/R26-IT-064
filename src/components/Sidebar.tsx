@@ -135,7 +135,7 @@ export default function Sidebar({ role, mobileOpen, onMobileClose }: Props) {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 flex-col overflow-y-auto border-r border-white/40 bg-white/40 backdrop-blur-xl md:flex">
+      <aside className="sticky top-20 hidden h-[calc(100vh-5rem)] w-64 shrink-0 flex-col overflow-y-auto border-r border-white/40 bg-white/40 backdrop-blur-xl md:flex">
         <NavLinks items={items} pathname={pathname} />
       </aside>
 

@@ -8,9 +8,9 @@ const GlassCard = forwardRef<HTMLDivElement, Props>(
   ({ className = '', hover = true, children, ...rest }, ref) => (
     <div
       ref={ref}
-      className={`group relative overflow-hidden rounded-2xl border border-white/50 bg-white/50 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_20px_45px_rgba(15,23,42,0.10)] ring-1 ring-inset ring-white/30 backdrop-blur-xl transition-all duration-300 ${
+      className={`group relative overflow-hidden rounded-2xl border border-white/50 bg-white/70 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_20px_45px_rgba(15,23,42,0.10)] ring-1 ring-inset ring-white/30 backdrop-blur-xl transition-all duration-300 ${
         hover
-          ? 'hover:-translate-y-1 hover:border-white/80 hover:bg-white/65 hover:shadow-[0_4px_14px_rgba(15,23,42,0.10),0_28px_56px_rgba(15,23,42,0.18)]'
+          ? 'hover:-translate-y-1 hover:border-white/80 hover:bg-white/80 hover:shadow-[0_4px_14px_rgba(15,23,42,0.10),0_28px_56px_rgba(15,23,42,0.18)]'
           : ''
       } ${className}`}
       {...rest}

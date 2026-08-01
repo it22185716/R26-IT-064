@@ -12,6 +12,7 @@ export default function DashboardBackground({ scrollContainerRef }: Props) {
   const blobARef = useRef<HTMLDivElement>(null);
   const blobBRef = useRef<HTMLDivElement>(null);
   const blobCRef = useRef<HTMLDivElement>(null);
+  const blobDRef = useRef<HTMLDivElement>(null);
 
   useParallax({
     containerRef: scrollContainerRef,
@@ -19,6 +20,7 @@ export default function DashboardBackground({ scrollContainerRef }: Props) {
       { ref: blobARef, speed: -50 },
       { ref: blobBRef, speed: 40 },
       { ref: blobCRef, speed: -80 },
+      { ref: blobDRef, speed: 30 },
     ],
   });
 
@@ -35,6 +37,9 @@ export default function DashboardBackground({ scrollContainerRef }: Props) {
       </ParallaxLayer>
       <ParallaxLayer ref={blobCRef} className="absolute bottom-0 left-1/4">
         <div className="h-80 w-80 rounded-full bg-indigo-300/30 blur-3xl animate-blob [animation-delay:4s]" />
+      </ParallaxLayer>
+      <ParallaxLayer ref={blobDRef} className="absolute bottom-1/4 right-1/4">
+        <div className="h-72 w-72 rounded-full bg-gold-300/25 blur-3xl animate-blob [animation-delay:6s]" />
       </ParallaxLayer>
       <div
         aria-hidden

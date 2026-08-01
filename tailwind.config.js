@@ -5,6 +5,32 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        gold: {
+          50: '#FDF8E7',
+          100: '#FAF0C7',
+          200: '#F3DE8A',
+          300: '#EACB53',
+          400: '#DBB233',
+          500: '#C9A227',
+          600: '#A9841C',
+          700: '#856615',
+          800: '#634B10',
+          900: '#40300A',
+        },
+        maroon: {
+          50: '#FBEAEC',
+          100: '#F3C6CB',
+          200: '#E4919B',
+          300: '#CE5C6B',
+          400: '#A93444',
+          500: '#7A1F2B',
+          600: '#651822',
+          700: '#4F131A',
+          800: '#3A0D13',
+          900: '#26090C',
+        },
+      },
       keyframes: {
         'fade-in-up': {
           '0%': { opacity: '0', transform: 'translateY(12px)' },
@@ -20,11 +46,30 @@ module.exports = {
           '25%': { transform: 'translateX(-4px)' },
           '75%': { transform: 'translateX(4px)' },
         },
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { boxShadow: '0 0 0 0 rgb(var(--pulse-glow-rgb) / 0.45)' },
+          '50%': { boxShadow: '0 0 0 8px rgb(var(--pulse-glow-rgb) / 0)' },
+        },
+        'ken-burns': {
+          // Never animates through scale(1) — at exactly container size,
+          // sub-pixel layout rounding on a `fill` image can leave a hairline
+          // gap at the rounded corners. Staying oversized the whole time
+          // keeps the image safely beyond the clip edge at every frame.
+          '0%': { transform: 'scale(1.05)' },
+          '100%': { transform: 'scale(1.15)' },
+        },
       },
       animation: {
         'fade-in-up': 'fade-in-up 0.5s ease-out both',
         blob: 'blob 8s infinite ease-in-out',
         shake: 'shake 0.4s ease-in-out',
+        shimmer: 'shimmer 1.6s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 2.4s ease-in-out infinite',
+        'ken-burns': 'ken-burns 20s ease-in-out infinite alternate',
       },
     },
   },

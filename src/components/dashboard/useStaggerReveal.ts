@@ -11,7 +11,12 @@ const SAFETY_TIMEOUT_MS = 4000;
  * Same fade/slide-up entrance as useParallax's entranceRefs, but animates a
  * set of items as one staggered sequence instead of independently.
  */
-export function useStaggerReveal(containerRef: RefObject<HTMLElement>, itemRefs: RefObject<HTMLElement>[]) {
+export function useStaggerReveal(
+  containerRef: RefObject<HTMLElement>,
+  itemRefs: RefObject<HTMLElement>[],
+  options?: { start?: string },
+) {
+  const start = options?.start ?? 'top 85%';
   useLayoutEffect(() => {
     let cancelled = false;
     let rafId: number | undefined;
@@ -64,7 +69,7 @@ export function useStaggerReveal(containerRef: RefObject<HTMLElement>, itemRefs:
                   stagger: 0.12,
                   scrollTrigger: {
                     trigger: containerRef.current,
-                    start: 'top 85%',
+                    start,
                     toggleActions: 'play none none reverse',
                   },
                 },
