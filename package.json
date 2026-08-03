@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/run-dev.js",
+    "dev:next": "next dev",
+    "dev:ml": "ml-services\\meal-planning\\venv\\Scripts\\python.exe ml-services\\meal-planning\\app.py",
+    "dev:reading": "ml-services\\reading-assessment\\venv\\Scripts\\python.exe ml-services\\reading-assessment\\app.py",
+    "dev:video": "ml-services\\video-recommendation\\venv\\Scripts\\python.exe ml-services\\video-recommendation\\app.py",
     "build": "next build",
     "start": "next start"
   },

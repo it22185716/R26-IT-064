@@ -2,14 +2,27 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../lib/firebase';
 import { UserRole } from '../../lib/types';
 
 // Student quick-nav — same routes/icons/colors as the "Quick actions"
-// cards on the student Overview page, sized down for the navbar.
+// cards on the student Overview page (plus Overview itself), sized down
+// for the navbar.
 const STUDENT_QUICK_LINKS = [
+  {
+    href: '/dashboard/student',
+    title: 'Overview',
+    accent: 'bg-gradient-to-br from-gold-400 to-gold-600',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+      />
+    ),
+  },
   {
     href: '/quiz',
     title: 'Take Quiz',
@@ -79,6 +92,7 @@ type Props = {
 
 export default function DashboardHeader({ role, title, userName, onMenuClick }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -124,22 +138,34 @@ export default function DashboardHeader({ role, title, userName, onMenuClick }: 
         {role === 'student' ? (
           <nav className="hidden min-w-0 justify-self-center overflow-x-auto sm:block">
             <div className="flex items-center gap-1">
-              {STUDENT_QUICK_LINKS.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="group flex shrink-0 items-center gap-2 rounded-full px-2.5 py-1.5 transition-colors duration-200 hover:bg-black/5"
-                >
-                  <div
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg shadow-inner transition-transform duration-200 ease-out group-hover:scale-105 ${item.accent}`}
+              {STUDENT_QUICK_LINKS.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`group flex shrink-0 items-center gap-2 rounded-full px-2.5 py-1.5 transition-colors duration-200 hover:bg-black/5 ${
+                      isActive ? 'bg-black/5' : ''
+                    }`}
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      {item.icon}
-                    </svg>
-                  </div>
-                  <span className="hidden whitespace-nowrap text-sm font-medium text-gray-700 lg:inline">{item.title}</span>
-                </a>
-              ))}
+                    <div
+                      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg shadow-inner transition-transform duration-200 ease-out group-hover:scale-105 ${item.accent}`}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        {item.icon}
+                      </svg>
+                    </div>
+                    <span
+                      className={`hidden whitespace-nowrap text-sm lg:inline ${
+                        isActive ? 'font-semibold text-gray-900' : 'font-medium text-gray-700'
+                      }`}
+                    >
+                      {item.title}
+                    </span>
+                  </a>
+                );
+              })}
             </div>
           </nav>
         ) : (
