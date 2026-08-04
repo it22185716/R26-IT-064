@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { useAuthUser } from '../../hooks/useAuthUser';
 
 const LINKS = [
   { href: '#nutrition', label: 'Meal and Nutrition' },
@@ -12,6 +13,9 @@ const LINKS = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { user, profile, loading } = useAuthUser();
+  const isLoggedIn = !loading && Boolean(user);
+  const dashboardHref = profile?.role === 'teacher' ? '/dashboard/teacher' : '/dashboard/student';
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/20 bg-white/25 shadow-[0_1px_2px_rgba(15,23,42,0.06),0_12px_32px_rgba(15,23,42,0.12)] ring-1 ring-inset ring-white/10 backdrop-blur-xl">
@@ -48,22 +52,37 @@ export default function Navbar() {
 
         <div className="flex items-center justify-self-end gap-3">
           <div className="hidden items-center gap-3 xl:flex">
-            <a
-              href="/auth"
-              className="inline-flex items-center justify-center rounded-lg border border-slate-300/60 bg-white/40 px-3.5 py-2 text-sm font-semibold text-slate-700 ring-1 ring-inset ring-white/40 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-400/70 hover:bg-white/60 hover:text-slate-900 hover:shadow-md active:translate-y-0 active:scale-95"
-            >
-              Sign In
-            </a>
-            <a
-              href="/auth"
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:translate-y-0 active:scale-95"
-            >
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
-              />
-              Login
-            </a>
+            {isLoggedIn ? (
+              <a
+                href={dashboardHref}
+                className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:translate-y-0 active:scale-95"
+              >
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
+                />
+                Dashboard
+              </a>
+            ) : (
+              <>
+                <a
+                  href="/auth"
+                  className="inline-flex items-center justify-center rounded-lg border border-slate-300/60 bg-white/40 px-3.5 py-2 text-sm font-semibold text-slate-700 ring-1 ring-inset ring-white/40 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-400/70 hover:bg-white/60 hover:text-slate-900 hover:shadow-md active:translate-y-0 active:scale-95"
+                >
+                  Sign In
+                </a>
+                <a
+                  href="/auth"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:translate-y-0 active:scale-95"
+                >
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
+                  />
+                  Login
+                </a>
+              </>
+            )}
           </div>
 
           <button
@@ -99,22 +118,40 @@ export default function Navbar() {
               </a>
             ))}
             <div className="mt-2 flex flex-col gap-3 border-t border-white/30 pt-4">
-              <a
-                href="/auth"
-                className="inline-flex items-center justify-center rounded-lg border border-slate-300/60 bg-white/40 px-4 py-2 text-sm font-semibold text-slate-700 ring-1 ring-inset ring-white/40 backdrop-blur-md transition-all duration-200 hover:border-slate-400/70 hover:bg-white/60 hover:text-slate-900 hover:shadow-md active:scale-95"
-              >
-                Sign In
-              </a>
-              <a
-                href="/auth"
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:scale-95"
-              >
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
-                />
-                Login
-              </a>
+              {isLoggedIn ? (
+                <a
+                  href={dashboardHref}
+                  onClick={() => setOpen(false)}
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:scale-95"
+                >
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
+                  />
+                  Dashboard
+                </a>
+              ) : (
+                <>
+                  <a
+                    href="/auth"
+                    onClick={() => setOpen(false)}
+                    className="inline-flex items-center justify-center rounded-lg border border-slate-300/60 bg-white/40 px-4 py-2 text-sm font-semibold text-slate-700 ring-1 ring-inset ring-white/40 backdrop-blur-md transition-all duration-200 hover:border-slate-400/70 hover:bg-white/60 hover:text-slate-900 hover:shadow-md active:scale-95"
+                  >
+                    Sign In
+                  </a>
+                  <a
+                    href="/auth"
+                    onClick={() => setOpen(false)}
+                    className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:scale-95"
+                  >
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
+                    />
+                    Login
+                  </a>
+                </>
+              )}
             </div>
           </nav>
         </div>

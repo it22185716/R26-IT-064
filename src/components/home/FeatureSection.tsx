@@ -2,6 +2,7 @@
 
 import { useRef, type ComponentType, type RefObject } from 'react';
 import { useParallax } from './useParallax';
+import { useAuthUser } from '../../hooks/useAuthUser';
 import type { Accent } from './content';
 
 export interface IllustrationProps {
@@ -18,7 +19,21 @@ interface FeatureSectionProps {
   Illustration: ComponentType<IllustrationProps>;
 }
 
+// Where a logged-in student lands for each feature, in place of accent.ctaHref
+// ('/auth') once they're already authenticated. No per-feature teacher pages
+// exist yet, so a logged-in teacher always goes to /dashboard/teacher.
+const STUDENT_ROUTES: Record<Accent['key'], string> = {
+  nutrition: '/dashboard/student/meal-plan',
+  math: '/quiz',
+  reading: '/dashboard/student/reading',
+  adaptive: '/dashboard/student/video-recommendation',
+};
+
 export default function FeatureSection({ id, index, align, accent, Illustration }: FeatureSectionProps) {
+  const { user, profile, loading } = useAuthUser();
+  const ctaHref =
+    !loading && user ? (profile?.role === 'teacher' ? '/dashboard/teacher' : STUDENT_ROUTES[accent.key]) : accent.ctaHref;
+
   const sectionRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const illustrationRef = useRef<HTMLDivElement>(null);
@@ -83,7 +98,7 @@ export default function FeatureSection({ id, index, align, accent, Illustration 
           </ul>
 
           <a
-            href={accent.ctaHref}
+            href={ctaHref}
             className={`mt-8 inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold text-white ring-1 ring-inset ring-white/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 ${accent.classes.ctaBg} ${accent.classes.ctaHover} ${accent.classes.ctaShadow} ${accent.classes.ctaShadowHover}`}
           >
             {accent.ctaLabel}

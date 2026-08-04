@@ -1,6 +1,7 @@
 'use client';
 
-import { useId } from 'react';
+import { useId, useLayoutEffect, useRef } from 'react';
+import { gsap } from '../home/gsapClient';
 
 type Props = {
   /** 0–100 fill percentage. */
@@ -18,6 +19,21 @@ export default function RadialGauge({ percent, centerLabel, label, colorFrom, co
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (clamped / 100) * circumference;
   const gradientId = useId();
+  const circleRef = useRef<SVGCircleElement>(null);
+
+  // Draw-in from empty on mount/whenever the target value changes, rather
+  // than appearing already filled. useLayoutEffect (not useEffect) so GSAP's
+  // "from" state is applied before the browser paints — otherwise the ring
+  // would flash at its final value for a frame before resetting to empty.
+  useLayoutEffect(() => {
+    const el = circleRef.current;
+    if (!el) return;
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(el, { strokeDashoffset: offset });
+      return;
+    }
+    gsap.fromTo(el, { strokeDashoffset: circumference }, { strokeDashoffset: offset, duration: 0.8, ease: 'power2.out' });
+  }, [offset, circumference]);
 
   return (
     <div className="flex flex-col items-center">
@@ -31,6 +47,7 @@ export default function RadialGauge({ percent, centerLabel, label, colorFrom, co
           </defs>
           <circle cx="50" cy="50" r={radius} fill="none" stroke="#E2E8F0" strokeWidth="9" />
           <circle
+            ref={circleRef}
             cx="50"
             cy="50"
             r={radius}
@@ -40,7 +57,6 @@ export default function RadialGauge({ percent, centerLabel, label, colorFrom, co
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={offset}
-            className="transition-[stroke-dashoffset] duration-700 ease-out"
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">

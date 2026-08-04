@@ -12,6 +12,18 @@ import { UserRole } from '../../lib/types';
 // for the navbar.
 const STUDENT_QUICK_LINKS = [
   {
+    href: '/',
+    title: 'Home',
+    accent: 'bg-gradient-to-br from-violet-500 to-purple-600',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75"
+      />
+    ),
+  },
+  {
     href: '/dashboard/student',
     title: 'Overview',
     accent: 'bg-gradient-to-br from-gold-400 to-gold-600',
@@ -87,10 +99,9 @@ type Props = {
   role: UserRole;
   title: string;
   userName: string;
-  onMenuClick?: () => void;
 };
 
-export default function DashboardHeader({ role, title, userName, onMenuClick }: Props) {
+export default function DashboardHeader({ role, title, userName }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -177,19 +188,6 @@ export default function DashboardHeader({ role, title, userName, onMenuClick }: 
         )}
 
         <div className="flex items-center gap-2 justify-self-end sm:gap-3">
-          {onMenuClick && (
-            <button
-              type="button"
-              onClick={onMenuClick}
-              aria-label="Open navigation menu"
-              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-black/10 bg-black/5 text-gray-600 transition-colors duration-200 hover:bg-black/10 md:hidden"
-            >
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          )}
-
           <div className="flex items-center gap-1.5 rounded-full bg-black/5 py-1 pl-1 pr-2 transition-colors duration-200 hover:bg-black/10">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-indigo-600 text-xs font-semibold text-white shadow-sm">
               {getInitials(userName)}

@@ -14,9 +14,14 @@ const SAFETY_TIMEOUT_MS = 4000;
 export function useStaggerReveal(
   containerRef: RefObject<HTMLElement>,
   itemRefs: RefObject<HTMLElement>[],
-  options?: { start?: string },
+  options?: { start?: string; deps?: unknown[] },
 ) {
   const start = options?.start ?? 'top 85%';
+  // Extra values that should force a re-run — e.g. an id that changes when a
+  // conditionally-rendered set of items (re)mounts after the initial pass,
+  // so they get collected and staggered in too. Must stay a fixed length
+  // across renders (React requirement for effect dependency arrays).
+  const extraDeps = options?.deps ?? [];
   useLayoutEffect(() => {
     let cancelled = false;
     let rafId: number | undefined;
@@ -92,5 +97,5 @@ export function useStaggerReveal(
       ctx?.revert();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [containerRef]);
+  }, [containerRef, ...extraDeps]);
 }

@@ -46,6 +46,22 @@ export type MealPlanProfile = {
   allergies: string[];
 };
 
+export type DayPlan = {
+  day: number;
+  breakfast: MealOption;
+  lunch: MealOption;
+  dinner: MealOption;
+  snack: MealOption;
+};
+
+export type MealPlanProgress = {
+  previousPlanId: string | null;
+  daysSinceLastPlan: number | null;
+  heightChangeCm: number | null;
+  weightChangeKg: number | null;
+  bmiChange: number | null;
+};
+
 export type MealPlan = {
   id: string;
   studentId: string;
@@ -55,6 +71,9 @@ export type MealPlan = {
   confidence: number | null;
   mealOptions: MealOptions;
   createdAt: number;
+  expiresAt: number;
+  weeklyCalendar: DayPlan[];
+  progressSinceLastPlan: MealPlanProgress | null;
 };
 
 export type ReadingDifficulty = 'Easy' | 'Medium' | 'Hard';
