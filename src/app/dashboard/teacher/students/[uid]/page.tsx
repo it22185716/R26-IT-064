@@ -58,11 +58,8 @@ export default function StudentDetailPage() {
       title={student?.name || student?.email || 'Student'}
       subtitle={student?.email}
       userName={profile?.name || user.email || ''}
-      action={
-        <a href="/dashboard/teacher/students" className="text-sm font-medium text-sky-600 hover:text-sky-700">
-          ← Back to students
-        </a>
-      }
+      backHref="/dashboard/teacher/students"
+      backLabel="Back to Students"
     >
       <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
         <h3 className="font-semibold">Latest result</h3>

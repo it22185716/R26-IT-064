@@ -132,6 +132,8 @@ export default function VideoRecommendationPage() {
       title="Your Personalized Video Recommendations"
       subtitle="Videos selected by our AI model based on your weak area."
       userName={profile?.name || user.email || ''}
+      backHref="/dashboard/student"
+      backLabel="Back to Overview"
     >
       {error && (
         <div className="rounded-xl border border-rose-100 bg-rose-50 p-4 text-sm text-rose-600">

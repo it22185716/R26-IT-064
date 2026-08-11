@@ -48,6 +48,8 @@ export default function StudentHistoryPage() {
       title="Quiz History"
       subtitle="Every diagnostic you've submitted. Ask your teacher for your results."
       userName={profile?.name || user.email || ''}
+      backHref="/dashboard/student"
+      backLabel="Back to Overview"
     >
       <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm overflow-x-auto">
         {!attempts ? (

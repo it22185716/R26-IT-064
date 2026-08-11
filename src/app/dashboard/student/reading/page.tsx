@@ -139,6 +139,8 @@ export default function ReadingPracticePage() {
       title="Reading Practice"
       subtitle="Read the passage aloud and get instant feedback on your accuracy."
       userName={profile?.name || user.email || ''}
+      backHref="/dashboard/student"
+      backLabel="Back to Overview"
     >
       <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
         <span className="text-sm font-medium text-slate-700">Difficulty</span>

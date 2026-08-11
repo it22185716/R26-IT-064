@@ -48,6 +48,8 @@ export default function ReadingHistoryPage() {
       title="Reading History"
       subtitle="Every reading passage you've attempted."
       userName={profile?.name || user.email || ''}
+      backHref="/dashboard/student/reading"
+      backLabel="Back to Reading Practice"
     >
       <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm overflow-x-auto">
         {!attempts ? (
