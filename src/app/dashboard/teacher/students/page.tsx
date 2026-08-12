@@ -2,10 +2,11 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../../../../lib/firebase';
 import { useAuthUser } from '../../../../hooks/useAuthUser';
-import DashboardShell from '../../../../components/DashboardShell';
+import TeacherShell from '../../../../components/dashboard/TeacherShell';
+import GlassCard from '../../../../components/dashboard/GlassCard';
 import { QuizAttempt, UserProfile } from '../../../../lib/types';
 
 type StatusFilter = 'all' | 'completed' | 'pending';
@@ -33,13 +34,23 @@ export default function TeacherStudentsPage() {
   useEffect(() => {
     if (!profile || profile.role !== 'teacher') return;
 
-    getDocs(query(collection(db, 'users'), where('role', '==', 'student'))).then((snap) => {
+    // Live listeners, not one-time fetches — the roster updates immediately
+    // when a student submits, no page reload needed.
+    const unsubStudents = onSnapshot(query(collection(db, 'users'), where('role', '==', 'student')), (snap) => {
       setStudents(snap.docs.map((d) => d.data() as UserProfile));
     });
 
-    getDocs(query(collection(db, 'quizAttempts'), orderBy('completedAt', 'desc'))).then((snap) => {
-      setAttempts(snap.docs.map((d) => ({ id: d.id, ...d.data() } as QuizAttempt)));
-    });
+    const unsubAttempts = onSnapshot(
+      query(collection(db, 'quizAttempts'), orderBy('completedAt', 'desc')),
+      (snap) => {
+        setAttempts(snap.docs.map((d) => ({ id: d.id, ...d.data() } as QuizAttempt)));
+      }
+    );
+
+    return () => {
+      unsubStudents();
+      unsubAttempts();
+    };
   }, [profile]);
 
   const attemptsByStudent = useMemo(() => {
@@ -76,22 +87,20 @@ export default function TeacherStudentsPage() {
 
   if (loading || !user) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-white">
+      <main className="flex min-h-screen items-center justify-center bg-slate-50">
         <p className="text-sm text-slate-500">Loading…</p>
       </main>
     );
   }
 
   return (
-    <DashboardShell
-      role="teacher"
-      title="Students"
-      subtitle="Full roster with quiz activity."
-      userName={profile?.name || user.email || ''}
-      backHref="/dashboard/teacher"
-      backLabel="Back to Overview"
-    >
-      <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+    <TeacherShell userName={profile?.name || user.email || ''} title="Students">
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+        <p className="text-sm text-slate-500">Management</p>
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">Students</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500">Full roster with quiz activity.</p>
+
+        <GlassCard hover={false} className="mt-8 p-6">
         <div className="flex flex-wrap gap-3">
           <input
             type="text"
@@ -180,7 +189,8 @@ export default function TeacherStudentsPage() {
             </table>
           )}
         </div>
-      </div>
-    </DashboardShell>
+        </GlassCard>
+      </main>
+    </TeacherShell>
   );
 }

@@ -27,6 +27,7 @@ const COLORS = {
   MEAL: '\x1b[35m', // magenta
   READING: '\x1b[33m', // yellow
   VIDEO: '\x1b[32m', // green
+  MATH: '\x1b[34m', // blue
   RESET: '\x1b[0m',
 };
 
@@ -45,6 +46,11 @@ const SERVICES = [
   {
     label: 'VIDEO',
     dir: path.join(ROOT, 'ml-services', 'video-recommendation'),
+    args: ['app.py'],
+  },
+  {
+    label: 'MATH',
+    dir: path.join(ROOT, 'ml-services', 'math-weak-detection'),
     args: ['app.py'],
   },
 ];

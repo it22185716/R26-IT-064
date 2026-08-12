@@ -6,6 +6,7 @@ export interface Accent {
   bullets: string[];
   ctaLabel: string;
   ctaHref: string;
+  image: { src: string; alt: string };
   classes: {
     badgeBg: string;
     badgeBorder: string;
@@ -37,6 +38,7 @@ export const ACCENTS: Record<Accent['key'], Accent> = {
     ],
     ctaLabel: 'Explore Nutrition',
     ctaHref: '/auth',
+    image: { src: '/meal.jpg', alt: 'Fresh ingredients for a balanced meal' },
     classes: {
       badgeBg: 'bg-lime-500/20',
       badgeBorder: 'border border-lime-600/20',
@@ -63,6 +65,7 @@ export const ACCENTS: Record<Accent['key'], Accent> = {
     ],
     ctaLabel: 'Explore Math Detection',
     ctaHref: '/auth',
+    image: { src: '/mathweek.jpeg', alt: 'Student working through a math problem' },
     classes: {
       badgeBg: 'bg-blue-500/20',
       badgeBorder: 'border border-blue-600/20',
@@ -89,6 +92,7 @@ export const ACCENTS: Record<Accent['key'], Accent> = {
     ],
     ctaLabel: 'Explore Reading Assessment',
     ctaHref: '/auth',
+    image: { src: '/Reading.jpeg', alt: 'Student engaged in a reading session' },
     classes: {
       badgeBg: 'bg-orange-500/20',
       badgeBorder: 'border border-orange-600/20',
@@ -115,6 +119,7 @@ export const ACCENTS: Record<Accent['key'], Accent> = {
     ],
     ctaLabel: 'Explore Adaptive Content',
     ctaHref: '/auth',
+    image: { src: '/videocontent.jpeg', alt: 'Adaptive video content delivered to a student' },
     classes: {
       badgeBg: 'bg-violet-500/20',
       badgeBorder: 'border border-violet-600/20',

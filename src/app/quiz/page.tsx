@@ -2,7 +2,10 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 import { useAuthUser } from '@/hooks/useAuthUser';
+import { QuizAttempt } from '@/lib/types';
 
 type Question = {
   id: string;
@@ -23,11 +26,22 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
+  const [attempts, setAttempts] = useState<QuizAttempt[] | null>(null);
   const submittedRef = useRef(false);
 
   useEffect(() => {
     if (!loading && !user) router.replace('/auth');
   }, [loading, user, router]);
+
+  useEffect(() => {
+    if (!user) return;
+    const q = query(collection(db, 'quizAttempts'), where('studentId', '==', user.uid));
+    getDocs(q).then((snap) => {
+      const results = snap.docs.map((d) => ({ id: d.id, ...d.data() } as QuizAttempt));
+      results.sort((a, b) => b.completedAt - a.completedAt);
+      setAttempts(results);
+    });
+  }, [user]);
 
   async function startQuiz() {
     if (!user) return;
@@ -98,29 +112,67 @@ export default function QuizPage() {
 
   if (stage === 'intro' || stage === 'loading') {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-slate-50 px-6">
-        <div className="max-w-lg w-full bg-white rounded-2xl border border-slate-100 shadow-sm p-8 text-center">
-          <h1 className="text-2xl font-bold">Math Weak-Area Diagnostic</h1>
-          <p className="mt-3 text-slate-600">
-            40 questions across Arithmetic and Fractions. You&apos;ll have <strong>1 hour</strong> to
-            complete the quiz once you start — the timer keeps running even if you close this tab.
-          </p>
-          <ul className="mt-6 text-left text-sm text-slate-600 space-y-2">
-            <li>• Each question has 5 answer choices.</li>
-            <li>• The quiz auto-submits when time runs out.</li>
-            <li>• You can review and change answers before submitting.</li>
-          </ul>
-          {error && <p className="mt-4 text-sm text-rose-600">{error}</p>}
-          <button
-            onClick={startQuiz}
-            disabled={stage === 'loading'}
-            className="mt-8 w-full inline-flex items-center justify-center px-6 py-3 bg-sky-600 text-white font-semibold rounded-lg shadow hover:bg-sky-700 transition-colors disabled:opacity-60"
-          >
-            {stage === 'loading' ? 'Preparing your quiz…' : 'Start Quiz'}
-          </button>
-          <a href="/dashboard" className="mt-4 block text-sm text-slate-500 hover:text-slate-700">
-            Back to dashboard
-          </a>
+      <main className="min-h-screen bg-slate-50 px-6 py-12">
+        <div className="max-w-4xl mx-auto grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-start">
+          <div className="w-full bg-white rounded-2xl border border-slate-100 shadow-sm p-8 text-center">
+            <h1 className="text-2xl font-bold">Math Weak-Area Diagnostic</h1>
+            <p className="mt-3 text-slate-600">
+              40 questions across Arithmetic and Fractions. You&apos;ll have <strong>1 hour</strong> to
+              complete the quiz once you start — the timer keeps running even if you close this tab.
+            </p>
+            <ul className="mt-6 text-left text-sm text-slate-600 space-y-2">
+              <li>• Each question has 5 answer choices.</li>
+              <li>• The quiz auto-submits when time runs out.</li>
+              <li>• You can review and change answers before submitting.</li>
+            </ul>
+            {error && <p className="mt-4 text-sm text-rose-600">{error}</p>}
+            <button
+              onClick={startQuiz}
+              disabled={stage === 'loading'}
+              className="mt-8 w-full inline-flex items-center justify-center px-6 py-3 bg-sky-600 text-white font-semibold rounded-lg shadow hover:bg-sky-700 transition-colors disabled:opacity-60"
+            >
+              {stage === 'loading' ? 'Preparing your quiz…' : 'Start Quiz'}
+            </button>
+            <a href="/dashboard/student" className="mt-4 block text-sm text-slate-500 hover:text-slate-700">
+              Back to dashboard
+            </a>
+          </div>
+
+          <div className="w-full bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+            <h2 className="text-sm font-semibold text-slate-900">Your quiz history</h2>
+            <p className="mt-1 text-xs text-slate-500">Every diagnostic you&apos;ve submitted so far.</p>
+
+            {!attempts ? (
+              <p className="mt-6 text-sm text-slate-400">Loading…</p>
+            ) : attempts.length === 0 ? (
+              <p className="mt-6 text-sm text-slate-500">
+                You haven&apos;t taken a quiz yet — your results will show up here once you do.
+              </p>
+            ) : (
+              <ul className="mt-4 divide-y divide-slate-100">
+                {attempts.map((a) => (
+                  <li key={a.id} className="flex items-center justify-between gap-3 py-3">
+                    <span className="text-sm text-slate-600">
+                      {new Date(a.completedAt).toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-600">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Submitted
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="mt-4 text-xs text-slate-400">
+              Ask your teacher for your results and feedback on each attempt.
+            </p>
+          </div>
         </div>
       </main>
     );
