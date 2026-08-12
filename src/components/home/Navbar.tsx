@@ -73,7 +73,12 @@ export default function Navbar() {
 
         <div className="flex items-center justify-self-end gap-3">
           <div className="hidden items-center gap-3 xl:flex">
-            {isLoggedIn ? (
+            {loading ? (
+              <span
+                aria-hidden
+                className="h-9 w-28 animate-pulse rounded-lg bg-white/30 ring-1 ring-inset ring-white/40"
+              />
+            ) : isLoggedIn ? (
               <a
                 href={dashboardHref}
                 className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:translate-y-0 active:scale-95"
@@ -133,7 +138,12 @@ export default function Navbar() {
               </a>
             ))}
             <div className="mt-2 flex flex-col gap-3 border-t border-white/30 pt-4">
-              {isLoggedIn ? (
+              {loading ? (
+                <span
+                  aria-hidden
+                  className="h-10 w-full animate-pulse rounded-lg bg-white/30 ring-1 ring-inset ring-white/40"
+                />
+              ) : isLoggedIn ? (
                 <a
                   href={dashboardHref}
                   onClick={() => setOpen(false)}

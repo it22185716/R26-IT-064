@@ -464,6 +464,8 @@ export default function MealPlanPage() {
       title="Meal Dashboard"
       subtitle="Your AI-personalized 14-day nutrition plan, built around you."
       userName={profile?.name || user.email || ''}
+      backHref="/dashboard/student"
+      backLabel="Back to Overview"
     >
       {showConfirm && currentPlan && (
         <ConfirmDialog
