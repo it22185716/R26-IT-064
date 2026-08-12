@@ -12,8 +12,8 @@ interface IllustrationProps {
 
 export default function MathIllustration({ bgRef, midRef, fgRef }: IllustrationProps) {
   return (
-    <div className="relative mx-auto h-80 max-w-md transition-transform duration-300 hover:[transform:perspective(1200px)_rotateX(1.5deg)_rotateY(-1.5deg)_scale(1.02)] sm:h-96">
-      <ParallaxLayer ref={bgRef} className="absolute -inset-6 overflow-hidden rounded-[3rem]">
+    <div className="relative h-[26rem] w-full transition-transform duration-300 hover:[transform:perspective(1200px)_rotateX(1deg)_rotateY(-1deg)_scale(1.015)] sm:h-[30rem] lg:h-[34rem]">
+      <ParallaxLayer ref={bgRef} className="absolute -inset-3 overflow-hidden rounded-[2rem] sm:-inset-4">
         <Image
           src="/mathweek.jpeg"
           alt="Student working through a math problem"

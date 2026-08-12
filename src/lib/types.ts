@@ -14,6 +14,8 @@ export type QuizAttempt = {
   studentName: string;
   categoryScores: Record<string, number>;
   weakestCategory: string;
+  predictionMethod?: 'model' | 'rule';
+  confidence?: number;
   totalScore: number;
   maxScore: number;
   completedAt: number;
@@ -96,4 +98,14 @@ export type ReadingAttempt = {
   missingWords: string[];
   extraWords: string[];
   completedAt: number;
+};
+
+export type AssignedVideo = {
+  id: string;
+  studentId: string;
+  title: string;
+  url: string;
+  note?: string;
+  assignedByName: string;
+  createdAt: number;
 };

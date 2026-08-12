@@ -2,15 +2,22 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
 import { useAuthUser } from '../../../hooks/useAuthUser';
 import { useParallax } from '../../../components/home/useParallax';
 import { ScrollTrigger } from '../../../components/home/gsapClient';
-import DashboardShell from '../../../components/DashboardShell';
+import TeacherShell from '../../../components/dashboard/TeacherShell';
 import StatCard from '../../../components/StatCard';
 import GlassCard from '../../../components/dashboard/GlassCard';
 import { QuizAttempt, UserProfile } from '../../../lib/types';
+
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good morning';
+  if (hour < 18) return 'Good afternoon';
+  return 'Good evening';
+}
 
 export default function TeacherDashboard() {
   const router = useRouter();
@@ -39,13 +46,23 @@ export default function TeacherDashboard() {
   useEffect(() => {
     if (!profile || profile.role !== 'teacher') return;
 
-    getDocs(query(collection(db, 'users'), where('role', '==', 'student'))).then((snap) => {
+    // Live listeners, not one-time fetches — a student's quiz submission
+    // shows up here immediately without the teacher needing to reload.
+    const unsubStudents = onSnapshot(query(collection(db, 'users'), where('role', '==', 'student')), (snap) => {
       setStudents(snap.docs.map((d) => d.data() as UserProfile));
     });
 
-    getDocs(query(collection(db, 'quizAttempts'), orderBy('completedAt', 'desc'))).then((snap) => {
-      setAttempts(snap.docs.map((d) => ({ id: d.id, ...d.data() } as QuizAttempt)));
-    });
+    const unsubAttempts = onSnapshot(
+      query(collection(db, 'quizAttempts'), orderBy('completedAt', 'desc')),
+      (snap) => {
+        setAttempts(snap.docs.map((d) => ({ id: d.id, ...d.data() } as QuizAttempt)));
+      }
+    );
+
+    return () => {
+      unsubStudents();
+      unsubAttempts();
+    };
   }, [profile]);
 
   useEffect(() => {
@@ -57,7 +74,7 @@ export default function TeacherDashboard() {
 
   if (loading || !user) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-sky-100 via-indigo-50 to-violet-100">
+      <main className="flex min-h-screen items-center justify-center bg-slate-50">
         <p className="text-sm text-slate-500">Loading…</p>
       </main>
     );
@@ -84,44 +101,47 @@ export default function TeacherDashboard() {
         )
       : null;
 
+  // "Recent" means recent activity, not Firestore's arbitrary document order —
+  // students who've submitted most recently float to the top; those with no
+  // attempt yet sink to the bottom.
+  const recentStudents = [...(students || [])].sort((a, b) => {
+    const aLatest = latestByStudent.get(a.uid)?.completedAt ?? -Infinity;
+    const bLatest = latestByStudent.get(b.uid)?.completedAt ?? -Infinity;
+    return bLatest - aLatest;
+  });
+
   return (
-    <DashboardShell
-      role="teacher"
-      title="Overview"
-      subtitle="See which students need support, and where."
-      userName={profile?.name || user.email || ''}
-      action={
-        <a
-          href="/dashboard/teacher/students"
-          className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(79,70,229,0.30),0_16px_32px_rgba(79,70,229,0.25)] ring-1 ring-inset ring-white/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_14px_rgba(79,70,229,0.40),0_24px_44px_rgba(79,70,229,0.35)] active:translate-y-0 active:scale-95"
-        >
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
-          />
-          View all students
-        </a>
-      }
-    >
-      <div ref={pageRef} className="space-y-6">
+    <TeacherShell userName={profile?.name || user.email || ''} title="Overview">
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <div ref={pageRef} className="space-y-8">
       <div ref={bannerRef} className="opacity-0">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-sky-600 via-indigo-600 to-violet-600 p-8 text-white shadow-[0_4px_16px_rgba(79,70,229,0.30),0_24px_48px_rgba(79,70,229,0.28)]">
-          <span
-            aria-hidden
-            className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-3xl"
-          />
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent"
-          />
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 px-6 py-8 sm:px-10 sm:py-10">
+          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div className="absolute -top-16 -left-10 h-64 w-64 rounded-full bg-indigo-500/30 blur-3xl animate-blob" />
+            <div className="absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-gold-400/20 blur-3xl animate-blob [animation-delay:3s]" />
+            <div className="absolute top-1/2 right-1/4 h-48 w-48 rounded-full bg-sky-400/10 blur-3xl animate-blob [animation-delay:5s]" />
+          </div>
+
           <div className="relative">
-            <p className="text-sm font-medium text-sky-100">Welcome back</p>
-            <h2 className="mt-1 text-2xl font-bold sm:text-3xl">{profile?.name || 'Teacher'}</h2>
-            <p className="mt-3 max-w-md text-sky-100">
+            <p className="text-sm font-medium text-indigo-200">{getGreeting()}</p>
+            <h1 className="mt-1 text-3xl font-semibold tracking-tight text-white">{profile?.name || 'Teacher'}</h1>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300">
               {assessedCount > 0
                 ? `${assessedCount} student${assessedCount === 1 ? ' has' : 's have'} completed a diagnostic. ${topWeakCategory} is the most common weak area right now.`
-                : 'No students have completed a diagnostic yet.'}
+                : 'See which students need support, and where — no diagnostics submitted yet.'}
             </p>
+
+            <div className="mt-6">
+              <a
+                href="/dashboard/teacher/students"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition-colors hover:bg-slate-100"
+              >
+                View all students
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -184,7 +204,7 @@ export default function TeacherDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-900/10">
-                {students.slice(0, 5).map((s) => {
+                {recentStudents.slice(0, 5).map((s) => {
                   const latest = latestByStudent.get(s.uid);
                   return (
                     <tr key={s.uid}>
@@ -231,6 +251,7 @@ export default function TeacherDashboard() {
         </GlassCard>
       </div>
       </div>
-    </DashboardShell>
+      </main>
+    </TeacherShell>
   );
 }

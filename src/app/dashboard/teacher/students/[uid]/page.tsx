@@ -2,10 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../../../../../lib/firebase';
 import { useAuthUser } from '../../../../../hooks/useAuthUser';
-import DashboardShell from '../../../../../components/DashboardShell';
+import TeacherShell from '../../../../../components/dashboard/TeacherShell';
+import GlassCard from '../../../../../components/dashboard/GlassCard';
+import AssignVideosPanel from '../../../../../components/dashboard/AssignVideosPanel';
 import { QuizAttempt, UserProfile } from '../../../../../lib/types';
 
 export default function StudentDetailPage() {
@@ -34,17 +36,21 @@ export default function StudentDetailPage() {
       setStudent(snap.exists() ? (snap.data() as UserProfile) : null);
     });
 
+    // Live listener, not a one-time fetch — a new submission from this
+    // student appears immediately while the teacher is already on this page.
     const q = query(collection(db, 'quizAttempts'), where('studentId', '==', uid));
-    getDocs(q).then((snap) => {
+    const unsubscribe = onSnapshot(q, (snap) => {
       const results = snap.docs.map((d) => ({ id: d.id, ...d.data() } as QuizAttempt));
       results.sort((a, b) => b.completedAt - a.completedAt);
       setAttempts(results);
     });
+
+    return () => unsubscribe();
   }, [profile, uid]);
 
   if (loading || !user) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-white">
+      <main className="flex min-h-screen items-center justify-center bg-slate-50">
         <p className="text-sm text-slate-500">Loading…</p>
       </main>
     );
@@ -53,18 +59,17 @@ export default function StudentDetailPage() {
   const latest = attempts?.[0];
 
   return (
-    <DashboardShell
-      role="teacher"
-      title={student?.name || student?.email || 'Student'}
-      subtitle={student?.email}
-      userName={profile?.name || user.email || ''}
-      action={
-        <a href="/dashboard/teacher/students" className="text-sm font-medium text-sky-600 hover:text-sky-700">
+    <TeacherShell userName={profile?.name || user.email || ''} title={student?.name || student?.email || 'Student'}>
+      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+        <a href="/dashboard/teacher/students" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
           ← Back to students
         </a>
-      }
-    >
-      <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm">
+        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900">
+          {student?.name || student?.email || 'Student'}
+        </h1>
+        {student?.email && <p className="mt-1 text-sm text-slate-500">{student.email}</p>}
+
+        <GlassCard hover={false} className="mt-8 p-6">
         <h3 className="font-semibold">Latest result</h3>
         {!attempts ? (
           <p className="mt-4 text-sm text-slate-400">Loading…</p>
@@ -93,6 +98,9 @@ export default function StudentDetailPage() {
             <div className="mt-4 flex flex-wrap gap-3">
               <div className="rounded-lg bg-rose-50 border border-rose-100 px-4 py-3 text-sm text-rose-700 font-medium">
                 Weakest category: {latest.weakestCategory}
+                {latest.predictionMethod === 'model' && typeof latest.confidence === 'number' && (
+                  <span className="ml-1 text-rose-500">({Math.round(latest.confidence * 100)}% AI confidence)</span>
+                )}
               </div>
               <div className="rounded-lg bg-slate-50 border border-slate-100 px-4 py-3 text-sm text-slate-700 font-medium">
                 Score: {latest.totalScore}/{latest.maxScore}
@@ -100,9 +108,9 @@ export default function StudentDetailPage() {
             </div>
           </>
         )}
-      </div>
+        </GlassCard>
 
-      <div className="mt-6 rounded-xl border border-slate-100 bg-white p-6 shadow-sm overflow-x-auto">
+      <GlassCard hover={false} className="mt-6 overflow-x-auto p-6">
         <h3 className="font-semibold">Attempt history</h3>
         {!attempts ? (
           <p className="mt-4 text-sm text-slate-400">Loading…</p>
@@ -142,7 +150,22 @@ export default function StudentDetailPage() {
             </tbody>
           </table>
         )}
-      </div>
-    </DashboardShell>
+      </GlassCard>
+
+      <GlassCard hover={false} className="mt-6 p-6">
+        <h3 className="font-semibold">Recommend videos</h3>
+        <p className="mt-1 text-sm text-slate-500">
+          Assign videos for this student to watch — they&apos;ll appear on their dashboard under &quot;Your recommendations&quot;.
+        </p>
+        <div className="mt-4">
+          <AssignVideosPanel
+            studentId={uid}
+            weakArea={latest?.weakestCategory}
+            teacherName={profile?.name || user.email || 'Teacher'}
+          />
+        </div>
+      </GlassCard>
+      </main>
+    </TeacherShell>
   );
 }

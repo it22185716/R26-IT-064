@@ -8,6 +8,7 @@
     "dev:ml": "ml-services\\meal-planning\\venv\\Scripts\\python.exe ml-services\\meal-planning\\app.py",
     "dev:reading": "ml-services\\reading-assessment\\venv\\Scripts\\python.exe ml-services\\reading-assessment\\app.py",
     "dev:video": "ml-services\\video-recommendation\\venv\\Scripts\\python.exe ml-services\\video-recommendation\\app.py",
+    "dev:math": "ml-services\\math-weak-detection\\venv\\Scripts\\python.exe ml-services\\math-weak-detection\\app.py",
     "build": "next build",
     "start": "next start"
   },
