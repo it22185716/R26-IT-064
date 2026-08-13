@@ -26,6 +26,7 @@ const NAV_CARDS = [
     title: 'Take Quiz',
     description: 'Start a new diagnostic and get instant, adaptive feedback on where you stand.',
     primary: true,
+    accent: 'indigo' as const,
     icon: (
       <path
         strokeLinecap="round"
@@ -38,6 +39,7 @@ const NAV_CARDS = [
     href: '/dashboard/student/meal-plan',
     title: 'Meal Plan',
     description: 'Get a personalized nutrition plan built around your profile.',
+    accent: 'emerald' as const,
     icon: (
       <path
         strokeLinecap="round"
@@ -50,6 +52,7 @@ const NAV_CARDS = [
     href: '/dashboard/student/reading',
     title: 'Reading Practice',
     description: 'Read a passage aloud and get instant accuracy feedback from our AI model.',
+    accent: 'amber' as const,
     icon: (
       <path
         strokeLinecap="round"
@@ -62,6 +65,7 @@ const NAV_CARDS = [
     href: '/dashboard/student/video-recommendation',
     title: 'Video Recommendation',
     description: 'Watch curated videos picked for your learning progress.',
+    accent: 'violet' as const,
     icon: (
       <path
         strokeLinecap="round"
@@ -71,6 +75,19 @@ const NAV_CARDS = [
     ),
   },
 ];
+
+const RECOMMENDATION_ACCENT: Record<string, 'indigo' | 'emerald' | 'amber' | 'violet'> = {
+  '/quiz': 'indigo',
+  '/dashboard/student/meal-plan': 'emerald',
+  '/dashboard/student/reading': 'amber',
+  '/dashboard/student': 'violet',
+};
+
+const TIMELINE_ICON_STYLE: Record<TimelineEntry['type'], string> = {
+  quiz: 'bg-indigo-50 text-indigo-600',
+  meal: 'bg-emerald-50 text-emerald-600',
+  reading: 'bg-amber-50 text-amber-600',
+};
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -91,6 +108,44 @@ function bmiGaugePercent(bmi: number): number {
   return Math.max(0, Math.min(100, ((bmi - 15) / (35 - 15)) * 100));
 }
 
+// "Your progress" tiles are tinted to match their Quick actions counterpart
+// (Meal Plan = emerald, Reading Practice = amber) rather than the BMI zone or
+// reading level — so the same feature carries the same color across both
+// sections, regardless of the specific state. The RadialGauge's own ring
+// still uses bmiZone()'s colorFrom/colorTo, so the health-status signal isn't
+// lost, it just lives inside the gauge instead of tinting the whole card.
+const MEAL_PROGRESS_CARD = 'border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-white';
+const MEAL_PROGRESS_TILE = 'bg-gradient-to-br from-emerald-500 to-teal-600 shadow-emerald-500/30';
+const READING_PROGRESS_CARD = 'border-amber-100 bg-gradient-to-br from-amber-50 via-white to-white';
+const READING_PROGRESS_TILE = 'bg-gradient-to-br from-amber-500 to-orange-600 shadow-amber-500/30';
+
+const ACHIEVEMENT_THEME: Record<string, { card: string; tile: string; shadow: string; pill: string }> = {
+  'first-quiz': {
+    card: 'border-indigo-100 bg-gradient-to-br from-indigo-50 to-white',
+    tile: 'bg-gradient-to-br from-blue-500 to-indigo-600',
+    shadow: 'shadow-indigo-500/30',
+    pill: 'bg-indigo-50 text-indigo-700',
+  },
+  'consistent-learner': {
+    card: 'border-violet-100 bg-gradient-to-br from-violet-50 to-white',
+    tile: 'bg-gradient-to-br from-purple-500 to-violet-600',
+    shadow: 'shadow-violet-500/30',
+    pill: 'bg-violet-50 text-violet-700',
+  },
+  'meal-planner': {
+    card: 'border-emerald-100 bg-gradient-to-br from-emerald-50 to-white',
+    tile: 'bg-gradient-to-br from-emerald-500 to-teal-600',
+    shadow: 'shadow-emerald-500/30',
+    pill: 'bg-emerald-50 text-emerald-700',
+  },
+  bookworm: {
+    card: 'border-amber-100 bg-gradient-to-br from-amber-50 to-white',
+    tile: 'bg-gradient-to-br from-amber-500 to-orange-600',
+    shadow: 'shadow-amber-500/30',
+    pill: 'bg-amber-50 text-amber-700',
+  },
+};
+
 type TimelineEntry = {
   id: string;
   type: 'quiz' | 'meal' | 'reading';
@@ -98,10 +153,6 @@ type TimelineEntry = {
   detail: string;
   date: number;
 };
-
-// The row label already names the activity type, so the marker stays neutral
-// rather than encoding category in color.
-const TIMELINE_DOT = 'bg-slate-300';
 
 function buildTimeline(
   attempts: QuizAttempt[] | null,
@@ -170,6 +221,13 @@ const READING_ICON = (
     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
   />
 );
+
+const TIMELINE_ICON: Record<TimelineEntry['type'], ReactNode> = {
+  quiz: QUIZ_ICON,
+  meal: MEAL_ICON,
+  reading: READING_ICON,
+};
+
 // TODO: replace with real ML-driven recommendations once that service
 // exists — for now these are simple rules over the student's own real
 // quiz/meal-plan/reading data (already fetched above).
@@ -413,51 +471,64 @@ export default function StudentDashboard() {
     <StudentShell userName={profile?.name || user.email || ''} title="Overview">
       <main ref={mainRef} className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         <div ref={heroRef} className="opacity-0">
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 px-6 py-8 sm:px-10 sm:py-10">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 px-6 py-9 sm:px-10 sm:py-12">
             <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-              <div className="absolute -top-16 -left-10 h-64 w-64 rounded-full bg-indigo-500/30 blur-3xl animate-blob" />
-              <div className="absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-gold-400/20 blur-3xl animate-blob [animation-delay:3s]" />
-              <div className="absolute top-1/2 right-1/4 h-48 w-48 rounded-full bg-sky-400/10 blur-3xl animate-blob [animation-delay:5s]" />
+              <div className="absolute -top-16 -left-10 h-64 w-64 rounded-full bg-indigo-500/25 blur-3xl animate-blob" />
+              <div className="absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-gold-400/10 blur-3xl animate-blob [animation-delay:3s]" />
+              <div className="absolute -bottom-24 right-0 h-64 w-64 rounded-full bg-violet-400/15 blur-3xl animate-blob [animation-delay:5s]" />
             </div>
+            <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_100%_0%,rgba(255,255,255,0.06),transparent)]" />
 
-            <div className="relative">
-              <p className="text-sm font-medium text-indigo-200">{getGreeting()}</p>
-              <h1 className="mt-1 text-3xl font-semibold tracking-tight text-white">{profile?.name || 'Student'}</h1>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300">
-                Track your quizzes, get a personalized meal plan, sharpen your reading, and explore recommended
-                videos — all in one place.
-              </p>
+            <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <span className="inline-flex items-center gap-2 text-sm font-medium text-gold-300">
+                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-gold-400" />
+                  {getGreeting()}
+                </span>
+                <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-[2.75rem]">
+                  {profile?.name || 'Student'}
+                </h1>
+                <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-300">
+                  Track your quizzes, get a personalized meal plan, sharpen your reading, and explore recommended
+                  videos — all in one place.
+                </p>
+              </div>
 
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <a
-                  href="/quiz"
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition-colors hover:bg-slate-100"
-                >
-                  Take a quiz
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </a>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <div className="grid shrink-0 grid-cols-3 gap-3 sm:gap-4">
+                <div className="group rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/20 transition-colors duration-200 group-hover:bg-indigo-500/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       {QUIZ_ICON}
                     </svg>
-                    {attempts ? `${attempts.length} quiz${attempts.length === 1 ? '' : 'zes'} taken` : '—'}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-gold-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  </div>
+                  <p className="mt-3 text-2xl font-bold leading-none text-white">{attempts ? attempts.length : '—'}</p>
+                  <p className="mt-1.5 text-[11px] font-medium text-slate-400">
+                    {attempts && attempts.length === 1 ? 'Quiz taken' : 'Quizzes taken'}
+                  </p>
+                </div>
+
+                <div className="group rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/20 transition-colors duration-200 group-hover:bg-amber-500/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       {READING_ICON}
                     </svg>
-                    {readingAttempts?.[0] ? `Reading: ${readingAttempts[0].level}` : 'No reading yet'}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  </div>
+                  <p className="mt-3 text-sm font-bold leading-snug text-white sm:text-base">
+                    {readingAttempts?.[0]?.level || 'No reading yet'}
+                  </p>
+                  <p className="mt-1.5 text-[11px] font-medium text-slate-400">Reading level</p>
+                </div>
+
+                <div className="group rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/20 transition-colors duration-200 group-hover:bg-emerald-500/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       {MEAL_ICON}
                     </svg>
+                  </div>
+                  <p className="mt-3 text-sm font-bold leading-snug text-white sm:text-base">
                     {mealPlans?.[0] ? bmiZone(mealPlans[0].profile.bmi).label : 'No meal plan yet'}
-                  </span>
+                  </p>
+                  <p className="mt-1.5 text-[11px] font-medium text-slate-400">Nutrition</p>
                 </div>
               </div>
             </div>
@@ -477,6 +548,7 @@ export default function StudentDashboard() {
                     description={card.description}
                     icon={card.icon}
                     primary={card.primary}
+                    accent={card.accent}
                     badge={quickActionBadges[card.href]}
                   />
                 ))}
@@ -490,18 +562,18 @@ export default function StudentDashboard() {
                   ref={progressCardRefs[0]}
                   label="Attempts taken"
                   value={attempts ? String(attempts.length) : '—'}
-                  accent="bg-slate-100 text-slate-600"
+                  gradient="from-blue-500 to-indigo-600"
                   icon={<path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />}
                 />
                 <StatCard
                   ref={progressCardRefs[1]}
                   label="Last submitted"
                   value={latest ? new Date(latest.completedAt).toLocaleDateString() : '—'}
-                  accent="bg-slate-100 text-slate-600"
+                  gradient="from-indigo-500 to-blue-600"
                   icon={<path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />}
                 />
 
-                <GlassCard ref={progressCardRefs[2]} className="flex flex-col items-center p-5">
+                <GlassCard ref={progressCardRefs[2]} className={`flex flex-col items-center p-5 ${MEAL_PROGRESS_CARD}`}>
                   {latestMealPlan ? (
                     <RadialGauge
                       percent={bmiGaugePercent(latestMealPlan.profile.bmi)}
@@ -514,18 +586,26 @@ export default function StudentDashboard() {
                     <p className="my-8 text-sm text-slate-400">Loading…</p>
                   ) : (
                     <div className="flex flex-col items-center py-4 text-center">
-                      <p className="text-sm text-slate-500">No meal plan yet</p>
-                      <a href="/dashboard/student/meal-plan" className="mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-700">
+                      <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-inner ring-1 ring-inset ring-white/25 ${MEAL_PROGRESS_TILE}`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          {MEAL_ICON}
+                        </svg>
+                      </div>
+                      <p className="mt-3 text-sm text-slate-500">No meal plan yet</p>
+                      <a href="/dashboard/student/meal-plan" className="mt-1 text-sm font-semibold text-emerald-600 hover:text-emerald-700">
                         Generate one →
                       </a>
                     </div>
                   )}
                 </GlassCard>
 
-                <GlassCard ref={progressCardRefs[3]} className="flex flex-col items-center justify-center p-5 text-center">
+                <GlassCard
+                  ref={progressCardRefs[3]}
+                  className={`flex flex-col items-center justify-center p-5 text-center ${READING_PROGRESS_CARD}`}
+                >
                   {latestReading ? (
                     <>
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                      <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-inner ring-1 ring-inset ring-white/25 ${READING_PROGRESS_TILE}`}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           {READING_ICON}
                         </svg>
@@ -539,8 +619,13 @@ export default function StudentDashboard() {
                     <p className="my-8 text-sm text-slate-400">Loading…</p>
                   ) : (
                     <div className="py-4">
-                      <p className="text-sm text-slate-500">No reading practice yet</p>
-                      <a href="/dashboard/student/reading" className="mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-700">
+                      <div className={`mx-auto flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-inner ring-1 ring-inset ring-white/25 ${READING_PROGRESS_TILE}`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          {READING_ICON}
+                        </svg>
+                      </div>
+                      <p className="mt-3 text-sm text-slate-500">No reading practice yet</p>
+                      <a href="/dashboard/student/reading" className="mt-1 text-sm font-semibold text-amber-600 hover:text-amber-700">
                         Start reading →
                       </a>
                     </div>
@@ -565,13 +650,20 @@ export default function StudentDashboard() {
                   ) : timeline.length === 0 ? (
                     <p className="mt-4 text-sm text-slate-500">No activity yet — take a quiz or generate a meal plan to get started.</p>
                   ) : (
-                    <ul className="mt-4 divide-y divide-slate-900/10">
+                    <ul className="mt-4 divide-y divide-slate-100">
                       {timeline.map((entry) => (
-                        <li key={entry.id} className="flex items-center gap-3 py-3 text-sm">
-                          <span aria-hidden className={`h-1.5 w-1.5 shrink-0 rounded-full ${TIMELINE_DOT}`} />
-                          <span className="flex-1 text-slate-700">{entry.label}</span>
-                          <span className="text-slate-500">{entry.detail}</span>
-                          <span className="shrink-0 text-slate-400">{new Date(entry.date).toLocaleDateString()}</span>
+                        <li key={entry.id} className="-mx-2 flex items-center gap-3.5 rounded-xl px-2 py-3.5 text-sm transition-colors duration-150 hover:bg-slate-50">
+                          <span
+                            aria-hidden
+                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${TIMELINE_ICON_STYLE[entry.type]}`}
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              {TIMELINE_ICON[entry.type]}
+                            </svg>
+                          </span>
+                          <span className="flex-1 font-medium text-slate-700">{entry.label}</span>
+                          <span className="hidden text-slate-500 sm:inline">{entry.detail}</span>
+                          <span className="shrink-0 text-xs font-medium text-slate-400">{new Date(entry.date).toLocaleDateString()}</span>
                         </li>
                       ))}
                     </ul>
@@ -595,6 +687,7 @@ export default function StudentDashboard() {
                         title={rec.title}
                         description={rec.description}
                         icon={rec.icon}
+                        accent={RECOMMENDATION_ACCENT[rec.href] ?? 'indigo'}
                       />
                     ))}
                   </div>
@@ -625,11 +718,15 @@ export default function StudentDashboard() {
                     key={a.key}
                     ref={achievementRefs[i]}
                     hover={false}
-                    className="flex flex-col items-center p-5 text-center"
+                    className={`flex flex-col items-center p-5 text-center ${
+                      a.unlocked ? ACHIEVEMENT_THEME[a.key]?.card ?? '' : 'opacity-60'
+                    }`}
                   >
                     <div
-                      className={`flex h-11 w-11 items-center justify-center rounded-lg ${
-                        a.unlocked ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-400'
+                      className={`flex h-11 w-11 items-center justify-center rounded-xl ${
+                        a.unlocked
+                          ? `text-white shadow-lg ${ACHIEVEMENT_THEME[a.key]?.tile ?? 'bg-gradient-to-br from-blue-500 to-indigo-600'} ${ACHIEVEMENT_THEME[a.key]?.shadow ?? ''}`
+                          : 'bg-slate-100 text-slate-400'
                       }`}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
@@ -641,9 +738,11 @@ export default function StudentDashboard() {
                     </h3>
                     <p className="mt-1 text-xs text-slate-500">{a.description}</p>
                     <span
-                      className={`mt-2 text-[11px] font-medium ${a.unlocked ? 'text-indigo-600' : 'text-slate-400'}`}
+                      className={`mt-2.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+                        a.unlocked ? ACHIEVEMENT_THEME[a.key]?.pill ?? 'bg-indigo-50 text-indigo-700' : 'bg-slate-100 text-slate-400'
+                      }`}
                     >
-                      {a.unlocked ? 'Unlocked' : 'Locked'}
+                      {a.unlocked ? '✓ Unlocked' : 'Locked'}
                     </span>
                   </GlassCard>
                 ))}

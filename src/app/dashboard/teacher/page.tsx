@@ -150,7 +150,7 @@ export default function TeacherDashboard() {
         <StatCard
           label="Total students"
           value={students ? String(students.length) : '—'}
-          accent="bg-sky-100 text-sky-600"
+          gradient="from-sky-500 to-blue-600"
           icon={
             <path
               strokeLinecap="round"
@@ -162,19 +162,19 @@ export default function TeacherDashboard() {
         <StatCard
           label="Assessed"
           value={students ? `${assessedCount}/${students.length}` : '—'}
-          accent="bg-indigo-100 text-indigo-600"
+          gradient="from-blue-500 to-indigo-600"
           icon={<path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />}
         />
         <StatCard
           label="Class average"
           value={classAveragePct !== null ? `${classAveragePct}%` : '—'}
-          accent="bg-emerald-100 text-emerald-600"
+          gradient="from-emerald-500 to-teal-600"
           icon={<path strokeLinecap="round" strokeLinejoin="round" d="M9 17V9m6 8V5M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z" />}
         />
         <StatCard
           label="Most common weak area"
           value={topWeakCategory}
-          accent="bg-rose-100 text-rose-600"
+          gradient="from-rose-500 to-pink-600"
           icon={<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />}
         />
       </div>

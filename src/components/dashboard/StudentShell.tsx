@@ -156,15 +156,12 @@ export default function StudentShell({ userName, title, children }: Props) {
                     <Link
                       href={item.href}
                       aria-current={active ? 'page' : undefined}
-                      className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors duration-150 ${
+                      className={`group relative flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-all duration-150 ${
                         active
-                          ? 'bg-slate-100 font-semibold text-slate-900'
+                          ? 'bg-gradient-to-r from-indigo-50 to-violet-50 font-semibold text-indigo-700'
                           : 'font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                       }`}
                     >
-                      {active && (
-                        <span aria-hidden className="absolute inset-y-1.5 left-0 w-0.5 rounded-full bg-indigo-600" />
-                      )}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className={`h-[18px] w-[18px] shrink-0 ${active ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600'}`}
@@ -194,8 +191,8 @@ export default function StudentShell({ userName, title, children }: Props) {
       </nav>
 
       <div className="border-t border-slate-200 p-3">
-        <div className="flex items-center gap-3 rounded-lg px-3 py-2">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-semibold text-white">
+        <div className="flex items-center gap-3 rounded-xl px-3 py-2">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 via-indigo-600 to-violet-600 text-xs font-semibold text-white shadow-md shadow-indigo-500/30">
             {getInitials(userName)}
           </div>
           <div className="min-w-0 flex-1 leading-tight">
@@ -223,7 +220,14 @@ export default function StudentShell({ userName, title, children }: Props) {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="relative min-h-screen bg-slate-50">
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-24 left-1/4 h-[28rem] w-[28rem] rounded-full bg-indigo-200/40 blur-3xl" />
+        <div className="absolute top-1/3 -right-32 h-[26rem] w-[26rem] rounded-full bg-rose-200/35 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-amber-200/30 blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 h-80 w-80 rounded-full bg-emerald-200/25 blur-3xl" />
+      </div>
+
       {/* Desktop: permanent rail */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 lg:block">{sidebar}</aside>
 

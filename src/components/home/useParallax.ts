@@ -9,18 +9,10 @@ export interface ParallaxLayerConfig {
   speed: number;
 }
 
-export interface SlideEntranceConfig {
-  ref: RefObject<HTMLElement>;
-  /** Horizontal pixels the element travels in from (negative = from the left, positive = from the right). */
-  fromX: number;
-}
-
 interface UseParallaxOptions {
   containerRef: RefObject<HTMLElement>;
   layers?: ParallaxLayerConfig[];
   entranceRefs?: RefObject<HTMLElement>[];
-  /** Like entranceRefs, but slides in horizontally (triggered off containerRef so paired elements converge together). */
-  slideRefs?: SlideEntranceConfig[];
 }
 
 // Last-resort guarantee: if ScrollTrigger never fires for some reason (an
@@ -29,7 +21,7 @@ interface UseParallaxOptions {
 // hidden forever. Animation should enhance visibility, never gate it.
 const SAFETY_TIMEOUT_MS = 4000;
 
-export function useParallax({ containerRef, layers = [], entranceRefs = [], slideRefs = [] }: UseParallaxOptions) {
+export function useParallax({ containerRef, layers = [], entranceRefs = [] }: UseParallaxOptions) {
   useLayoutEffect(() => {
     let cancelled = false;
     let rafId: number | undefined;
@@ -39,9 +31,6 @@ export function useParallax({ containerRef, layers = [], entranceRefs = [], slid
     const revealAll = () => {
       entranceRefs.forEach((ref) => {
         if (ref.current) gsap.set(ref.current, { opacity: 1, y: 0 });
-      });
-      slideRefs.forEach(({ ref }) => {
-        if (ref.current) gsap.set(ref.current, { opacity: 1, x: 0 });
       });
     };
 
@@ -89,29 +78,6 @@ export function useParallax({ containerRef, layers = [], entranceRefs = [], slid
                       scrollTrigger: {
                         trigger: ref.current,
                         start: 'top 85%',
-                        toggleActions: 'play none none reverse',
-                      },
-                    },
-                  );
-                }
-              });
-
-              slideRefs.forEach(({ ref, fromX }) => {
-                if (!ref.current) return;
-                if (conditions.reduceMotion) {
-                  gsap.set(ref.current, { opacity: 1, x: 0 });
-                } else {
-                  gsap.fromTo(
-                    ref.current,
-                    { opacity: 0, x: fromX },
-                    {
-                      opacity: 1,
-                      x: 0,
-                      duration: 0.7,
-                      ease: 'power3.out',
-                      scrollTrigger: {
-                        trigger: containerRef.current,
-                        start: 'top 75%',
                         toggleActions: 'play none none reverse',
                       },
                     },

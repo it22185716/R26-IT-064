@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { useAuthUser } from '../../hooks/useAuthUser';
 
 const LINKS = [
   { href: '#nutrition', label: 'Meal and Nutrition' },
@@ -13,48 +12,24 @@ const LINKS = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const { user, profile, loading } = useAuthUser();
-  const isLoggedIn = !loading && Boolean(user);
-  const dashboardHref = profile?.role === 'teacher' ? '/dashboard/teacher' : '/dashboard/student';
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   return (
-    <div
-      className={`fixed inset-x-0 top-0 z-40 w-full transition-all duration-500 ease-out ${
-        scrolled ? 'px-3 pt-3 sm:px-4' : 'px-0 pt-0'
-      }`}
-    >
-      <header
-        className={`mx-auto w-full overflow-hidden border transition-all duration-500 ease-out ${
-          scrolled
-            ? 'max-w-6xl rounded-3xl border-white/20 bg-white/25 shadow-[0_1px_2px_rgba(15,23,42,0.06),0_12px_32px_rgba(15,23,42,0.12)] ring-1 ring-inset ring-white/10 backdrop-blur-xl'
-            : 'max-w-full rounded-none border-transparent bg-white shadow-[0_1px_2px_rgba(15,23,42,0.06),0_8px_20px_rgba(15,23,42,0.08)] ring-0'
-        }`}
-      >
-        <div className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2.5 sm:px-5">
-        <a href="#home" className="group flex min-w-0 items-center gap-2.5 justify-self-start transition-opacity duration-200 hover:opacity-80">
+    <header className="sticky top-0 z-40 border-b border-white/20 bg-white/25 shadow-[0_1px_2px_rgba(15,23,42,0.06),0_12px_32px_rgba(15,23,42,0.12)] ring-1 ring-inset ring-white/10 backdrop-blur-xl">
+      <div className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-4 sm:px-6">
+        <a href="#home" className="group flex items-center gap-3 justify-self-start transition-opacity duration-200 hover:opacity-80">
           <Image
             src="/logo.png"
             alt="Hayagiri International Buddhist College crest"
-            width={48}
-            height={48}
+            width={80}
+            height={80}
             priority
-            className="h-11 w-11 shrink-0 rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105"
+            className="h-20 w-20 shrink-0 rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105"
           />
-          <span className="flex min-w-0 flex-col leading-tight">
-            <span className="truncate bg-gradient-to-r from-slate-900 via-indigo-800 to-slate-900 bg-clip-text text-sm font-extrabold tracking-tight text-transparent sm:text-lg">
+          <span className="flex flex-col leading-tight">
+            <span className="bg-gradient-to-r from-slate-900 via-indigo-800 to-slate-900 bg-clip-text text-xl font-extrabold tracking-tight text-transparent sm:text-2xl">
               Hayagiri AI Learning Platform
             </span>
-            <span className="hidden truncate text-[10px] font-medium text-slate-500 sm:block">
-              Hayagiri International Buddhist College, Kandy
-            </span>
+            <span className="text-[11px] font-medium text-slate-500">Hayagiri International Buddhist College, Kandy</span>
           </span>
         </a>
 
@@ -73,42 +48,28 @@ export default function Navbar() {
 
         <div className="flex items-center justify-self-end gap-3">
           <div className="hidden items-center gap-3 xl:flex">
-            {loading ? (
+            <a
+              href="/auth"
+              className="inline-flex items-center justify-center rounded-lg border border-slate-300/60 bg-white/40 px-3.5 py-2 text-sm font-semibold text-slate-700 ring-1 ring-inset ring-white/40 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-400/70 hover:bg-white/60 hover:text-slate-900 hover:shadow-md active:translate-y-0 active:scale-95"
+            >
+              Sign In
+            </a>
+            <a
+              href="/auth"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:translate-y-0 active:scale-95"
+            >
               <span
                 aria-hidden
-                className="h-9 w-28 animate-pulse rounded-lg bg-white/30 ring-1 ring-inset ring-white/40"
+                className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
               />
-            ) : isLoggedIn ? (
-              <a
-                href={dashboardHref}
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:translate-y-0 active:scale-95"
-              >
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
-                />
-                Dashboard
-              </a>
-            ) : (
-              <>
-                <a
-                  href="/auth"
-                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:translate-y-0 active:scale-95"
-                >
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
-                  />
-                  Sign In
-                </a>
-              </>
-            )}
+              Login
+            </a>
           </div>
 
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white/60 text-slate-700 backdrop-blur-md transition-colors hover:border-slate-300 hover:bg-white xl:hidden"
+            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/40 bg-white/30 text-slate-700 backdrop-blur-md transition-colors hover:border-white/60 hover:bg-white/50 xl:hidden"
             aria-label="Toggle navigation menu"
             aria-expanded={open}
           >
@@ -138,43 +99,26 @@ export default function Navbar() {
               </a>
             ))}
             <div className="mt-2 flex flex-col gap-3 border-t border-white/30 pt-4">
-              {loading ? (
+              <a
+                href="/auth"
+                className="inline-flex items-center justify-center rounded-lg border border-slate-300/60 bg-white/40 px-4 py-2 text-sm font-semibold text-slate-700 ring-1 ring-inset ring-white/40 backdrop-blur-md transition-all duration-200 hover:border-slate-400/70 hover:bg-white/60 hover:text-slate-900 hover:shadow-md active:scale-95"
+              >
+                Sign In
+              </a>
+              <a
+                href="/auth"
+                className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:scale-95"
+              >
                 <span
                   aria-hidden
-                  className="h-10 w-full animate-pulse rounded-lg bg-white/30 ring-1 ring-inset ring-white/40"
+                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
                 />
-              ) : isLoggedIn ? (
-                <a
-                  href={dashboardHref}
-                  onClick={() => setOpen(false)}
-                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:scale-95"
-                >
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
-                  />
-                  Dashboard
-                </a>
-              ) : (
-                <>
-                  <a
-                    href="/auth"
-                    onClick={() => setOpen(false)}
-                    className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:scale-95"
-                  >
-                    <span
-                      aria-hidden
-                      className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
-                    />
-                    Sign In
-                  </a>
-                </>
-              )}
+                Login
+              </a>
             </div>
           </nav>
         </div>
       )}
-      </header>
-    </div>
+    </header>
   );
 }
