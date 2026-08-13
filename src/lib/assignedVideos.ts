@@ -15,11 +15,20 @@ export async function fetchAssignedVideos(studentId: string): Promise<AssignedVi
 // show up without a manual refresh.
 export function subscribeAssignedVideos(studentId: string, callback: (videos: AssignedVideo[]) => void) {
   const q = query(collection(db, 'assignedVideos'), where('studentId', '==', studentId));
-  return onSnapshot(q, (snap) => {
-    const videos = snap.docs.map((d) => ({ id: d.id, ...d.data() } as AssignedVideo));
-    videos.sort((a, b) => b.createdAt - a.createdAt);
-    callback(videos);
-  });
+  return onSnapshot(
+    q,
+    (snap) => {
+      const videos = snap.docs.map((d) => ({ id: d.id, ...d.data() } as AssignedVideo));
+      videos.sort((a, b) => b.createdAt - a.createdAt);
+      callback(videos);
+    },
+    (err) => {
+      // A denied/broken listener must not crash the shell it's mounted in —
+      // fall back to "no assigned videos" instead of an uncaught rejection.
+      console.error('subscribeAssignedVideos: listener error', err);
+      callback([]);
+    },
+  );
 }
 
 export async function assignVideo(params: {

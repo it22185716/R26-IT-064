@@ -14,7 +14,16 @@ export function useAuthUser() {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
       setUser(u);
-      setProfile(u ? await getUserProfile(u.uid) : null);
+      try {
+        setProfile(u ? await getUserProfile(u.uid) : null);
+      } catch (err) {
+        // A failed profile read (rules denial, transient network error, a
+        // race on a brand-new signup before the profile doc is readable)
+        // must not leave `loading` stuck true forever — every gated page
+        // would hang on its loading state. Fall back to no profile instead.
+        console.error('useAuthUser: failed to load profile', err);
+        setProfile(null);
+      }
       setLoading(false);
     });
     return () => unsub();

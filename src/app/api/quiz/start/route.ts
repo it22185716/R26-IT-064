@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { doc, getDoc, setDoc } from 'firebase/firestore/lite';
-import { db } from '@/lib/firebaseServer';
+import { adminDb } from '@/lib/firebaseAdmin';
 import { pickQuizQuestions, QUIZ_DURATION_MINUTES, BankQuestion } from '@/lib/quiz';
 
 function toClientQuestion(q: BankQuestion) {
@@ -17,10 +16,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Missing uid' }, { status: 400 });
   }
 
-  const sessionRef = doc(db, 'quizSessions', uid);
-  const existing = await getDoc(sessionRef);
+  const sessionRef = adminDb.collection('quizSessions').doc(uid);
+  const existing = await sessionRef.get();
 
-  if (existing.exists()) {
+  if (existing.exists) {
     const session = existing.data() as { questions: BankQuestion[]; deadline: number };
     if (session.deadline > Date.now()) {
       return NextResponse.json({
@@ -34,7 +33,7 @@ export async function POST(request: Request) {
   const startedAt = Date.now();
   const deadline = startedAt + QUIZ_DURATION_MINUTES * 60 * 1000;
 
-  await setDoc(sessionRef, { uid, questions, startedAt, deadline });
+  await sessionRef.set({ uid, questions, startedAt, deadline });
 
   return NextResponse.json({
     deadline,

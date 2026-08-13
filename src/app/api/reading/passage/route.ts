@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { collection, getDocs, query, where } from 'firebase/firestore/lite';
-import { db } from '@/lib/firebaseServer';
+import { adminDb } from '@/lib/firebaseAdmin';
 import { ReadingPassage } from '@/lib/types';
 
 export async function GET(request: Request) {
@@ -15,14 +14,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Missing studentId' }, { status: 400 });
   }
 
-  const passagesSnap = await getDocs(
-    query(collection(db, 'readingPassages'), where('difficulty', '==', difficulty)),
-  );
+  const passagesSnap = await adminDb.collection('readingPassages').where('difficulty', '==', difficulty).get();
   const passages = passagesSnap.docs.map((d) => ({ id: d.id, ...d.data() } as ReadingPassage));
 
-  const attemptsSnap = await getDocs(
-    query(collection(db, 'readingAttempts'), where('studentId', '==', studentId)),
-  );
+  const attemptsSnap = await adminDb.collection('readingAttempts').where('studentId', '==', studentId).get();
   const attemptedPassageIds = new Set(attemptsSnap.docs.map((d) => d.data().passageId as string));
 
   const unattempted = passages.filter((p) => !attemptedPassageIds.has(p.passageId));

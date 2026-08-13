@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore/lite';
-import { db } from '@/lib/firebaseServer';
+import { adminDb } from '@/lib/firebaseAdmin';
 import { DayPlan, MealOptions, MealPlan } from '@/lib/types';
 
 const MEAL_PLAN_SERVICE_URL = process.env.MEAL_PLAN_SERVICE_URL || 'http://127.0.0.1:5001';
@@ -74,7 +73,7 @@ export async function POST(request: Request) {
   // where(studentId) + orderBy(createdAt) would need a composite index Firestore
   // doesn't create automatically (same reason lib/mealPlan.ts sorts client-side
   // instead) — fetch by studentId alone and sort in memory.
-  const previousSnap = await getDocs(query(collection(db, 'mealPlans'), where('studentId', '==', uid)));
+  const previousSnap = await adminDb.collection('mealPlans').where('studentId', '==', uid).get();
   const previousDocs = previousSnap.docs.sort((a, b) => b.data().createdAt - a.data().createdAt);
   const previousDoc = previousDocs[0];
   const previous = previousDoc ? ({ id: previousDoc.id, ...previousDoc.data() } as MealPlan) : null;
@@ -103,7 +102,7 @@ export async function POST(request: Request) {
     progressSinceLastPlan,
   };
 
-  const docRef = await addDoc(collection(db, 'mealPlans'), newPlan);
+  const docRef = await adminDb.collection('mealPlans').add(newPlan);
 
   return NextResponse.json({ id: docRef.id, ...newPlan });
 }

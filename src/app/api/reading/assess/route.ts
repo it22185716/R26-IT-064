@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore/lite';
-import { db } from '@/lib/firebaseServer';
+import { adminDb } from '@/lib/firebaseAdmin';
 import { ReadingDifficulty, ReadingPassage } from '@/lib/types';
 
 const READING_SERVICE_URL = process.env.READING_SERVICE_URL || 'http://127.0.0.1:5003';
@@ -40,9 +39,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Missing currentDifficulty' }, { status: 400 });
   }
 
-  const passageSnap = await getDocs(
-    query(collection(db, 'readingPassages'), where('passageId', '==', passageId)),
-  );
+  const passageSnap = await adminDb.collection('readingPassages').where('passageId', '==', passageId).get();
   if (passageSnap.empty) {
     return NextResponse.json({ error: `Unknown passageId '${passageId}'` }, { status: 404 });
   }
@@ -71,7 +68,7 @@ export async function POST(request: Request) {
   const level = result.level as ReadingLevel;
   const nextDifficulty = NEXT_DIFFICULTY[level][passage.difficulty];
 
-  await addDoc(collection(db, 'readingAttempts'), {
+  await adminDb.collection('readingAttempts').add({
     studentId,
     passageId,
     difficulty: passage.difficulty,

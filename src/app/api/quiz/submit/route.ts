@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { addDoc, collection, deleteDoc, doc, getDoc } from 'firebase/firestore/lite';
-import { db } from '@/lib/firebaseServer';
+import { adminDb } from '@/lib/firebaseAdmin';
 import { BankQuestion } from '@/lib/quiz';
 
 const MATH_WEAKNESS_SERVICE_URL = process.env.MATH_WEAKNESS_SERVICE_URL || 'http://127.0.0.1:5004';
@@ -42,9 +41,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Missing uid' }, { status: 400 });
   }
 
-  const sessionRef = doc(db, 'quizSessions', uid);
-  const sessionSnap = await getDoc(sessionRef);
-  if (!sessionSnap.exists()) {
+  const sessionRef = adminDb.collection('quizSessions').doc(uid);
+  const sessionSnap = await sessionRef.get();
+  if (!sessionSnap.exists) {
     return NextResponse.json({ error: 'No active quiz session' }, { status: 400 });
   }
 
@@ -85,10 +84,10 @@ export async function POST(request: Request) {
   const weakestCategory = modelPrediction?.weakestCategory || ruleWeakestCategory;
   const predictionMethod = modelPrediction ? 'model' : 'rule';
 
-  const userSnap = await getDoc(doc(db, 'users', uid));
-  const studentName = userSnap.exists() ? (userSnap.data() as { name?: string }).name || '' : '';
+  const userSnap = await adminDb.collection('users').doc(uid).get();
+  const studentName = userSnap.exists ? (userSnap.data() as { name?: string }).name || '' : '';
 
-  await addDoc(collection(db, 'quizAttempts'), {
+  await adminDb.collection('quizAttempts').add({
     studentId: uid,
     studentName,
     categoryScores,
@@ -100,7 +99,7 @@ export async function POST(request: Request) {
     completedAt: Date.now(),
   });
 
-  await deleteDoc(sessionRef);
+  await sessionRef.delete();
 
   return NextResponse.json({ categoryScores, weakestCategory, totalScore, maxScore });
 }
