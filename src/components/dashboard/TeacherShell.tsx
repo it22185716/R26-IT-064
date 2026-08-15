@@ -31,6 +31,13 @@ const ICONS: Record<string, ReactNode> = {
       d="M8.25 21V12.75M8.25 12.75a2.25 2.25 0 01-2.25-2.25V3.75m2.25 9a2.25 2.25 0 002.25-2.25V3.75M8.25 3.75v3M15.75 3.75c0 3-2.25 4.5-2.25 7.5 0 1.036.84 1.875 1.875 1.875h.375V21"
     />
   ),
+  reading: (
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+    />
+  ),
 };
 
 type NavItem = { href: string; label: string; icon: ReactNode; exact?: boolean };
@@ -41,6 +48,7 @@ const NAV_SECTIONS: { heading: string; items: NavItem[] }[] = [
     items: [
       { href: '/dashboard/teacher', label: 'Overview', icon: ICONS.overview, exact: true },
       { href: '/dashboard/teacher/meal-plan', label: 'Meal & Nutrition', icon: ICONS.mealNutrition },
+      { href: '/dashboard/teacher/reading', label: 'Reading Progress', icon: ICONS.reading },
     ],
   },
   {
