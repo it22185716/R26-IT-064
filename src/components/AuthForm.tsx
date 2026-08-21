@@ -3,24 +3,13 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth, googleProvider } from '../lib/firebase';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from 'firebase/auth';
-import { createUserProfile, ensureUserProfile } from '../lib/userProfile';
-import { UserRole } from '../lib/types';
+import { signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
+import { getUserProfile } from '../lib/userProfile';
 
-type Props = {
-  mode: 'login' | 'signup';
-};
-
-export default function AuthForm({ mode }: Props) {
+export default function AuthForm() {
   const router = useRouter();
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<UserRole>('student');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,12 +19,7 @@ export default function AuthForm({ mode }: Props) {
     setLoading(true);
     setError(null);
     try {
-      if (mode === 'signup') {
-        const cred = await createUserWithEmailAndPassword(auth, email, password);
-        await createUserProfile({ uid: cred.user.uid, email, name: name || email, role });
-      } else {
-        await signInWithEmailAndPassword(auth, email, password);
-      }
+      await signInWithEmailAndPassword(auth, email, password);
       router.push('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Authentication failed');
@@ -49,12 +33,14 @@ export default function AuthForm({ mode }: Props) {
     setError(null);
     try {
       const cred = await signInWithPopup(auth, googleProvider);
-      await ensureUserProfile({
-        uid: cred.user.uid,
-        email: cred.user.email || '',
-        name: cred.user.displayName || cred.user.email || '',
-        defaultRole: 'student',
-      });
+      const profile = await getUserProfile(cred.user.uid);
+      if (!profile) {
+        // This Google account was never registered by an admin — don't leave
+        // it half-authenticated with no profile, and don't auto-create one.
+        await signOut(auth);
+        setError("This account hasn't been registered. Please contact your school admin.");
+        return;
+      }
       router.push('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Google sign-in failed');
@@ -65,10 +51,8 @@ export default function AuthForm({ mode }: Props) {
 
   return (
     <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
-      <h2 className="text-2xl font-semibold">{mode === 'signup' ? 'Create account' : 'Welcome back'}</h2>
-      <p className="mt-1 text-sm text-slate-500">
-        {mode === 'signup' ? 'Start tracking progress in minutes.' : 'Sign in to continue to your dashboard.'}
-      </p>
+      <h2 className="text-2xl font-semibold">Welcome back</h2>
+      <p className="mt-1 text-sm text-slate-500">Sign in to continue to your dashboard.</p>
 
       {error && (
         <div className="mt-4 flex items-start gap-2 text-sm text-rose-700 bg-rose-50 border border-rose-100 px-3 py-2.5 rounded-lg animate-shake">
@@ -80,20 +64,6 @@ export default function AuthForm({ mode }: Props) {
       )}
 
       <form onSubmit={handleEmailAuth} className="mt-6 space-y-4">
-        {mode === 'signup' && (
-          <label className="block">
-            <span className="text-sm font-medium text-slate-700">Full name</span>
-            <input
-              type="text"
-              required
-              placeholder="Jane Silva"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none transition-all focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
-            />
-          </label>
-        )}
-
         <label className="block">
           <span className="text-sm font-medium text-slate-700">Email</span>
           <div className="relative mt-1.5">
@@ -149,28 +119,6 @@ export default function AuthForm({ mode }: Props) {
           </div>
         </label>
 
-        {mode === 'signup' && (
-          <div>
-            <span className="text-sm font-medium text-slate-700">I am a</span>
-            <div className="mt-1.5 grid grid-cols-2 gap-2">
-              {(['student', 'teacher'] as UserRole[]).map((r) => (
-                <button
-                  key={r}
-                  type="button"
-                  onClick={() => setRole(r)}
-                  className={`rounded-lg border px-3 py-2.5 text-sm font-medium capitalize transition-colors ${
-                    role === r
-                      ? 'border-sky-600 bg-sky-50 text-sky-700'
-                      : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-                  }`}
-                >
-                  {r}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
         <button
           type="submit"
           disabled={loading}
@@ -182,7 +130,7 @@ export default function AuthForm({ mode }: Props) {
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
           )}
-          {loading ? 'Please wait...' : mode === 'signup' ? 'Create account' : 'Sign in'}
+          {loading ? 'Please wait...' : 'Sign in'}
         </button>
       </form>
 

@@ -10,7 +10,8 @@
     "dev:video": "ml-services\\video-recommendation\\venv\\Scripts\\python.exe ml-services\\video-recommendation\\app.py",
     "dev:math": "ml-services\\math-weak-detection\\venv\\Scripts\\python.exe ml-services\\math-weak-detection\\app.py",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "promote-admin": "node scripts/promote-to-admin.js"
   },
   "dependencies": {
     "firebase": "^9.22.1",

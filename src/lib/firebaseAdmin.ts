@@ -1,5 +1,6 @@
 import { cert, getApps, initializeApp, type App } from 'firebase-admin/app';
 import { getFirestore, type Firestore } from 'firebase-admin/firestore';
+import { getAuth, type Auth } from 'firebase-admin/auth';
 
 // API Route Handlers run server-side with no signed-in user, so the client
 // SDK's Firestore Security Rules (which gate on request.auth) always deny
@@ -46,5 +47,22 @@ export const adminDb: Firestore = new Proxy({} as Firestore, {
     const db = getAdminDb();
     const value = Reflect.get(db, prop, db);
     return typeof value === 'function' ? value.bind(db) : value;
+  },
+});
+
+let cachedAuth: Auth | undefined;
+
+function getAdminAuth(): Auth {
+  if (!cachedAuth) cachedAuth = getAuth(getAdminApp());
+  return cachedAuth;
+}
+
+// Same lazy-Proxy rationale as adminDb above — defers constructing the Admin
+// app (and throwing on missing credentials) until first use, not build time.
+export const adminAuth: Auth = new Proxy({} as Auth, {
+  get(_target, prop, _receiver) {
+    const authInstance = getAdminAuth();
+    const value = Reflect.get(authInstance, prop, authInstance);
+    return typeof value === 'function' ? value.bind(authInstance) : value;
   },
 });

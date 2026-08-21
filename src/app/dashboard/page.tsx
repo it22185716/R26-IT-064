@@ -14,7 +14,13 @@ export default function DashboardRedirect() {
       router.replace('/auth');
       return;
     }
-    router.replace(profile?.role === 'teacher' ? '/dashboard/teacher' : '/dashboard/student');
+    if (profile?.role === 'admin') {
+      router.replace('/dashboard/admin');
+    } else if (profile?.role === 'teacher') {
+      router.replace('/dashboard/teacher');
+    } else {
+      router.replace('/dashboard/student');
+    }
   }, [loading, user, profile, router]);
 
   return (

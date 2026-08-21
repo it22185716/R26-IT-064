@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import AuthForm from '../../components/AuthForm';
 import RadialGauge from '../../components/dashboard/RadialGauge';
 import { gsap } from '../../components/home/gsapClient';
@@ -8,7 +8,6 @@ import { gsap } from '../../components/home/gsapClient';
 const CHART_BARS = [38, 62, 45, 80, 58, 94, 70];
 
 export default function AuthPage() {
-  const [mode, setMode] = useState<'login' | 'signup'>('login');
   const mockupRef = useRef<HTMLDivElement>(null);
   const chipRef = useRef<HTMLDivElement>(null);
 
@@ -147,32 +146,10 @@ export default function AuthPage() {
 
         <div className="flex flex-col items-center animate-fade-in-up [animation-delay:100ms]">
           <div className="w-full max-w-md">
-            <div className="relative flex mb-6 rounded-xl bg-slate-100 p-1">
-              <div
-                className="absolute inset-y-1 w-1/2 rounded-lg bg-white shadow-sm transition-transform duration-300 ease-out"
-                style={{ transform: mode === 'login' ? 'translateX(0%)' : 'translateX(100%)' }}
-              />
-              <button
-                type="button"
-                onClick={() => setMode('login')}
-                className={`relative z-10 w-1/2 py-2.5 text-sm font-semibold rounded-lg transition-colors ${
-                  mode === 'login' ? 'text-slate-900' : 'text-slate-500 hover:text-slate-700'
-                }`}
-              >
-                Login
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode('signup')}
-                className={`relative z-10 w-1/2 py-2.5 text-sm font-semibold rounded-lg transition-colors ${
-                  mode === 'signup' ? 'text-slate-900' : 'text-slate-500 hover:text-slate-700'
-                }`}
-              >
-                Register
-              </button>
-            </div>
-
-            <AuthForm mode={mode} />
+            <AuthForm />
+            <p className="mt-4 text-center text-sm text-slate-500">
+              Don&apos;t have an account? Contact your school admin to get one created.
+            </p>
           </div>
         </div>
       </div>

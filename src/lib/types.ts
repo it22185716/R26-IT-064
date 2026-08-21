@@ -1,4 +1,4 @@
-export type UserRole = 'student' | 'teacher';
+export type UserRole = 'student' | 'teacher' | 'admin';
 
 export type UserProfile = {
   uid: string;
@@ -107,5 +107,18 @@ export type AssignedVideo = {
   url: string;
   note?: string;
   assignedByName: string;
+  createdAt: number;
+};
+
+export type AdminAuditAction = 'user_created' | 'user_role_changed' | 'user_deleted';
+
+export type AdminAuditLogEntry = {
+  id: string;
+  action: AdminAuditAction;
+  actorUid: string;
+  actorName: string;
+  targetUid: string;
+  targetEmail: string;
+  details: Record<string, unknown>;
   createdAt: number;
 };
