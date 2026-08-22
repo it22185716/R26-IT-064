@@ -110,6 +110,18 @@ export type AssignedVideo = {
   createdAt: number;
 };
 
+export type VideoPostTestResult = {
+  id: string;
+  studentId: string;
+  weakArea: string;
+  preScore: number;
+  postScore: number;
+  improved: boolean;
+  correctCount: number;
+  totalQuestions: number;
+  completedAt: number;
+};
+
 export type AdminAuditAction = 'user_created' | 'user_role_changed' | 'user_deleted';
 
 export type AdminAuditLogEntry = {

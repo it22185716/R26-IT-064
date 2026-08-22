@@ -71,9 +71,8 @@ const NavCard = forwardRef<HTMLAnchorElement, Props>(
     <Link
       ref={ref}
       href={href}
-      className={`group relative flex flex-col overflow-hidden rounded-2xl border p-5 opacity-0 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_20px_rgba(15,23,42,0.05)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(15,23,42,0.10),0_24px_48px_rgba(15,23,42,0.14)] ${
-        primary ? PRIMARY_CARD[accent] : ACCENT_CARD[accent]
-      } ${className}`}
+      className={`group relative flex flex-col overflow-hidden rounded-2xl border p-5 opacity-0 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_20px_rgba(15,23,42,0.05)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(15,23,42,0.10),0_24px_48px_rgba(15,23,42,0.14)] ${primary ? PRIMARY_CARD[accent] : ACCENT_CARD[accent]
+        } ${className}`}
     >
       {!primary && (
         <span
@@ -90,18 +89,16 @@ const NavCard = forwardRef<HTMLAnchorElement, Props>(
 
       {badge && (
         <span
-          className={`absolute right-4 top-4 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
-            primary ? 'bg-white/15 text-white' : ACCENT_BADGE[accent]
-          }`}
+          className={`absolute right-4 top-4 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${primary ? 'bg-white/15 text-white' : ACCENT_BADGE[accent]
+            }`}
         >
           {badge}
         </span>
       )}
 
       <div
-        className={`relative flex h-11 w-11 items-center justify-center rounded-xl shadow-lg ring-1 ring-inset ring-white/25 transition-transform duration-200 group-hover:scale-105 ${
-          primary ? 'bg-white/15 text-white shadow-none' : `text-white ${ACCENT_TILE[accent]}`
-        }`}
+        className={`relative flex h-11 w-11 items-center justify-center rounded-xl shadow-lg ring-1 ring-inset ring-white/25 transition-transform duration-200 group-hover:scale-105 ${primary ? 'bg-white/15 text-white shadow-none' : `text-white ${ACCENT_TILE[accent]}`
+          }`}
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
           {icon}
@@ -114,9 +111,8 @@ const NavCard = forwardRef<HTMLAnchorElement, Props>(
       </p>
 
       <span
-        className={`relative mt-4 inline-flex items-center gap-1.5 text-sm font-semibold ${
-          primary ? 'text-white' : 'text-slate-900'
-        }`}
+        className={`relative mt-4 inline-flex items-center gap-1.5 text-sm font-semibold ${primary ? 'text-white' : 'text-slate-900'
+          }`}
       >
         {primary ? 'Start now' : 'Open'}
         <svg

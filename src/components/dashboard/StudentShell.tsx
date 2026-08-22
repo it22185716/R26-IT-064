@@ -156,11 +156,10 @@ export default function StudentShell({ userName, title, children }: Props) {
                     <Link
                       href={item.href}
                       aria-current={active ? 'page' : undefined}
-                      className={`group relative flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-all duration-150 ${
-                        active
+                      className={`group relative flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-all duration-150 ${active
                           ? 'bg-gradient-to-r from-indigo-50 to-violet-50 font-semibold text-indigo-700'
                           : 'font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                      }`}
+                        }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -236,14 +235,12 @@ export default function StudentShell({ userName, title, children }: Props) {
         <div
           onClick={() => setOpen(false)}
           aria-hidden
-          className={`fixed inset-0 z-40 bg-slate-900/40 transition-opacity duration-200 ${
-            open ? 'opacity-100' : 'opacity-0'
-          }`}
+          className={`fixed inset-0 z-40 bg-slate-900/40 transition-opacity duration-200 ${open ? 'opacity-100' : 'opacity-0'
+            }`}
         />
         <aside
-          className={`fixed inset-y-0 left-0 z-50 w-64 shadow-xl transition-transform duration-200 ease-out ${
-            open ? 'translate-x-0' : '-translate-x-full'
-          }`}
+          className={`fixed inset-y-0 left-0 z-50 w-64 shadow-xl transition-transform duration-200 ease-out ${open ? 'translate-x-0' : '-translate-x-full'
+            }`}
         >
           {sidebar}
         </aside>

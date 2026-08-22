@@ -536,218 +536,215 @@ export default function StudentDashboard() {
         </div>
 
         <div className="mt-10 space-y-10">
-            <div>
-              <h2 className="text-base font-semibold text-slate-900">Quick actions</h2>
-              <div ref={navGridRef} className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                {NAV_CARDS.map((card, i) => (
-                  <NavCard
-                    key={card.href}
-                    ref={navCardRefs[i]}
-                    href={card.href}
-                    title={card.title}
-                    description={card.description}
-                    icon={card.icon}
-                    primary={card.primary}
-                    accent={card.accent}
-                    badge={quickActionBadges[card.href]}
-                  />
-                ))}
-              </div>
+          <div>
+            <h2 className="text-base font-semibold text-slate-900">Quick actions</h2>
+            <div ref={navGridRef} className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {NAV_CARDS.map((card, i) => (
+                <NavCard
+                  key={card.href}
+                  ref={navCardRefs[i]}
+                  href={card.href}
+                  title={card.title}
+                  description={card.description}
+                  icon={card.icon}
+                  primary={card.primary}
+                  accent={card.accent}
+                  badge={quickActionBadges[card.href]}
+                />
+              ))}
             </div>
+          </div>
 
-            <section>
-              <h2 className="text-base font-semibold text-slate-900">Your progress</h2>
-              <div ref={progressGridRef} className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
-                <StatCard
-                  ref={progressCardRefs[0]}
-                  label="Attempts taken"
-                  value={attempts ? String(attempts.length) : '—'}
-                  gradient="from-blue-500 to-indigo-600"
-                  icon={<path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />}
-                />
-                <StatCard
-                  ref={progressCardRefs[1]}
-                  label="Last submitted"
-                  value={latest ? new Date(latest.completedAt).toLocaleDateString() : '—'}
-                  gradient="from-indigo-500 to-blue-600"
-                  icon={<path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />}
-                />
+          <section>
+            <h2 className="text-base font-semibold text-slate-900">Your progress</h2>
+            <div ref={progressGridRef} className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
+              <StatCard
+                ref={progressCardRefs[0]}
+                label="Attempts taken"
+                value={attempts ? String(attempts.length) : '—'}
+                gradient="from-blue-500 to-indigo-600"
+                icon={<path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />}
+              />
+              <StatCard
+                ref={progressCardRefs[1]}
+                label="Last submitted"
+                value={latest ? new Date(latest.completedAt).toLocaleDateString() : '—'}
+                gradient="from-indigo-500 to-blue-600"
+                icon={<path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />}
+              />
 
-                <GlassCard ref={progressCardRefs[2]} className={`flex flex-col items-center p-5 ${MEAL_PROGRESS_CARD}`}>
-                  {latestMealPlan ? (
-                    <RadialGauge
-                      percent={bmiGaugePercent(latestMealPlan.profile.bmi)}
-                      centerLabel={latestMealPlan.profile.bmi.toFixed(1)}
-                      label={bmiZone(latestMealPlan.profile.bmi).label}
-                      colorFrom={bmiZone(latestMealPlan.profile.bmi).from}
-                      colorTo={bmiZone(latestMealPlan.profile.bmi).to}
-                    />
-                  ) : mealPlans === null ? (
-                    <p className="my-8 text-sm text-slate-400">Loading…</p>
-                  ) : (
-                    <div className="flex flex-col items-center py-4 text-center">
-                      <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-inner ring-1 ring-inset ring-white/25 ${MEAL_PROGRESS_TILE}`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          {MEAL_ICON}
-                        </svg>
-                      </div>
-                      <p className="mt-3 text-sm text-slate-500">No meal plan yet</p>
-                      <a href="/dashboard/student/meal-plan" className="mt-1 text-sm font-semibold text-emerald-600 hover:text-emerald-700">
-                        Generate one →
-                      </a>
-                    </div>
-                  )}
-                </GlassCard>
-
-                <GlassCard
-                  ref={progressCardRefs[3]}
-                  className={`flex flex-col items-center justify-center p-5 text-center ${READING_PROGRESS_CARD}`}
-                >
-                  {latestReading ? (
-                    <>
-                      <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-inner ring-1 ring-inset ring-white/25 ${READING_PROGRESS_TILE}`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          {READING_ICON}
-                        </svg>
-                      </div>
-                      <p className="mt-4 text-2xl font-bold tracking-tight text-slate-900">{latestReading.level}</p>
-                      <p className="text-sm font-medium text-slate-600">
-                        Reading level · {readingAttempts?.length} passage{readingAttempts?.length === 1 ? '' : 's'}
-                      </p>
-                    </>
-                  ) : readingAttempts === null ? (
-                    <p className="my-8 text-sm text-slate-400">Loading…</p>
-                  ) : (
-                    <div className="py-4">
-                      <div className={`mx-auto flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-inner ring-1 ring-inset ring-white/25 ${READING_PROGRESS_TILE}`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          {READING_ICON}
-                        </svg>
-                      </div>
-                      <p className="mt-3 text-sm text-slate-500">No reading practice yet</p>
-                      <a href="/dashboard/student/reading" className="mt-1 text-sm font-semibold text-amber-600 hover:text-amber-700">
-                        Start reading →
-                      </a>
-                    </div>
-                  )}
-                </GlassCard>
-              </div>
-            </section>
-
-            <section>
-              <div ref={activityRef} className="opacity-0">
-                <GlassCard hover={false} className="p-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-base font-semibold text-slate-900">Recent activity</h3>
-                    {attempts && attempts.length > 0 && (
-                      <a href="/quiz" className="text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-700">
-                        View quiz history
-                      </a>
-                    )}
-                  </div>
-                  {!dataLoaded ? (
-                    <p className="mt-4 text-sm text-slate-400">Loading…</p>
-                  ) : timeline.length === 0 ? (
-                    <p className="mt-4 text-sm text-slate-500">No activity yet — take a quiz or generate a meal plan to get started.</p>
-                  ) : (
-                    <ul className="mt-4 divide-y divide-slate-100">
-                      {timeline.map((entry) => (
-                        <li key={entry.id} className="-mx-2 flex items-center gap-3.5 rounded-xl px-2 py-3.5 text-sm transition-colors duration-150 hover:bg-slate-50">
-                          <span
-                            aria-hidden
-                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${TIMELINE_ICON_STYLE[entry.type]}`}
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              {TIMELINE_ICON[entry.type]}
-                            </svg>
-                          </span>
-                          <span className="flex-1 font-medium text-slate-700">{entry.label}</span>
-                          <span className="hidden text-slate-500 sm:inline">{entry.detail}</span>
-                          <span className="shrink-0 text-xs font-medium text-slate-400">{new Date(entry.date).toLocaleDateString()}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </GlassCard>
-              </div>
-            </section>
-
-            <section>
-              <div ref={recommendedRef} className="opacity-0">
-                <h2 className="text-base font-semibold text-slate-900">Recommended for you</h2>
-                {!dataLoaded ? (
-                  <p className="mt-4 text-sm text-slate-400">Loading…</p>
+              <GlassCard ref={progressCardRefs[2]} className={`flex flex-col items-center p-5 ${MEAL_PROGRESS_CARD}`}>
+                {latestMealPlan ? (
+                  <RadialGauge
+                    percent={bmiGaugePercent(latestMealPlan.profile.bmi)}
+                    centerLabel={latestMealPlan.profile.bmi.toFixed(1)}
+                    label={bmiZone(latestMealPlan.profile.bmi).label}
+                    colorFrom={bmiZone(latestMealPlan.profile.bmi).from}
+                    colorTo={bmiZone(latestMealPlan.profile.bmi).to}
+                  />
+                ) : mealPlans === null ? (
+                  <p className="my-8 text-sm text-slate-400">Loading…</p>
                 ) : (
-                  <div ref={recommendedGridRef} className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                    {recommendations.map((rec, i) => (
-                      <NavCard
-                        key={rec.key}
-                        ref={recommendationRefs[i]}
-                        href={rec.href}
-                        title={rec.title}
-                        description={rec.description}
-                        icon={rec.icon}
-                        accent={RECOMMENDATION_ACCENT[rec.href] ?? 'indigo'}
-                      />
-                    ))}
-                  </div>
-                )}
-
-                <div className="mt-8">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-semibold text-slate-900">Videos for you</h3>
-                    <a
-                      href="/dashboard/student/video-recommendation"
-                      className="text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-700"
-                    >
-                      See all
-                    </a>
-                  </div>
-                  <div className="mt-3">
-                    <RecommendedVideos studentId={user.uid} />
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-base font-semibold text-slate-900">Achievements</h2>
-              <div ref={achievementsGridRef} className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
-                {(dataLoaded ? achievements : buildAchievements([], [], [])).map((a, i) => (
-                  <GlassCard
-                    key={a.key}
-                    ref={achievementRefs[i]}
-                    hover={false}
-                    className={`flex flex-col items-center p-5 text-center ${
-                      a.unlocked ? ACHIEVEMENT_THEME[a.key]?.card ?? '' : 'opacity-60'
-                    }`}
-                  >
-                    <div
-                      className={`flex h-11 w-11 items-center justify-center rounded-xl ${
-                        a.unlocked
-                          ? `text-white shadow-lg ${ACHIEVEMENT_THEME[a.key]?.tile ?? 'bg-gradient-to-br from-blue-500 to-indigo-600'} ${ACHIEVEMENT_THEME[a.key]?.shadow ?? ''}`
-                          : 'bg-slate-100 text-slate-400'
-                      }`}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                        {a.icon}
+                  <div className="flex flex-col items-center py-4 text-center">
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-inner ring-1 ring-inset ring-white/25 ${MEAL_PROGRESS_TILE}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        {MEAL_ICON}
                       </svg>
                     </div>
-                    <h3 className={`mt-3 text-sm font-semibold ${a.unlocked ? 'text-slate-900' : 'text-slate-400'}`}>
-                      {a.title}
-                    </h3>
-                    <p className="mt-1 text-xs text-slate-500">{a.description}</p>
-                    <span
-                      className={`mt-2.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
-                        a.unlocked ? ACHIEVEMENT_THEME[a.key]?.pill ?? 'bg-indigo-50 text-indigo-700' : 'bg-slate-100 text-slate-400'
-                      }`}
-                    >
-                      {a.unlocked ? '✓ Unlocked' : 'Locked'}
-                    </span>
-                  </GlassCard>
-                ))}
+                    <p className="mt-3 text-sm text-slate-500">No meal plan yet</p>
+                    <a href="/dashboard/student/meal-plan" className="mt-1 text-sm font-semibold text-emerald-600 hover:text-emerald-700">
+                      Generate one →
+                    </a>
+                  </div>
+                )}
+              </GlassCard>
+
+              <GlassCard
+                ref={progressCardRefs[3]}
+                className={`flex flex-col items-center justify-center p-5 text-center ${READING_PROGRESS_CARD}`}
+              >
+                {latestReading ? (
+                  <>
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-inner ring-1 ring-inset ring-white/25 ${READING_PROGRESS_TILE}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        {READING_ICON}
+                      </svg>
+                    </div>
+                    <p className="mt-4 text-2xl font-bold tracking-tight text-slate-900">{latestReading.level}</p>
+                    <p className="text-sm font-medium text-slate-600">
+                      Reading level · {readingAttempts?.length} passage{readingAttempts?.length === 1 ? '' : 's'}
+                    </p>
+                  </>
+                ) : readingAttempts === null ? (
+                  <p className="my-8 text-sm text-slate-400">Loading…</p>
+                ) : (
+                  <div className="py-4">
+                    <div className={`mx-auto flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-inner ring-1 ring-inset ring-white/25 ${READING_PROGRESS_TILE}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        {READING_ICON}
+                      </svg>
+                    </div>
+                    <p className="mt-3 text-sm text-slate-500">No reading practice yet</p>
+                    <a href="/dashboard/student/reading" className="mt-1 text-sm font-semibold text-amber-600 hover:text-amber-700">
+                      Start reading →
+                    </a>
+                  </div>
+                )}
+              </GlassCard>
+            </div>
+          </section>
+
+          <section>
+            <div ref={activityRef} className="opacity-0">
+              <GlassCard hover={false} className="p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-semibold text-slate-900">Recent activity</h3>
+                  {attempts && attempts.length > 0 && (
+                    <a href="/quiz" className="text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-700">
+                      View quiz history
+                    </a>
+                  )}
+                </div>
+                {!dataLoaded ? (
+                  <p className="mt-4 text-sm text-slate-400">Loading…</p>
+                ) : timeline.length === 0 ? (
+                  <p className="mt-4 text-sm text-slate-500">No activity yet — take a quiz or generate a meal plan to get started.</p>
+                ) : (
+                  <ul className="mt-4 divide-y divide-slate-100">
+                    {timeline.map((entry) => (
+                      <li key={entry.id} className="-mx-2 flex items-center gap-3.5 rounded-xl px-2 py-3.5 text-sm transition-colors duration-150 hover:bg-slate-50">
+                        <span
+                          aria-hidden
+                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${TIMELINE_ICON_STYLE[entry.type]}`}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            {TIMELINE_ICON[entry.type]}
+                          </svg>
+                        </span>
+                        <span className="flex-1 font-medium text-slate-700">{entry.label}</span>
+                        <span className="hidden text-slate-500 sm:inline">{entry.detail}</span>
+                        <span className="shrink-0 text-xs font-medium text-slate-400">{new Date(entry.date).toLocaleDateString()}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </GlassCard>
+            </div>
+          </section>
+
+          <section>
+            <div ref={recommendedRef} className="opacity-0">
+              <h2 className="text-base font-semibold text-slate-900">Recommended for you</h2>
+              {!dataLoaded ? (
+                <p className="mt-4 text-sm text-slate-400">Loading…</p>
+              ) : (
+                <div ref={recommendedGridRef} className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                  {recommendations.map((rec, i) => (
+                    <NavCard
+                      key={rec.key}
+                      ref={recommendationRefs[i]}
+                      href={rec.href}
+                      title={rec.title}
+                      description={rec.description}
+                      icon={rec.icon}
+                      accent={RECOMMENDATION_ACCENT[rec.href] ?? 'indigo'}
+                    />
+                  ))}
+                </div>
+              )}
+
+              <div className="mt-8">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold text-slate-900">Videos for you</h3>
+                  <a
+                    href="/dashboard/student/video-recommendation"
+                    className="text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-700"
+                  >
+                    See all
+                  </a>
+                </div>
+                <div className="mt-3">
+                  <RecommendedVideos studentId={user.uid} />
+                </div>
               </div>
-            </section>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-base font-semibold text-slate-900">Achievements</h2>
+            <div ref={achievementsGridRef} className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
+              {(dataLoaded ? achievements : buildAchievements([], [], [])).map((a, i) => (
+                <GlassCard
+                  key={a.key}
+                  ref={achievementRefs[i]}
+                  hover={false}
+                  className={`flex flex-col items-center p-5 text-center ${a.unlocked ? ACHIEVEMENT_THEME[a.key]?.card ?? '' : 'opacity-60'
+                    }`}
+                >
+                  <div
+                    className={`flex h-11 w-11 items-center justify-center rounded-xl ${a.unlocked
+                        ? `text-white shadow-lg ${ACHIEVEMENT_THEME[a.key]?.tile ?? 'bg-gradient-to-br from-blue-500 to-indigo-600'} ${ACHIEVEMENT_THEME[a.key]?.shadow ?? ''}`
+                        : 'bg-slate-100 text-slate-400'
+                      }`}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                      {a.icon}
+                    </svg>
+                  </div>
+                  <h3 className={`mt-3 text-sm font-semibold ${a.unlocked ? 'text-slate-900' : 'text-slate-400'}`}>
+                    {a.title}
+                  </h3>
+                  <p className="mt-1 text-xs text-slate-500">{a.description}</p>
+                  <span
+                    className={`mt-2.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${a.unlocked ? ACHIEVEMENT_THEME[a.key]?.pill ?? 'bg-indigo-50 text-indigo-700' : 'bg-slate-100 text-slate-400'
+                      }`}
+                  >
+                    {a.unlocked ? '✓ Unlocked' : 'Locked'}
+                  </span>
+                </GlassCard>
+              ))}
+            </div>
+          </section>
         </div>
       </main>
     </StudentShell>

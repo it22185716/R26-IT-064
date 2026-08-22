@@ -47,24 +47,16 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center justify-self-end gap-3">
-          <div className="hidden items-center gap-3 xl:flex">
-            <a
-              href="/auth"
-              className="inline-flex items-center justify-center rounded-lg border border-slate-300/60 bg-white/40 px-3.5 py-2 text-sm font-semibold text-slate-700 ring-1 ring-inset ring-white/40 backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-400/70 hover:bg-white/60 hover:text-slate-900 hover:shadow-md active:translate-y-0 active:scale-95"
-            >
-              Sign In
-            </a>
-            <a
-              href="/auth"
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:translate-y-0 active:scale-95"
-            >
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
-              />
-              Login
-            </a>
-          </div>
+          <a
+            href="/auth"
+            className="group relative hidden items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:translate-y-0 active:scale-95 xl:inline-flex"
+          >
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-[400ms] ease-out group-hover:translate-x-full"
+            />
+            Login
+          </a>
 
           <button
             type="button"
@@ -99,12 +91,6 @@ export default function Navbar() {
               </a>
             ))}
             <div className="mt-2 flex flex-col gap-3 border-t border-white/30 pt-4">
-              <a
-                href="/auth"
-                className="inline-flex items-center justify-center rounded-lg border border-slate-300/60 bg-white/40 px-4 py-2 text-sm font-semibold text-slate-700 ring-1 ring-inset ring-white/40 backdrop-blur-md transition-all duration-200 hover:border-slate-400/70 hover:bg-white/60 hover:text-slate-900 hover:shadow-md active:scale-95"
-              >
-                Sign In
-              </a>
               <a
                 href="/auth"
                 className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/25 shadow-[0_1px_3px_rgba(79,70,229,0.35),0_8px_20px_rgba(79,70,229,0.28)] transition-all duration-200 hover:shadow-[0_2px_6px_rgba(79,70,229,0.45),0_16px_36px_rgba(79,70,229,0.38)] active:scale-95"
