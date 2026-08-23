@@ -683,6 +683,20 @@ export default function MealPlanPage() {
         </GlassCard>
       </div>
 
+      {currentPlan && !currentPlan.progressSinceLastPlan && (
+        <div className="mt-4">
+          <a
+            href="/dashboard/student/meal-plan/history"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-900"
+          >
+            View growth history
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+      )}
+
       {currentPlan && (
         <div ref={resultsRef} className="mt-5 space-y-5">
           {/* ---- Growth Progress ---- */}
@@ -719,6 +733,16 @@ export default function MealPlanPage() {
                     label={currentPlan.progressSinceLastPlan.daysSinceLastPlan === 1 ? 'day since last plan' : 'days since last plan'}
                   />
                 </div>
+
+                <a
+                  href="/dashboard/student/meal-plan/history"
+                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-900"
+                >
+                  View full growth history
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </a>
               </div>
             </GlassCard>
           )}
