@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useRouter } from 'next/navigation';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../../../lib/firebase';
@@ -10,26 +10,12 @@ import VideoCard from '../../../../components/dashboard/VideoCard';
 import { fetchAssignedVideos } from '../../../../lib/assignedVideos';
 import { AssignedVideo, QuizAttempt } from '../../../../lib/types';
 import { toEmbedUrl, toThumbnailUrl } from '../../../../lib/youtube';
+import { useParallax } from '../../../../components/home/useParallax';
+import { useStaggerReveal } from '../../../../components/dashboard/useStaggerReveal';
+import { gsap, ScrollTrigger } from '../../../../components/home/gsapClient';
 
 type CommonVideo = { title: string; url: string; duration: string; difficulty: string };
 type RecommendApiItem = { title: string; url: string; video_duration: string; difficulty: string };
-
-type PostTestQuestion = {
-  id: string;
-  question: string;
-  difficulty: string;
-  options: { label: string; text: string }[];
-};
-
-type PostTestResult = {
-  preScore: number;
-  postScore: number;
-  improved: boolean;
-  correctCount: number;
-  totalQuestions: number;
-};
-
-type PostTestStage = 'closed' | 'loading' | 'active' | 'submitting' | 'result';
 
 const badgeStyle: Record<string, string> = {
   Beginner: 'bg-emerald-50 text-emerald-700',
@@ -78,6 +64,62 @@ function MainThumbnailVisual({ thumb, duration }: { thumb: string | null; durati
   );
 }
 
+// One-off "curtain draw" flourish for the screening room panel — a restrained
+// scale-in layered on top of useParallax's own fade/slide for the same
+// element. Kept local to this page per the task's constraints rather than
+// added to the shared hooks. Mirrors useParallax.ts's own defensive
+// structure: poll for the ref to mount, gsap.context() + matchMedia gate on
+// prefers-reduced-motion, ScrollTrigger start/toggleActions, ctx.revert() on
+// cleanup.
+function useScreeningRoomCurtain(ref: RefObject<HTMLElement>) {
+  useLayoutEffect(() => {
+    let cancelled = false;
+    let rafId: number | undefined;
+    let ctx: ReturnType<typeof gsap.context> | undefined;
+
+    const setup = () => {
+      if (cancelled) return;
+      if (!ref.current) {
+        rafId = requestAnimationFrame(setup);
+        return;
+      }
+
+      try {
+        ctx = gsap.context(() => {
+          const mm = gsap.matchMedia();
+          mm.add('(prefers-reduced-motion: no-preference)', () => {
+            gsap.fromTo(
+              ref.current,
+              { scale: 0.97 },
+              {
+                scale: 1,
+                duration: 0.5,
+                ease: 'power2.out',
+                scrollTrigger: {
+                  trigger: ref.current,
+                  start: 'top 85%',
+                  toggleActions: 'play none none reverse',
+                },
+              },
+            );
+          });
+        }, ref);
+      } catch (err) {
+        console.error('useScreeningRoomCurtain: GSAP setup failed, skipping the scale flourish.', err);
+      }
+    };
+
+    setup();
+
+    return () => {
+      cancelled = true;
+      if (rafId !== undefined) cancelAnimationFrame(rafId);
+      ctx?.revert();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref]);
+}
+
 export default function VideoRecommendationPage() {
   const router = useRouter();
   const { user, profile, loading } = useAuthUser();
@@ -85,13 +127,54 @@ export default function VideoRecommendationPage() {
   const [attempts, setAttempts] = useState<QuizAttempt[] | null>(null);
   const [recommended, setRecommended] = useState<CommonVideo[] | null>(null);
 
-  const [postTestStage, setPostTestStage] = useState<PostTestStage>('closed');
-  const [postTestQuestions, setPostTestQuestions] = useState<PostTestQuestion[]>([]);
-  const [postTestAnswers, setPostTestAnswers] = useState<Record<string, string>>({});
-  const [postTestResult, setPostTestResult] = useState<PostTestResult | null>(null);
-  const [postTestError, setPostTestError] = useState<string | null>(null);
-
   const [mainVideoPlaying, setMainVideoPlaying] = useState(false);
+
+  // Counts computed above the loading gate below so the choreography hooks —
+  // which are hooks and must run unconditionally on every render — have
+  // stable primitives to key their deps on.
+  const assignedCount = assigned?.length ?? 0;
+  const alternativeCount = Math.max(0, (recommended?.length ?? 0) - 1);
+
+  const mainRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const screeningRoomRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const alternativesRef = useRef<HTMLDivElement>(null);
+  const assignedRef = useRef<HTMLDivElement>(null);
+
+  const altGridRef = useRef<HTMLDivElement>(null);
+  const assignedGridRef = useRef<HTMLDivElement>(null);
+
+  // Dynamically-sized ref pools — recreated only when the item count changes,
+  // so a stable identity persists across renders that don't add/remove items.
+  // VideoCard.tsx is a plain function component (not forwardRef), and it's
+  // out of scope to change — so each item gets a wrapping div ref instead of
+  // a ref straight into VideoCard.
+  const altItemRefs = useMemo(
+    () => Array.from({ length: alternativeCount }, () => React.createRef<HTMLDivElement>()),
+    [alternativeCount],
+  );
+  const assignedItemRefs = useMemo(
+    () => Array.from({ length: assignedCount }, () => React.createRef<HTMLDivElement>()),
+    [assignedCount],
+  );
+
+  // Step 1 + Step 3: page-level entrance choreography, plus a subtle parallax
+  // drift on the screening room's ambient glow. Mirrors the exact hook usage
+  // in src/app/dashboard/student/page.tsx.
+  useParallax({
+    containerRef: mainRef,
+    entranceRefs: [headerRef, screeningRoomRef, alternativesRef, assignedRef],
+    layers: [{ ref: glowRef, speed: -30 }],
+  });
+
+  // Step 2: two independent "poster shelf" stagger groups.
+  useStaggerReveal(altGridRef, altItemRefs, { start: 'top 85%', deps: [alternativeCount] });
+  useStaggerReveal(assignedGridRef, assignedItemRefs, { start: 'top 85%', deps: [assignedCount] });
+
+  // Step 4: the screening room's one-off curtain-draw scale, layered on top
+  // of its own entrance fade/slide from useParallax above.
+  useScreeningRoomCurtain(screeningRoomRef);
 
   useEffect(() => {
     if (loading) return;
@@ -168,6 +251,14 @@ export default function VideoRecommendationPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attempts, weakestCategory]);
 
+  // Recommendations and assigned videos load async and change page height,
+  // which can leave ScrollTrigger's cached trigger positions for anything
+  // below the fold stale (same reasoning as the identical comment in
+  // src/app/dashboard/student/page.tsx). Recalculate once both have settled.
+  useEffect(() => {
+    if (assigned !== null && recommended !== null) ScrollTrigger.refresh();
+  }, [assigned, recommended]);
+
   // A stale iframe must not linger once a new weak area / recommendation
   // set loads — reset back to the click-to-play thumbnail.
   useEffect(() => {
@@ -191,58 +282,10 @@ export default function VideoRecommendationPage() {
   const mainEmbedUrl = mainRecommendation ? toEmbedUrl(mainRecommendation.url) : null;
   const mainThumb = mainRecommendation ? toThumbnailUrl(mainRecommendation.url) : null;
 
-  async function startPostTest() {
-    if (!user || !mainRecommendation || !weakestCategory) return;
-    window.open(mainRecommendation.url, '_blank', 'noopener,noreferrer');
-    setPostTestError(null);
-    setPostTestStage('loading');
-    try {
-      const res = await fetch('/api/video-recommendation/posttest/start', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid: user.uid, topic: weakestCategory }),
-      });
-      if (!res.ok) throw new Error('Could not start the post-test. Please try again.');
-      const data = await res.json();
-      setPostTestQuestions(data.questions || []);
-      setPostTestAnswers({});
-      setPostTestStage('active');
-    } catch {
-      setPostTestError('Could not start the post-test — please try again in a moment.');
-      setPostTestStage('closed');
-    }
+  function startPostTest() {
+    if (!mainRecommendation || !weakestCategory) return;
+    router.push(`/dashboard/student/video-recommendation/posttest?topic=${encodeURIComponent(weakestCategory)}`);
   }
-
-  async function submitPostTest() {
-    if (!user) return;
-    setPostTestStage('submitting');
-    setPostTestError(null);
-    try {
-      const res = await fetch('/api/video-recommendation/posttest/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid: user.uid, answers: postTestAnswers }),
-      });
-      if (!res.ok) throw new Error('Could not submit the post-test.');
-      const data = await res.json();
-      setPostTestResult(data);
-      setPostTestStage('result');
-    } catch {
-      setPostTestError('Could not submit the post-test — please try again.');
-      setPostTestStage('active');
-    }
-  }
-
-  function resetPostTest() {
-    setPostTestStage('closed');
-    setPostTestQuestions([]);
-    setPostTestAnswers({});
-    setPostTestResult(null);
-    setPostTestError(null);
-  }
-
-  const postTestAnsweredCount = Object.keys(postTestAnswers).length;
-  const postTestAllAnswered = postTestQuestions.length > 0 && postTestAnsweredCount === postTestQuestions.length;
 
   const recommendationsSubtitle =
     hasAssigned && hasRecommended
@@ -255,19 +298,21 @@ export default function VideoRecommendationPage() {
 
   return (
     <StudentShell userName={profile?.name || user.email || ''} title="Video Library">
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <p className="text-sm text-slate-500">Video Library</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">Watch and learn</h1>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500">
-          Videos picked for you based on your quiz results and your teacher's suggestions.
-        </p>
+      <main ref={mainRef} className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+        <div ref={headerRef} className="opacity-0">
+          <p className="text-sm text-slate-500">Video Library</p>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">Watch and learn</h1>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500">
+            Videos picked for you based on your quiz results and your teacher's suggestions.
+          </p>
+        </div>
 
         <section className="mt-10">
           <h2 className="text-base font-semibold text-slate-900">Your recommendations</h2>
           <p className="mt-1 text-sm text-slate-500">{recommendationsSubtitle}</p>
 
           <div className="mt-4">
-            {recommendationsLoading ? (
+            {recommendationsLoading && (
               <div className="grid gap-4 sm:grid-cols-3">
                 {[0, 1, 2].map((i) => (
                   <div key={i} className="animate-pulse overflow-hidden rounded-xl border border-slate-200 bg-white">
@@ -279,7 +324,9 @@ export default function VideoRecommendationPage() {
                   </div>
                 ))}
               </div>
-            ) : !hasAssigned && !hasRecommended ? (
+            )}
+
+            {!recommendationsLoading && !hasAssigned && !hasRecommended && (
               <div className="flex flex-col items-center rounded-xl border border-dashed border-slate-200 bg-white px-6 py-10 text-center">
                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-100 text-slate-400">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
@@ -291,16 +338,24 @@ export default function VideoRecommendationPage() {
                   Take a quiz to get topic-matched videos, or check back once your teacher assigns something.
                 </p>
               </div>
-            ) : (
-              <div className="space-y-6">
+            )}
+
+            {/* Always mounted (even while loading/empty) so useParallax's one-shot
+                entrance setup — which never retries — reliably finds these refs.
+                Hidden via `hidden`, not conditional rendering, until there's
+                something to show; Step 6's ScrollTrigger.refresh() then
+                recalculates trigger positions once real content replaces this
+                placeholder layout. */}
+            <div className={`space-y-6 ${recommendationsLoading || (!hasAssigned && !hasRecommended) ? 'hidden' : ''}`}>
+              <div ref={assignedRef} className="opacity-0">
                 {hasAssigned && (
-                  <div>
+                  <div className="rounded-2xl bg-gradient-to-b from-indigo-50/40 via-white to-white p-4 -m-4">
                     {hasRecommended && (
                       <h3 className="text-sm font-semibold text-slate-700">Picked by your teacher</h3>
                     )}
-                    <div className={`grid gap-4 sm:grid-cols-3 ${hasRecommended ? 'mt-3' : ''}`}>
-                      {assigned!.map((v) => (
-                        <div key={v.id}>
+                    <div ref={assignedGridRef} className={`grid gap-4 sm:grid-cols-3 ${hasRecommended ? 'mt-3' : ''}`}>
+                      {assigned?.map((v, i) => (
+                        <div key={v.id} ref={assignedItemRefs[i]}>
                           <VideoCard title={v.title} url={v.url} badge="From your teacher" badgeStyle="bg-indigo-50 text-indigo-700" />
                           {v.note && (
                             <p className="mt-2 text-xs text-slate-500">
@@ -312,20 +367,39 @@ export default function VideoRecommendationPage() {
                     </div>
                   </div>
                 )}
+              </div>
 
-                {hasRecommended && mainRecommendation && (
-                  <div>
-                    {hasAssigned && (
-                      <h3 className="text-sm font-semibold text-slate-700">
-                        Based on your last quiz — you&apos;re weakest in {weakestCategory}
-                      </h3>
-                    )}
-                    <div className={`grid gap-4 lg:grid-cols-3 ${hasAssigned ? 'mt-3' : ''}`}>
-                      <div className="lg:col-span-2">
-                        <p className="mb-2 inline-flex items-center rounded-full bg-sky-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-sky-700">
+              <div>
+                {hasRecommended && mainRecommendation && hasAssigned && (
+                  <h3 className="text-sm font-semibold text-slate-700">
+                    Based on your last quiz — you&apos;re weakest in {weakestCategory}
+                  </h3>
+                )}
+                <div className={`grid gap-4 lg:grid-cols-3 ${hasAssigned && hasRecommended ? 'mt-3' : ''}`}>
+                  <div ref={screeningRoomRef} className="relative opacity-0 lg:col-span-2">
+                    {/* Soft, low-opacity color blobs behind the featured card — the
+                        same "gold (project accent) + violet (secondary)" pairing used
+                        for the card's own gradient ring, just diffused into ambient
+                        light atmosphere rather than a hard shape. Always mounted (even
+                        before a recommendation exists) so the parallax layer wires up
+                        on the very first setup pass. */}
+                    <div ref={glowRef} aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+                      <div className="absolute -top-8 left-6 h-56 w-56 rounded-full bg-gold-200/40 blur-3xl animate-blob motion-reduce:animate-none" />
+                      <div className="absolute -top-14 right-0 h-64 w-64 rounded-full bg-violet-200/40 blur-3xl animate-blob [animation-delay:3s] motion-reduce:animate-none" />
+                      <div className="absolute bottom-0 left-1/3 h-48 w-48 rounded-full bg-rose-200/30 blur-3xl animate-blob [animation-delay:5s] motion-reduce:animate-none" />
+                    </div>
+
+                    {hasRecommended && mainRecommendation && (
+                      <>
+                        <div className="mb-2 inline-flex items-center rounded-full bg-gradient-to-r from-gold-700 to-violet-600 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white shadow-sm shadow-violet-500/20">
                           Top pick
-                        </p>
-                        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+                        </div>
+                        {/* Gradient "glow ring" frame — a padding-box double-background
+                            trick (gradient outer + solid white inner) gives the featured
+                            card its presence via a colorful border and soft tinted
+                            shadow, instead of a dark backdrop. */}
+                        <div className="rounded-2xl bg-gradient-to-br from-gold-400 via-amber-300 to-violet-400 p-[2px] shadow-xl shadow-gold-500/10">
+                          <div className="overflow-hidden rounded-[14px] bg-white">
                           {mainVideoPlaying && mainEmbedUrl ? (
                             <div className="relative aspect-video overflow-hidden bg-slate-900">
                               <iframe
@@ -373,143 +447,52 @@ export default function VideoRecommendationPage() {
                               {mainRecommendation.title}
                             </p>
                           </div>
+                          </div>
                         </div>
 
                         {weakestCategory && (
                           <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
-                            {postTestStage === 'closed' && (
-                              <>
-                                <button
-                                  onClick={startPostTest}
-                                  className="inline-flex items-center justify-center rounded-lg bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sky-700"
-                                >
-                                  I&apos;ve watched this — take the post-test
-                                </button>
-                                {postTestError && <p className="mt-2 text-sm text-rose-600">{postTestError}</p>}
-                              </>
-                            )}
-
-                            {postTestStage === 'loading' && (
-                              <p className="text-sm text-slate-500">Preparing your post-test…</p>
-                            )}
-
-                            {(postTestStage === 'active' || postTestStage === 'submitting') && (
-                              <div>
-                                <h3 className="text-sm font-semibold text-slate-900">
-                                  Post-test — {weakestCategory}
-                                </h3>
-                                <p className="mt-1 text-xs text-slate-500">
-                                  {postTestAnsweredCount} of {postTestQuestions.length} answered
-                                </p>
-                                <div className="mt-4 space-y-5">
-                                  {postTestQuestions.map((q, i) => (
-                                    <div key={q.id}>
-                                      <p className="text-sm font-medium text-slate-800">
-                                        {i + 1}. {q.question}
-                                      </p>
-                                      <div className="mt-2 space-y-2">
-                                        {q.options.map((opt) => (
-                                          <button
-                                            key={opt.label}
-                                            onClick={() =>
-                                              setPostTestAnswers((prev) => ({ ...prev, [q.id]: opt.label }))
-                                            }
-                                            disabled={postTestStage === 'submitting'}
-                                            className={`w-full rounded-lg border px-4 py-2.5 text-left text-sm font-medium transition-colors ${
-                                              postTestAnswers[q.id] === opt.label
-                                                ? 'border-sky-600 bg-sky-50 text-sky-700'
-                                                : 'border-slate-200 text-slate-700 hover:bg-slate-50'
-                                            }`}
-                                          >
-                                            {opt.text}
-                                          </button>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-
-                                {postTestError && <p className="mt-4 text-sm text-rose-600">{postTestError}</p>}
-
-                                <button
-                                  onClick={submitPostTest}
-                                  disabled={!postTestAllAnswered || postTestStage === 'submitting'}
-                                  className="mt-5 inline-flex items-center justify-center rounded-lg bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-50"
-                                >
-                                  {postTestStage === 'submitting' ? 'Submitting…' : 'Submit post-test'}
-                                </button>
-                              </div>
-                            )}
-
-                            {postTestStage === 'result' && postTestResult && (
-                              <div>
-                                <h3 className="text-sm font-semibold text-slate-900">Your results</h3>
-                                <div className="mt-3 grid grid-cols-2 gap-3">
-                                  <div className="rounded-lg bg-slate-50 p-3 text-center">
-                                    <p className="text-xs text-slate-500">Before</p>
-                                    <p className="mt-1 text-2xl font-semibold text-slate-700">
-                                      {postTestResult.preScore}%
-                                    </p>
-                                  </div>
-                                  <div className="rounded-lg bg-slate-50 p-3 text-center">
-                                    <p className="text-xs text-slate-500">Post-test</p>
-                                    <p className="mt-1 text-2xl font-semibold text-slate-900">
-                                      {postTestResult.postScore}%
-                                    </p>
-                                  </div>
-                                </div>
-                                <p className="mt-2 text-xs text-slate-500">
-                                  {postTestResult.correctCount} / {postTestResult.totalQuestions} correct
-                                </p>
-
-                                {postTestResult.improved ? (
-                                  <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
-                                    Great job — you improved from {postTestResult.preScore}% to{' '}
-                                    {postTestResult.postScore}%!
-                                  </p>
-                                ) : (
-                                  <p className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm font-medium text-amber-700">
-                                    You scored {postTestResult.postScore}% (was {postTestResult.preScore}% before) —
-                                    try watching another recommended video and test again.
-                                  </p>
-                                )}
-
-                                <button
-                                  onClick={resetPostTest}
-                                  className="mt-5 inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
-                                >
-                                  Done
-                                </button>
-                              </div>
-                            )}
+                            <button
+                              onClick={startPostTest}
+                              className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-gold-700 to-amber-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-gold-500/20 transition-all duration-300 hover:from-gold-800 hover:to-amber-800 hover:shadow-lg hover:shadow-gold-500/25 motion-reduce:transition-none"
+                            >
+                              I&apos;ve watched this — take the post-test
+                            </button>
                           </div>
                         )}
-                      </div>
+                      </>
+                    )}
+                  </div>
 
-                      {alternativeRecommendations.length > 0 && (
-                        <div>
-                          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
-                            You might also like
-                          </p>
-                          <div className="space-y-4">
-                            {alternativeRecommendations.map((v) => (
+                  <div ref={alternativesRef} className="opacity-0">
+                    {alternativeRecommendations.length > 0 && (
+                      <div className="rounded-2xl bg-gradient-to-b from-indigo-50/40 via-white to-white p-4 -m-4">
+                        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                          You might also like
+                        </p>
+                        {/* 2-up only in the sm–lg range, where this section is still
+                            full page width; back to 1 column at lg+ once it's confined
+                            to the narrow 1/3 sidebar next to the featured card, so cards
+                            never get squeezed into a cramped mini-grid. */}
+                        <div ref={altGridRef} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                          {alternativeRecommendations.map((v, i) => (
+                            <div key={v.url} ref={altItemRefs[i]}>
                               <VideoCard
-                                key={v.url}
                                 title={v.title}
                                 url={v.url}
                                 duration={v.duration}
                                 badge={v.difficulty}
                                 badgeStyle={badgeStyle[v.difficulty] || 'bg-slate-100 text-slate-600'}
                               />
-                            ))}
-                          </div>
+                            </div>
+                          ))}
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
-            )}
+            </div>
           </div>
         </section>
       </main>

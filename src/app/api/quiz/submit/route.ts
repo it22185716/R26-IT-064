@@ -84,6 +84,11 @@ export async function POST(request: Request) {
   const weakestCategory = modelPrediction?.weakestCategory || ruleWeakestCategory;
   const predictionMethod = modelPrediction ? 'model' : 'rule';
 
+  const questionIdsByCategory: Record<string, string[]> = {};
+  for (const q of session.questions) {
+    (questionIdsByCategory[q.subCategory] ||= []).push(q.id);
+  }
+
   const userSnap = await adminDb.collection('users').doc(uid).get();
   const studentName = userSnap.exists ? (userSnap.data() as { name?: string }).name || '' : '';
 
@@ -97,6 +102,7 @@ export async function POST(request: Request) {
     totalScore,
     maxScore,
     completedAt: Date.now(),
+    questionIdsByCategory,
   });
 
   await sessionRef.delete();

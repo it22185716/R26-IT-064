@@ -84,10 +84,21 @@ const RECOMMENDATION_ACCENT: Record<string, 'indigo' | 'emerald' | 'amber' | 'vi
 };
 
 const TIMELINE_ICON_STYLE: Record<TimelineEntry['type'], string> = {
-  quiz: 'bg-indigo-50 text-indigo-600',
-  meal: 'bg-emerald-50 text-emerald-600',
-  reading: 'bg-amber-50 text-amber-600',
+  quiz: 'bg-indigo-50 text-indigo-600 ring-1 ring-inset ring-indigo-100 shadow-sm shadow-indigo-500/10',
+  meal: 'bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-100 shadow-sm shadow-emerald-500/10',
+  reading: 'bg-amber-50 text-amber-600 ring-1 ring-inset ring-amber-100 shadow-sm shadow-amber-500/10',
 };
+
+// Small repeated gold motif tying each section heading back to the hero's
+// gold accent language — purely decorative, sits before the heading text.
+function SectionHeading({ children }: { children: ReactNode }) {
+  return (
+    <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900">
+      <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold-400" />
+      {children}
+    </h2>
+  );
+}
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -469,7 +480,15 @@ export default function StudentDashboard() {
 
   return (
     <StudentShell userName={profile?.name || user.email || ''} title="Overview">
-      <main ref={mainRef} className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <main ref={mainRef} className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+        {/* Ambient continuity with the hero below — very low-opacity, echoes
+            the hero's own blob placement so the rest of the page reads as
+            the same atmosphere rather than a hard cut to flat white. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute left-[8%] top-0 h-[32rem] w-[32rem] rounded-full bg-indigo-500/5 blur-3xl animate-blob" />
+          <div className="absolute right-0 top-[26rem] h-[28rem] w-[28rem] rounded-full bg-gold-400/5 blur-3xl animate-blob [animation-delay:4s]" />
+        </div>
+
         <div ref={heroRef} className="opacity-0">
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 px-6 py-9 sm:px-10 sm:py-12">
             <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -537,7 +556,7 @@ export default function StudentDashboard() {
 
         <div className="mt-10 space-y-10">
           <div>
-            <h2 className="text-base font-semibold text-slate-900">Quick actions</h2>
+            <SectionHeading>Quick actions</SectionHeading>
             <div ref={navGridRef} className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {NAV_CARDS.map((card, i) => (
                 <NavCard
@@ -556,7 +575,7 @@ export default function StudentDashboard() {
           </div>
 
           <section>
-            <h2 className="text-base font-semibold text-slate-900">Your progress</h2>
+            <SectionHeading>Your progress</SectionHeading>
             <div ref={progressGridRef} className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
               <StatCard
                 ref={progressCardRefs[0]}
@@ -674,7 +693,7 @@ export default function StudentDashboard() {
 
           <section>
             <div ref={recommendedRef} className="opacity-0">
-              <h2 className="text-base font-semibold text-slate-900">Recommended for you</h2>
+              <SectionHeading>Recommended for you</SectionHeading>
               {!dataLoaded ? (
                 <p className="mt-4 text-sm text-slate-400">Loading…</p>
               ) : (
@@ -711,7 +730,7 @@ export default function StudentDashboard() {
           </section>
 
           <section>
-            <h2 className="text-base font-semibold text-slate-900">Achievements</h2>
+            <SectionHeading>Achievements</SectionHeading>
             <div ref={achievementsGridRef} className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
               {(dataLoaded ? achievements : buildAchievements([], [], [])).map((a, i) => (
                 <GlassCard
@@ -721,6 +740,13 @@ export default function StudentDashboard() {
                   className={`flex flex-col items-center p-5 text-center ${a.unlocked ? ACHIEVEMENT_THEME[a.key]?.card ?? '' : 'opacity-60'
                     }`}
                 >
+                  {a.unlocked && (
+                    <span
+                      aria-hidden
+                      style={{ animationIterationCount: 1 }}
+                      className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(115deg,transparent_40%,rgba(255,255,255,0.65)_50%,transparent_60%)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-hover:animate-shimmer motion-reduce:hidden"
+                    />
+                  )}
                   <div
                     className={`flex h-11 w-11 items-center justify-center rounded-xl ${a.unlocked
                         ? `text-white shadow-lg ${ACHIEVEMENT_THEME[a.key]?.tile ?? 'bg-gradient-to-br from-blue-500 to-indigo-600'} ${ACHIEVEMENT_THEME[a.key]?.shadow ?? ''}`

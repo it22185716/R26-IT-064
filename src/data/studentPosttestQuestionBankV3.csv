@@ -1,0 +1,1052 @@
+question_id,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,difficulty_level
+Q0001,Addition,What is the answer when 146 + 169 + 646 = ?,961,1061,971,951,861,A,easy
+Q0002,Addition,What is the value of 303 + 750 + 261?,1314,1414,1324,1214,1304,A,easy
+Q0003,Addition,What is the value of 271 + 717 + 947?,1935,1835,1945,1925,2035,A,easy
+Q0004,Addition,What is the value of 384 + 853 + 959?,2186,2196,2296,2096,2206,B,easy
+Q0005,Addition,What is the value of 111 + 490 + 546?,1137,1147,1047,1247,1157,B,easy
+Q0006,Addition,What is the value of 447 + 617 + 107?,1271,1171,1181,1071,1161,B,easy
+Q0007,Addition,What is the value of 961 + 181 + 498?,1650,1640,1540,1630,1740,B,easy
+Q0008,Addition,What is the value of 234 + 567 + 891?,1792,1692,1682,1592,1702,B,easy
+Q0009,Addition,What is the value of 345 + 678 + 912?,1935,1835,2035,1945,1925,A,easy
+Q0010,Addition,What is the value of 456 + 789 + 123?,1368,1468,1268,1358,1378,A,easy
+Q0011,Addition,What is the value of 567 + 890 + 234?,1681,1691,1791,1701,1591,B,easy
+Q0012,Addition,What is the value of 678 + 901 + 345?,2024,1934,1924,1914,1824,C,easy
+Q0013,Addition,What is the value of 789 + 123 + 456?,1268,1378,1468,1368,1358,D,easy
+Q0014,Addition,What is the value of 890 + 234 + 567?,1681,1691,1701,1591,1791,B,easy
+Q0015,Addition,What is the value of 901 + 345 + 678?,2024,1824,1924,1914,1934,C,easy
+Q0016,Addition,What is the value of 112 + 345 + 789?,1346,1146,1246,1236,1256,C,easy
+Q0017,Addition,What is the value of 223 + 456 + 890?,1569,1579,1669,1559,1469,A,easy
+Q0018,Addition,What is the value of 334 + 567 + 901?,1802,1702,1792,1812,1902,A,easy
+Q0019,Addition,What is the value of 445 + 678 + 123?,1256,1246,1146,1346,1236,B,easy
+Q0020,Addition,What is the value of 556 + 789 + 234?,1569,1589,1479,1579,1679,D,easy
+Q0021,Addition,What is the value of 667 + 890 + 345?,1912,2002,1802,1892,1902,E,easy
+Q0022,Addition,What is the value of 778 + 901 + 456?,2035,2235,2135,2125,2145,C,easy
+Q0023,Addition,What is the value of 889 + 123 + 567?,1579,1479,1679,1569,1589,A,easy
+Q0024,Addition,What is the value of 990 + 234 + 678?,1902,1802,1892,1912,2002,A,easy
+Q0025,Addition,What is the value of 101 + 345 + 789?,1245,1335,1235,1225,1135,C,easy
+Q0026,Addition,What is the value of 212 + 456 + 890?,1458,1548,1558,1658,1568,C,easy
+Q0027,Addition,What is the value of 323 + 567 + 901?,1801,1691,1781,1791,1891,D,easy
+Q0028,Addition,What is the value of 434 + 678 + 123?,1335,1245,1235,1135,1225,C,easy
+Q0029,Addition,What is the value of 545 + 789 + 234?,1558,1568,1468,1668,1578,B,easy
+Q0030,Addition,What is the value of 656 + 890 + 345?,1881,1891,1901,1791,1991,B,easy
+Q0031,Addition,What is the value of 111 + 222 + 333?,566,676,766,656,666,E,easy
+Q0032,Addition,What is the value of 222 + 333 + 444?,1099,899,1009,999,989,D,easy
+Q0033,Addition,What is the value of 333 + 444 + 555?,1432,1332,1342,1232,1322,B,easy
+Q0034,Addition,What is the value of 444 + 555 + 666?,1765,1675,1565,1665,1655,D,easy
+Q0035,Addition,What is the value of 555 + 666 + 777?,1988,1898,2008,1998,2098,D,easy
+Q0036,Addition,What is the value of 666 + 777 + 888?,2331,2231,2341,2321,2431,A,easy
+Q0037,Addition,What is the value of 777 + 888 + 999?,2674,2564,2654,2764,2664,E,easy
+Q0038,Addition,What is the value of 888 + 999 + 111?,2098,2008,1898,1998,1988,D,easy
+Q0039,Addition,What is the value of 123 + 234 + 345?,602,702,712,692,802,B,easy
+Q0040,Addition,What is the value of 234 + 345 + 456?,1035,1045,1135,1025,935,A,easy
+Q0041,Addition,What is the value of 74 + 14?,88,87,98,78,89,A,easy
+Q0042,Addition,What is the value of 22 + 71?,93,103,94,83,92,A,easy
+Q0043,Addition,What is the value of 37 + 11?,58,49,48,47,38,C,easy
+Q0044,Addition,What is the value of 13 + 99?,111,122,112,102,113,C,easy
+Q0045,Addition,What is the value of 80 + 68?,147,148,158,138,149,B,easy
+Q0046,Addition,What is the value of 98 + 60?,157,168,148,159,158,E,easy
+Q0047,Addition,What is the value of 25 + 11?,46,36,37,26,35,B,easy
+Q0048,Addition,What is the value of 42 + 18?,60,70,61,50,59,A,easy
+Q0049,Addition,What is the value of 31 + 29?,50,61,59,60,70,D,easy
+Q0050,Addition,What is the value of 56 + 44?,110,99,90,101,100,E,easy
+Q0051,Addition,What is the value of 17 + 63?,70,80,81,90,79,B,easy
+Q0052,Addition,What is the value of 48 + 32?,79,81,90,80,70,D,easy
+Q0053,Addition,What is the value of 15 + 85?,110,90,99,101,100,E,easy
+Q0054,Addition,What is the value of 72 + 28?,100,101,110,99,90,A,easy
+Q0055,Addition,What is the value of 53 + 47?,100,99,101,110,90,A,easy
+Q0056,Addition,What is the value of 479 + 141?,720,621,520,620,619,D,medium
+Q0057,Addition,What is the value of 467 + 78?,544,545,645,445,546,B,medium
+Q0058,Addition,What is the value of 354 + 74?,429,427,328,428,528,D,medium
+Q0059,Addition,What is the value of 466 + 81?,546,447,647,548,547,E,medium
+Q0060,Addition,What is the value of 429 + 191?,520,720,620,619,621,C,medium
+Q0061,Addition,What is the value of 283 + 123?,506,405,407,406,306,D,medium
+Q0062,Addition,What is the value of 482 + 128?,710,611,610,609,510,C,medium
+Q0063,Addition,What is the value of 75 + 130?,206,204,105,205,305,D,medium
+Q0064,Addition,What is the value of 233 + 191?,425,424,423,324,524,B,medium
+Q0065,Addition,What is the value of 78 + 53?,131,31,231,132,130,A,medium
+Q0066,Addition,What is the value of 64 + 57?,221,122,120,121,21,D,medium
+Q0067,Addition,What is the value of 354 + 89?,442,443,343,543,444,B,medium
+Q0068,Addition,What is the value of 267 + 145?,312,512,412,413,411,C,medium
+Q0069,Addition,What is the value of 389 + 234?,723,623,622,624,523,B,medium
+Q0070,Addition,What is the value of 512 + 167?,779,680,678,679,579,D,medium
+Q0071,Addition,What is the value of 623 + 278?,801,901,1001,902,900,B,medium
+Q0072,Addition,What is the value of 734 + 189?,922,923,823,1023,924,B,medium
+Q0073,Addition,What is the value of 845 + 234?,1179,1080,979,1078,1079,E,medium
+Q0074,Addition,What is the value of 456 + 345?,801,701,901,800,802,A,medium
+Q0075,Addition,What is the value of 567 + 232?,799,899,699,798,800,A,medium
+Q0076,Addition,What is the value of 678 + 121?,798,899,800,699,799,E,medium
+Q0077,Addition,What is the value of 789 + 210?,899,1000,1099,999,998,D,medium
+Q0078,Addition,What is the value of 890 + 109?,899,1099,1000,999,998,D,medium
+Q0079,Addition,What is the value of 234 + 765?,998,1099,899,1000,999,E,medium
+Q0080,Addition,What is the value of 41050 + 3035?,44095,45085,44085,44075,43085,C,hard
+Q0081,Addition,What is the value of 76564 + 9766?,87330,85330,86320,86330,86340,D,hard
+Q0082,Addition,What is the value of 82405 + 3102?,84507,85497,86507,85517,85507,E,hard
+Q0083,Addition,What is the value of 6662 + 1481?,8133,8153,7143,8143,9143,D,hard
+Q0084,Addition,What is the value of 36331 + 7797?,45128,44128,43128,44138,44118,B,hard
+Q0085,Addition,What is the value of 62290 + 3512?,65812,65792,66802,65802,64802,D,hard
+Q0086,Addition,What is the value of 42922 + 7497?,50419,50409,51419,50429,49419,A,hard
+Q0087,Addition,What is the value of 74231 + 8456?,82697,81687,82687,82677,83687,C,hard
+Q0088,Addition,What is the value of 53847 + 9123?,62970,63970,62980,62960,61970,A,hard
+Q0089,Addition,What is the value of 67234 + 5891?,74125,72125,73125,73135,73115,C,hard
+Q0090,Addition,What is the value of 81456 + 7234?,89690,88700,88690,88680,87690,C,hard
+Q0091,Addition,What is the value of 92345 + 8123?,101468,99468,100468,100478,100458,C,hard
+Q0092,Addition,What is the value of 73456 + 9234?,82700,82680,82690,83690,81690,C,hard
+Q0093,Addition,What is the value of 84567 + 1234?,85801,86801,84801,85811,85791,A,hard
+Q0094,Addition,What is the value of 95678 + 2345?,98023,99023,98013,98033,97023,A,hard
+Q0095,Addition,What is the value of 26789 + 4456?,31235,31245,31255,30245,32245,B,hard
+Q0096,Addition,What is the value of 37890 + 5567?,43457,44457,42457,43447,43467,A,hard
+Q0097,Addition,What is the value of 48901 + 6678?,56579,55579,55569,54579,55589,B,hard
+Q0098,Addition,What is the value of 59012 + 7789?,66791,65801,67801,66811,66801,E,hard
+Q0099,Addition,What is the value of 70123 + 8890?,79023,79013,79003,80013,78013,B,hard
+Q0100,Addition,What is the value of 81234 + 9901?,91145,90135,92135,91135,91125,D,hard
+Q0101,Addition,What is the value of 92345 + 1012?,93347,92357,94357,93357,93367,D,hard
+Q0102,Addition,What is the value of 13456 + 3223?,16669,16689,16679,17679,15679,C,hard
+Q0103,Addition,What is the value of 24567 + 4334?,28901,27901,28891,29901,28911,A,hard
+Q0104,Addition,What is the value of 35678 + 5445?,41113,40123,41133,41123,42123,D,hard
+Q0105,Addition,What is the value of 46789 + 6556?,53335,53345,53355,52345,54345,B,hard
+Q0106,Addition,What is the value of 57890 + 7667?,65557,64557,65547,66557,65567,A,hard
+Q0107,Addition,What is the value of 68901 + 8778?,78679,76679,77689,77669,77679,E,hard
+Q0108,Addition,What is the value of 79012 + 9889?,88891,87901,88901,89901,88911,C,hard
+Q0109,Addition,What is the value of 80123 + 1000?,80123,81113,82123,81123,81133,D,hard
+Q0110,Addition,What is the value of 91234 + 2111?,94345,92345,93345,93335,93355,C,hard
+Q0111,Addition,What is the value of 12345 + 3222?,15557,15577,16567,15567,14567,D,hard
+Q0112,Addition,What is the value of 23456 + 4333?,28789,27789,27779,27799,26789,B,hard
+Q0113,Addition,What is the value of 34567 + 5444?,41011,40011,40021,40001,39011,B,hard
+Q0114,Addition,What is the value of 45678 + 6555?,51233,53233,52233,52243,52223,C,hard
+Q0115,Addition,What is the value of 56789 + 7666?,64445,65455,64455,63455,64465,C,hard
+Q0116,Addition,What is the value of 67890 + 8777?,77667,76667,76657,75667,76677,B,hard
+Q0117,Addition,What is the value of 78901 + 9888?,88789,88779,88799,87789,89789,A,hard
+Q0118,Addition,What is the value of 89012 + 1999?,91021,90011,91011,92011,91001,C,hard
+Q0119,Addition,What is the value of 90123 + 2888?,93011,93021,93001,94011,92011,A,hard
+Q0120,Subtraction,What is the value of 500 - 123?,367,387,378,377,376,D,easy
+Q0121,Subtraction,What is the value of 600 - 234?,367,356,365,366,376,D,easy
+Q0122,Subtraction,What is the value of 700 - 345?,345,354,355,365,356,C,easy
+Q0123,Subtraction,What is the value of 800 - 456?,344,343,345,354,334,A,easy
+Q0124,Subtraction,What is the value of 900 - 567?,333,332,334,343,323,A,easy
+Q0125,Subtraction,What is the value of 999 - 678?,322,320,311,331,321,E,easy
+Q0126,Subtraction,What is the value of 888 - 456?,422,433,432,442,431,C,easy
+Q0127,Subtraction,What is the value of 777 - 345?,431,422,442,433,432,E,easy
+Q0128,Subtraction,What is the value of 666 - 234?,422,442,432,431,433,C,easy
+Q0129,Subtraction,What is the value of 555 - 123?,431,422,432,433,442,C,easy
+Q0130,Subtraction,What is the value of 444 - 111?,323,343,332,334,333,E,easy
+Q0131,Subtraction,What is the value of 333 - 222?,110,111,101,112,121,B,easy
+Q0132,Subtraction,What is the value of 456 - 150?,296,316,305,307,306,E,easy
+Q0133,Subtraction,What is the value of 567 - 260?,308,307,306,297,317,B,easy
+Q0134,Subtraction,What is the value of 678 - 370?,318,309,298,307,308,E,easy
+Q0135,Subtraction,What is the value of 789 - 480?,310,299,308,309,319,D,easy
+Q0136,Subtraction,What is the value of 890 - 590?,299,310,300,290,301,C,easy
+Q0137,Subtraction,What is the value of 987 - 680?,317,297,307,308,306,C,easy
+Q0138,Subtraction,What is the value of 876 - 570?,305,316,307,306,296,D,easy
+Q0139,Subtraction,What is the value of 765 - 460?,315,306,295,305,304,D,easy
+Q0140,Subtraction,What is the value of 654 - 350?,314,304,305,303,294,B,easy
+Q0141,Subtraction,What is the value of 543 - 240?,304,303,313,293,302,B,easy
+Q0142,Subtraction,What is the value of 432 - 130?,302,301,303,312,292,A,easy
+Q0143,Subtraction,What is the value of 321 - 109?,213,212,202,222,211,B,easy
+Q0144,Subtraction,What is the value of 210 - 98?,122,113,112,102,111,C,easy
+Q0145,Subtraction,What is the value of 198 - 67?,130,131,141,121,132,B,easy
+Q0146,Subtraction,What is the value of 187 - 56?,130,131,132,141,121,B,easy
+Q0147,Subtraction,What is the value of 176 - 45?,132,131,130,141,121,B,easy
+Q0148,Subtraction,What is the value of 165 - 34?,130,131,121,141,132,B,easy
+Q0149,Subtraction,What is the value of 154 - 23?,121,130,141,131,132,D,easy
+Q0150,Subtraction,What is the value of 143 - 12?,121,141,130,132,131,E,easy
+Q0151,Subtraction,What is the value of 132 - 11?,111,122,121,120,131,C,easy
+Q0152,Subtraction,What is the value of 121 - 10?,121,110,112,111,101,D,easy
+Q0153,Subtraction,What is the value of 110 - 9?,101,100,102,111,91,A,easy
+Q0154,Subtraction,What is the value of 99 - 8?,91,90,101,92,81,A,easy
+Q0155,Subtraction,What is the value of 1234 - 567?,567,668,667,666,767,C,medium
+Q0156,Subtraction,What is the value of 2345 - 678?,1668,1666,1667,1567,1767,C,medium
+Q0157,Subtraction,What is the value of 3456 - 789?,2567,2666,2667,2668,2767,C,medium
+Q0158,Subtraction,What is the value of 4567 - 890?,3777,3577,3677,3678,3676,C,medium
+Q0159,Subtraction,What is the value of 5678 - 901?,4777,4776,4778,4677,4877,A,medium
+Q0160,Subtraction,What is the value of 6789 - 1012?,5677,5877,5776,5777,5778,D,medium
+Q0161,Subtraction,What is the value of 7890 - 1123?,6766,6667,6867,6767,6768,D,medium
+Q0162,Subtraction,What is the value of 8901 - 2234?,6667,6767,6668,6666,6567,A,medium
+Q0163,Subtraction,What is the value of 9012 - 3345?,5666,5667,5668,5767,5567,B,medium
+Q0164,Subtraction,What is the value of 1023 - 456?,567,667,568,467,566,A,medium
+Q0165,Subtraction,What is the value of 2134 - 567?,1567,1566,1467,1667,1568,A,medium
+Q0166,Subtraction,What is the value of 3245 - 678?,2467,2568,2667,2566,2567,E,medium
+Q0167,Subtraction,What is the value of 4356 - 789?,3467,3566,3568,3567,3667,D,medium
+Q0168,Subtraction,What is the value of 5467 - 890?,4477,4578,4577,4677,4576,C,medium
+Q0169,Subtraction,What is the value of 6578 - 901?,5777,5676,5677,5577,5678,C,medium
+Q0170,Subtraction,What is the value of 7689 - 1012?,6677,6676,6577,6777,6678,A,medium
+Q0171,Subtraction,What is the value of 8790 - 1123?,7668,7667,7767,7666,7567,B,medium
+Q0172,Subtraction,What is the value of 9801 - 2234?,7566,7568,7567,7667,7467,C,medium
+Q0173,Subtraction,What is the value of 1912 - 345?,1568,1667,1566,1467,1567,E,medium
+Q0174,Subtraction,What is the value of 2023 - 456?,1667,1568,1467,1567,1566,D,medium
+Q0175,Subtraction,What is the value of 3134 - 567?,2667,2568,2467,2567,2566,D,medium
+Q0176,Subtraction,What is the value of 4245 - 678?,3566,3467,3667,3568,3567,E,medium
+Q0177,Subtraction,What is the value of 5356 - 789?,4567,4467,4568,4566,4667,A,medium
+Q0178,Subtraction,What is the value of 6467 - 890?,5677,5578,5577,5477,5576,C,medium
+Q0179,Subtraction,What is the value of 7578 - 901?,6677,6577,6676,6777,6678,A,medium
+Q0180,Subtraction,What is the value of 8689 - 1012?,7577,7676,7678,7777,7677,E,medium
+Q0181,Subtraction,What is the value of 9790 - 1123?,8567,8667,8666,8767,8668,B,medium
+Q0182,Subtraction,What is the value of 1801 - 234?,1568,1667,1567,1566,1467,C,medium
+Q0183,Subtraction,What is the value of 2912 - 345?,2467,2667,2568,2566,2567,E,medium
+Q0184,Subtraction,What is the value of 3023 - 456?,2566,2567,2467,2568,2667,B,medium
+Q0185,Subtraction,What is the value of 5000 - 1234?,3767,3766,3866,3765,3666,B,hard
+Q0186,Subtraction,What is the value of 6000 - 2345?,3755,3655,3656,3555,3654,B,hard
+Q0187,Subtraction,What is the value of 7000 - 3456?,3545,3444,3544,3644,3543,C,hard
+Q0188,Subtraction,What is the value of 8000 - 4567?,3533,3434,3333,3432,3433,E,hard
+Q0189,Subtraction,What is the value of 9000 - 5678?,3422,3323,3322,3321,3222,C,hard
+Q0190,Subtraction,What is the value of 9999 - 6789?,3210,3110,3310,3209,3211,A,hard
+Q0191,Subtraction,What is the value of 8888 - 4567?,4421,4321,4322,4320,4221,B,hard
+Q0192,Subtraction,What is the value of 7777 - 3456?,4221,4322,4321,4320,4421,C,hard
+Q0193,Subtraction,What is the value of 6666 - 2345?,4421,4321,4320,4322,4221,B,hard
+Q0194,Subtraction,What is the value of 5555 - 1234?,4320,4221,4321,4322,4421,C,hard
+Q0195,Subtraction,What is the value of 4567 - 1500?,3067,3068,3066,3167,2967,A,hard
+Q0196,Subtraction,What is the value of 5678 - 2600?,3077,3079,3178,3078,2978,D,hard
+Q0197,Subtraction,What is the value of 6789 - 3700?,3088,2989,3089,3189,3090,C,hard
+Q0198,Subtraction,What is the value of 7890 - 4800?,2990,3090,3089,3091,3190,B,hard
+Q0199,Subtraction,What is the value of 8901 - 5900?,3000,3101,3002,2901,3001,E,hard
+Q0200,Subtraction,What is the value of 9876 - 6800?,3075,3176,3076,3077,2976,C,hard
+Q0201,Subtraction,What is the value of 8765 - 5700?,3065,3165,3066,3064,2965,A,hard
+Q0202,Subtraction,What is the value of 7654 - 4600?,3053,3055,2954,3054,3154,D,hard
+Q0203,Subtraction,What is the value of 6543 - 3500?,3143,3043,2943,3042,3044,B,hard
+Q0204,Subtraction,What is the value of 5432 - 2400?,3032,3132,3031,3033,2932,A,hard
+Q0205,Subtraction,What is the value of 9001 - 4567?,4534,4433,4334,4434,4435,D,hard
+Q0206,Subtraction,What is the value of 8001 - 3456?,4544,4546,4645,4445,4545,E,hard
+Q0207,Subtraction,What is the value of 7001 - 2345?,4556,4656,4657,4655,4756,B,hard
+Q0208,Subtraction,What is the value of 6001 - 1234?,4766,4768,4767,4667,4867,C,hard
+Q0209,Subtraction,What is the value of 5001 - 1111?,3889,3891,3790,3990,3890,E,hard
+Q0210,Subtraction,What is the value of 9500 - 4321?,5279,5178,5180,5179,5079,D,hard
+Q0211,Subtraction,What is the value of 8500 - 3210?,5289,5290,5390,5190,5291,B,hard
+Q0212,Subtraction,What is the value of 7500 - 2109?,5390,5291,5392,5391,5491,D,hard
+Q0213,Subtraction,What is the value of 6500 - 1098?,5502,5403,5402,5302,5401,C,hard
+Q0214,Subtraction,What is the value of 5500 - 4321?,1178,1079,1279,1180,1179,E,hard
+Q0215,Subtraction,What is the value of 9750 - 5678?,4073,4172,4071,3972,4072,E,hard
+Q0216,Subtraction,What is the value of 8750 - 4567?,4182,4283,4184,4083,4183,E,hard
+Q0217,Subtraction,What is the value of 7750 - 3456?,4295,4294,4293,4394,4194,B,hard
+Q0218,Subtraction,What is the value of 6750 - 2345?,4404,4405,4406,4505,4305,B,hard
+Q0219,Subtraction,What is the value of 5750 - 1234?,4517,4616,4516,4416,4515,C,hard
+Q0220,Subtraction,What is the value of 9250 - 4321?,4829,4930,4929,4928,5029,C,hard
+Q0221,Subtraction,What is the value of 8250 - 3210?,5140,5039,4940,5041,5040,E,hard
+Q0222,Subtraction,What is the value of 7250 - 2109?,5241,5142,5140,5141,5041,D,hard
+Q0223,Subtraction,What is the value of 6250 - 1098?,5151,5153,5252,5052,5152,E,hard
+Q0224,Subtraction,What is the value of 5250 - 4321?,829,928,929,1029,930,C,hard
+Q0225,Multiplication,What is the value of 13 x 14?,202,184,182,162,180,C,easy
+Q0226,Multiplication,What is the value of 15 x 16?,240,220,260,238,242,A,easy
+Q0227,Multiplication,What is the value of 17 x 18?,306,286,326,304,308,A,easy
+Q0228,Multiplication,What is the value of 19 x 20?,382,380,360,400,378,B,easy
+Q0229,Multiplication,What is the value of 21 x 22?,464,442,460,482,462,E,easy
+Q0230,Multiplication,What is the value of 23 x 24?,550,554,572,532,552,E,easy
+Q0231,Multiplication,What is the value of 25 x 26?,650,648,670,630,652,A,easy
+Q0232,Multiplication,What is the value of 27 x 28?,776,754,756,758,736,C,easy
+Q0233,Multiplication,What is the value of 29 x 30?,890,850,872,868,870,E,easy
+Q0234,Multiplication,What is the value of 31 x 32?,972,1012,990,992,994,D,easy
+Q0235,Multiplication,What is the value of 14 x 15?,212,190,210,230,208,C,easy
+Q0236,Multiplication,What is the value of 16 x 17?,252,292,270,272,274,D,easy
+Q0237,Multiplication,What is the value of 18 x 19?,362,342,340,344,322,B,easy
+Q0238,Multiplication,What is the value of 20 x 21?,440,418,420,400,422,C,easy
+Q0239,Multiplication,What is the value of 22 x 23?,508,504,506,526,486,C,easy
+Q0240,Multiplication,What is the value of 24 x 25?,620,600,598,602,580,B,easy
+Q0241,Multiplication,What is the value of 26 x 27?,682,704,700,722,702,E,easy
+Q0242,Multiplication,What is the value of 28 x 29?,832,814,812,810,792,C,easy
+Q0243,Multiplication,What is the value of 30 x 31?,932,928,910,950,930,E,easy
+Q0244,Multiplication,What is the value of 32 x 33?,1036,1076,1056,1054,1058,C,easy
+Q0245,Multiplication,What is the value of 33 x 34?,1120,1102,1124,1142,1122,E,easy
+Q0246,Multiplication,What is the value of 35 x 36?,1258,1240,1280,1262,1260,E,easy
+Q0247,Multiplication,What is the value of 37 x 38?,1386,1406,1426,1408,1404,B,easy
+Q0248,Multiplication,What is the value of 39 x 40?,1562,1558,1560,1580,1540,C,easy
+Q0249,Multiplication,What is the value of 41 x 42?,1722,1720,1742,1724,1702,A,easy
+Q0250,Multiplication,What is the value of 43 x 44?,1894,1892,1912,1872,1890,B,easy
+Q0251,Multiplication,What is the value of 45 x 46?,2068,2090,2072,2070,2050,D,easy
+Q0252,Multiplication,What is the value of 47 x 48?,2258,2276,2254,2256,2236,D,easy
+Q0253,Multiplication,What is the value of 49 x 50?,2430,2450,2452,2470,2448,B,easy
+Q0254,Multiplication,What is the value of 51 x 52?,2654,2632,2652,2672,2650,C,easy
+Q0255,Multiplication,What is the value of 53 x 54?,2882,2842,2864,2860,2862,E,easy
+Q0256,Multiplication,What is the value of 55 x 56?,3082,3060,3078,3100,3080,E,easy
+Q0257,Multiplication,What is the value of 57 x 58?,3326,3308,3304,3306,3286,D,easy
+Q0258,Multiplication,What is the value of 59 x 60?,3560,3540,3538,3542,3520,B,easy
+Q0259,Multiplication,What is the value of 61 x 62?,3780,3782,3784,3802,3762,B,easy
+Q0260,Multiplication,What is the value of 123 x 4?,592,392,615,369,492,E,medium
+Q0261,Multiplication,What is the value of 234 x 5?,1170,1070,936,1404,1270,A,medium
+Q0262,Multiplication,What is the value of 345 x 6?,2070,1725,2415,1970,2170,A,medium
+Q0263,Multiplication,What is the value of 456 x 7?,3648,3092,3192,3292,2736,C,medium
+Q0264,Multiplication,What is the value of 567 x 8?,4636,3969,4436,5103,4536,E,medium
+Q0265,Multiplication,What is the value of 678 x 9?,6002,6780,5424,6202,6102,E,medium
+Q0266,Multiplication,What is the value of 789 x 11?,8779,7890,9468,8579,8679,E,medium
+Q0267,Multiplication,What is the value of 890 x 12?,10780,10580,10680,9790,11570,C,medium
+Q0268,Multiplication,What is the value of 901 x 13?,12614,11813,11613,10812,11713,E,medium
+Q0269,Multiplication,What is the value of 112 x 14?,1568,1468,1456,1668,1680,A,medium
+Q0270,Multiplication,What is the value of 124 x 15?,1860,1760,1960,1984,1736,A,medium
+Q0271,Multiplication,What is the value of 235 x 16?,3760,3525,3995,3860,3660,A,medium
+Q0272,Multiplication,What is the value of 346 x 17?,6228,5536,5982,5782,5882,E,medium
+Q0273,Multiplication,What is the value of 457 x 18?,8226,8683,8126,8326,7769,A,medium
+Q0274,Multiplication,What is the value of 568 x 19?,10692,10792,11360,10892,10224,B,medium
+Q0275,Multiplication,What is the value of 679 x 21?,14259,14938,14359,13580,14159,A,medium
+Q0276,Multiplication,What is the value of 780 x 22?,17940,17060,17260,17160,16380,D,medium
+Q0277,Multiplication,What is the value of 891 x 23?,19602,20393,20593,21384,20493,E,medium
+Q0278,Multiplication,What is the value of 902 x 24?,21748,21648,20746,22550,21548,B,medium
+Q0279,Multiplication,What is the value of 113 x 25?,2825,2712,2938,2925,2725,A,medium
+Q0280,Multiplication,What is the value of 125 x 26?,3125,3375,3350,3250,3150,D,medium
+Q0281,Multiplication,What is the value of 236 x 27?,6608,6472,6136,6272,6372,E,medium
+Q0282,Multiplication,What is the value of 347 x 28?,9616,9369,9816,9716,10063,D,medium
+Q0283,Multiplication,What is the value of 458 x 29?,12824,13182,13282,13382,13740,C,medium
+Q0284,Multiplication,What is the value of 569 x 31?,17070,17639,17539,17739,18208,B,medium
+Q0285,Multiplication,What is the value of 670 x 32?,21540,21440,22110,21340,20770,B,medium
+Q0286,Multiplication,What is the value of 781 x 33?,24992,26554,25673,25873,25773,E,medium
+Q0287,Multiplication,What is the value of 892 x 34?,30328,30228,29436,30428,31220,A,medium
+Q0288,Multiplication,What is the value of 903 x 35?,31505,31705,30702,32508,31605,E,medium
+Q0289,Multiplication,What is the value of 114 x 36?,3990,4104,4218,4204,4004,B,medium
+Q0290,Multiplication,What is the value of 126 x 37?,4562,4762,4788,4662,4536,D,medium
+Q0291,Multiplication,What is the value of 237 x 38?,8769,9006,8906,9243,9106,B,medium
+Q0292,Multiplication,What is the value of 348 x 39?,13472,13572,13920,13672,13224,B,medium
+Q0293,Multiplication,What is the value of 459 x 41?,19278,18919,18719,18360,18819,E,medium
+Q0294,Multiplication,What is the value of 570 x 42?,23940,23370,24510,23840,24040,A,medium
+Q0295,Multiplication,What is the value of 671 x 43?,29524,28753,28182,28953,28853,E,medium
+Q0296,Multiplication,What is the value of 782 x 44?,34408,34508,34308,35190,33626,A,medium
+Q0297,Multiplication,What is the value of 893 x 45?,39292,41078,40085,40285,40185,E,medium
+Q0298,Multiplication,What is the value of 904 x 46?,40680,41484,41684,42488,41584,E,medium
+Q0299,Multiplication,What is the value of 115 x 47?,5505,5290,5520,5305,5405,E,medium
+Q0300,Multiplication,What is the value of 1234 x 5?,7404,5170,7170,6170,4936,D,hard
+Q0301,Multiplication,What is the value of 2345 x 6?,16415,14070,13070,15070,11725,B,hard
+Q0302,Multiplication,What is the value of 3456 x 7?,25192,23192,20736,27648,24192,E,hard
+Q0303,Multiplication,What is the value of 4567 x 8?,31969,35536,36536,41103,37536,C,hard
+Q0304,Multiplication,What is the value of 5678 x 9?,50102,51102,52102,45424,56780,B,hard
+Q0305,Multiplication,What is the value of 6789 x 11?,75679,73679,67890,74679,81468,D,hard
+Q0306,Multiplication,What is the value of 7890 x 12?,94680,86790,102570,93680,95680,A,hard
+Q0307,Multiplication,What is the value of 8901 x 13?,124614,114713,116713,115713,106812,D,hard
+Q0308,Multiplication,What is the value of 9012 x 14?,126168,117156,127168,135180,125168,A,hard
+Q0309,Multiplication,What is the value of 1123 x 15?,15845,16845,17845,17968,15722,B,hard
+Q0310,Multiplication,What is the value of 2234 x 16?,37978,35744,34744,33510,36744,B,hard
+Q0311,Multiplication,What is the value of 3345 x 17?,53520,56865,60210,55865,57865,B,hard
+Q0312,Multiplication,What is the value of 4456 x 18?,80208,84664,75752,81208,79208,A,hard
+Q0313,Multiplication,What is the value of 5567 x 19?,104773,111340,106773,105773,100206,D,hard
+Q0314,Multiplication,What is the value of 6678 x 21?,139238,141238,146916,133560,140238,E,hard
+Q0315,Multiplication,What is the value of 7789 x 22?,171358,172358,179147,170358,163569,A,hard
+Q0316,Multiplication,What is the value of 8890 x 23?,195580,204470,213360,203470,205470,B,hard
+Q0317,Multiplication,What is the value of 9901 x 24?,236624,247525,227723,238624,237624,E,hard
+Q0318,Multiplication,What is the value of 1012 x 25?,24288,26300,25300,24300,26312,C,hard
+Q0319,Multiplication,What is the value of 2123 x 26?,54198,53075,55198,57321,56198,C,hard
+Q0320,Multiplication,What is the value of 3234 x 27?,84084,88318,90552,86318,87318,E,hard
+Q0321,Multiplication,What is the value of 4345 x 28?,117315,120660,126005,121660,122660,D,hard
+Q0322,Multiplication,What is the value of 5456 x 29?,163680,157224,159224,152768,158224,E,hard
+Q0323,Multiplication,What is the value of 6567 x 31?,202577,204577,203577,210144,197010,C,hard
+Q0324,Multiplication,What is the value of 7678 x 32?,244696,238018,245696,246696,253374,C,hard
+Q0325,Multiplication,What is the value of 8789 x 33?,290037,298826,289037,291037,281248,A,hard
+Q0326,Multiplication,What is the value of 9890 x 34?,346150,335260,336260,326370,337260,C,hard
+Q0327,Multiplication,What is the value of 1901 x 35?,64634,67535,65535,66535,68436,D,hard
+Q0328,Multiplication,What is the value of 2012 x 36?,74444,70420,72432,71432,73432,C,hard
+Q0329,Multiplication,What is the value of 3123 x 37?,112428,115551,114551,118674,116551,B,hard
+Q0330,Multiplication,What is the value of 4234 x 38?,165126,159892,156658,161892,160892,E,hard
+Q0331,Multiplication,What is the value of 5345 x 39?,213800,207455,208455,203110,209455,C,hard
+Q0332,Multiplication,What is the value of 6456 x 41?,264696,265696,263696,258240,271152,A,hard
+Q0333,Multiplication,What is the value of 7567 x 42?,310247,318814,316814,325381,317814,E,hard
+Q0334,Multiplication,What is the value of 8678 x 43?,364476,374154,373154,372154,381832,C,hard
+Q0335,Multiplication,What is the value of 9789 x 44?,440505,431716,420927,430716,429716,D,hard
+Q0336,Multiplication,What is the value of 1890 x 45?,84050,83160,85050,86050,86940,C,hard
+Q0337,Multiplication,What is the value of 2901 x 46?,134446,133446,132446,130545,136347,B,hard
+Q0338,Multiplication,What is the value of 3012 x 47?,138552,144576,142564,140564,141564,E,hard
+Q0339,Multiplication,What is the value of 4123 x 48?,196904,202027,198904,193781,197904,E,hard
+Q0340,Division,What is the value of 144 / 12?,13,17,7,11,12,E,easy
+Q0341,Division,What is the value of 169 / 13?,13,8,14,12,18,A,easy
+Q0342,Division,What is the value of 196 / 14?,19,9,13,15,14,E,easy
+Q0343,Division,What is the value of 225 / 15?,14,10,16,15,20,D,easy
+Q0344,Division,What is the value of 256 / 16?,11,21,15,16,17,D,easy
+Q0345,Division,What is the value of 289 / 17?,22,16,18,12,17,E,easy
+Q0346,Division,What is the value of 324 / 18?,19,17,23,13,18,E,easy
+Q0347,Division,What is the value of 361 / 19?,18,19,20,24,14,B,easy
+Q0348,Division,What is the value of 400 / 20?,19,21,15,20,25,D,easy
+Q0349,Division,What is the value of 441 / 21?,26,16,22,21,20,D,easy
+Q0350,Division,What is the value of 484 / 22?,23,21,27,22,17,D,easy
+Q0351,Division,What is the value of 529 / 23?,28,24,18,22,23,E,easy
+Q0352,Division,What is the value of 576 / 24?,23,25,29,19,24,E,easy
+Q0353,Division,What is the value of 625 / 25?,20,25,26,24,30,B,easy
+Q0354,Division,What is the value of 676 / 26?,21,27,26,31,25,C,easy
+Q0355,Division,What is the value of 729 / 27?,27,28,26,32,22,A,easy
+Q0356,Division,What is the value of 784 / 28?,23,27,33,28,29,D,easy
+Q0357,Division,What is the value of 841 / 29?,28,30,29,24,34,C,easy
+Q0358,Division,What is the value of 900 / 30?,29,30,25,31,35,B,easy
+Q0359,Division,What is the value of 961 / 31?,36,30,32,31,26,D,easy
+Q0360,Division,What is the value of 120 / 12?,9,5,11,10,15,D,easy
+Q0361,Division,What is the value of 130 / 13?,11,5,9,10,15,D,easy
+Q0362,Division,What is the value of 140 / 14?,9,5,11,15,10,E,easy
+Q0363,Division,What is the value of 150 / 15?,11,5,15,9,10,E,easy
+Q0364,Division,What is the value of 160 / 16?,15,9,10,5,11,C,easy
+Q0365,Division,What is the value of 170 / 17?,5,10,15,9,11,B,easy
+Q0366,Division,What is the value of 180 / 18?,5,9,11,15,10,E,easy
+Q0367,Division,What is the value of 190 / 19?,5,15,11,10,9,D,easy
+Q0368,Division,What is the value of 200 / 20?,15,11,10,9,5,C,easy
+Q0369,Division,What is the value of 210 / 21?,9,15,11,5,10,E,easy
+Q0370,Division,What is the value of 240 / 12?,21,20,25,15,19,B,easy
+Q0371,Division,What is the value of 260 / 13?,19,15,25,20,21,D,easy
+Q0372,Division,What is the value of 280 / 14?,15,19,25,20,21,D,easy
+Q0373,Division,What is the value of 300 / 15?,21,20,25,15,19,B,easy
+Q0374,Division,What is the value of 320 / 16?,19,25,20,21,15,C,easy
+Q0375,Division,What is the value of 1440 / 12?,121,120,119,110,130,B,medium
+Q0376,Division,What is the value of 1690 / 13?,120,130,129,131,140,B,medium
+Q0377,Division,What is the value of 1960 / 14?,139,140,141,150,130,B,medium
+Q0378,Division,What is the value of 2250 / 15?,150,151,140,160,149,A,medium
+Q0379,Division,What is the value of 2560 / 16?,159,161,150,160,170,D,medium
+Q0380,Division,What is the value of 2890 / 17?,170,160,180,171,169,A,medium
+Q0381,Division,What is the value of 3240 / 18?,190,170,180,179,181,C,medium
+Q0382,Division,What is the value of 3610 / 19?,189,180,200,191,190,E,medium
+Q0383,Division,What is the value of 4000 / 20?,201,210,200,190,199,C,medium
+Q0384,Division,What is the value of 4410 / 21?,220,211,209,210,200,D,medium
+Q0385,Division,What is the value of 2400 / 12?,199,190,210,201,200,E,medium
+Q0386,Division,What is the value of 2600 / 13?,190,200,201,199,210,B,medium
+Q0387,Division,What is the value of 2800 / 14?,201,199,210,190,200,E,medium
+Q0388,Division,What is the value of 3000 / 15?,201,200,210,190,199,B,medium
+Q0389,Division,What is the value of 3200 / 16?,190,210,199,201,200,E,medium
+Q0390,Division,What is the value of 3400 / 17?,210,199,201,190,200,E,medium
+Q0391,Division,What is the value of 3600 / 18?,200,190,210,199,201,A,medium
+Q0392,Division,What is the value of 3800 / 19?,200,199,201,190,210,A,medium
+Q0393,Division,What is the value of 4200 / 21?,201,199,210,190,200,E,medium
+Q0394,Division,What is the value of 4800 / 12?,410,390,401,399,400,E,medium
+Q0395,Division,What is the value of 5200 / 13?,401,400,399,390,410,B,medium
+Q0396,Division,What is the value of 5600 / 14?,399,410,390,400,401,D,medium
+Q0397,Division,What is the value of 6000 / 15?,390,410,401,399,400,E,medium
+Q0398,Division,What is the value of 6400 / 16?,410,400,399,390,401,B,medium
+Q0399,Division,What is the value of 6800 / 17?,401,399,410,400,390,D,medium
+Q0400,Division,What is the value of 7200 / 18?,399,410,390,401,400,E,medium
+Q0401,Division,What is the value of 7600 / 19?,390,410,400,399,401,C,medium
+Q0402,Division,What is the value of 8400 / 21?,390,399,401,400,410,D,medium
+Q0403,Division,What is the value of 9600 / 12?,799,801,810,800,790,D,medium
+Q0404,Division,What is the value of 9100 / 13?,700,710,690,699,701,A,medium
+Q0405,Division,What is the value of 9800 / 14?,690,699,710,700,701,D,medium
+Q0406,Division,What is the value of 9000 / 15?,601,600,590,610,599,B,medium
+Q0407,Division,What is the value of 8500 / 17?,499,501,510,500,490,D,medium
+Q0408,Division,What is the value of 9500 / 19?,500,490,501,499,510,A,medium
+Q0409,Division,What is the value of 7200 / 12?,610,601,599,590,600,E,medium
+Q0410,Division,What is the value of 7800 / 13?,610,601,600,590,599,C,medium
+Q0411,Division,What is the value of 8400 / 14?,590,610,600,601,599,C,medium
+Q0412,Division,What is the value of 7500 / 15?,510,499,500,490,501,C,medium
+Q0413,Division,What is the value of 8000 / 16?,510,490,499,501,500,E,medium
+Q0414,Division,What is the value of 14400 / 12?,1201,1200,1199,1100,1300,B,hard
+Q0415,Division,What is the value of 16900 / 13?,1400,1200,1301,1299,1300,E,hard
+Q0416,Division,What is the value of 19600 / 14?,1300,1400,1399,1401,1500,B,hard
+Q0417,Division,What is the value of 22500 / 15?,1501,1400,1499,1500,1600,D,hard
+Q0418,Division,What is the value of 25600 / 16?,1500,1599,1700,1600,1601,D,hard
+Q0419,Division,What is the value of 28900 / 17?,1700,1800,1701,1699,1600,A,hard
+Q0420,Division,What is the value of 32400 / 18?,1799,1900,1800,1801,1700,C,hard
+Q0421,Division,What is the value of 36100 / 19?,1899,1901,1800,1900,2000,D,hard
+Q0422,Division,What is the value of 40000 / 20?,1999,1900,2000,2100,2001,C,hard
+Q0423,Division,What is the value of 44100 / 21?,2101,2099,2000,2100,2200,D,hard
+Q0424,Division,What is the value of 24000 / 12?,2100,1999,2001,2000,1900,D,hard
+Q0425,Division,What is the value of 26000 / 13?,1900,2000,2100,1999,2001,B,hard
+Q0426,Division,What is the value of 28000 / 14?,2100,1999,2001,1900,2000,E,hard
+Q0427,Division,What is the value of 30000 / 15?,2000,2001,1999,1900,2100,A,hard
+Q0428,Division,What is the value of 32000 / 16?,2001,1900,1999,2100,2000,E,hard
+Q0429,Division,What is the value of 34000 / 17?,2100,2000,1999,2001,1900,B,hard
+Q0430,Division,What is the value of 36000 / 18?,1900,2001,2100,2000,1999,D,hard
+Q0431,Division,What is the value of 38000 / 19?,1900,1999,2001,2000,2100,D,hard
+Q0432,Division,What is the value of 42000 / 21?,2001,2000,1900,2100,1999,B,hard
+Q0433,Division,What is the value of 48000 / 12?,3999,4100,4001,3900,4000,E,hard
+Q0434,Division,What is the value of 52000 / 13?,4000,4001,3999,3900,4100,A,hard
+Q0435,Division,What is the value of 56000 / 14?,3999,4100,3900,4000,4001,D,hard
+Q0436,Division,What is the value of 60000 / 15?,4100,3999,4001,4000,3900,D,hard
+Q0437,Division,What is the value of 64000 / 16?,4100,3900,3999,4001,4000,E,hard
+Q0438,Division,What is the value of 68000 / 17?,4000,4001,3999,4100,3900,A,hard
+Q0439,Division,What is the value of 72000 / 18?,3999,3900,4001,4000,4100,D,hard
+Q0440,Division,What is the value of 76000 / 19?,4100,4000,4001,3900,3999,B,hard
+Q0441,Division,What is the value of 84000 / 21?,3999,4001,4000,3900,4100,C,hard
+Q0442,Division,What is the value of 96000 / 12?,7900,7999,8001,8100,8000,E,hard
+Q0443,Division,What is the value of 91000 / 13?,7100,6999,7001,6900,7000,E,hard
+Q0444,Division,What is the value of 98000 / 14?,7000,7100,7001,6999,6900,A,hard
+Q0445,Division,What is the value of 90000 / 15?,6001,5900,5999,6000,6100,D,hard
+Q0446,Division,What is the value of 85000 / 17?,5100,4999,5001,5000,4900,D,hard
+Q0447,Division,What is the value of 95000 / 19?,4999,5100,5001,4900,5000,E,hard
+Q0448,Division,What is the value of 72000 / 12?,6100,5900,5999,6000,6001,D,hard
+Q0449,Division,What is the value of 78000 / 13?,5900,5999,6100,6001,6000,E,hard
+Q0450,Division,What is the value of 84000 / 14?,6001,5999,6000,6100,5900,C,hard
+Q0451,Division,What is the value of 75000 / 15?,4900,5100,4999,5001,5000,E,hard
+Q0452,Division,What is the value of 80000 / 16?,5001,5000,5100,4999,4900,B,hard
+Q0453,Division,What is the value of 85000 / 17?,5000,4999,5001,4900,5100,A,hard
+Q0569,Ordering Fractions,"Which is SMALLEST: 1/3, 1/5, 1/7, 1/9, 1/11","""1/11""","""1/9""","""1/3"""," ""1/7""","""1/5""",A,easy
+Q0570,Ordering Fractions,"Which is LARGEST: 1/3, 1/5, 1/7, 1/9, 1/11","""1/5""","""1/9""","""1/11"""," ""1/7""","""1/3""",E,easy
+Q0571,Ordering Fractions,"Which is SMALLEST: 2/3, 3/4, 4/5, 5/6, 6/7","""6/7""","""4/5""","""2/3""","""5/6""","""3/4""",C,easy
+Q0572,Ordering Fractions,"Which is LARGEST: 2/3, 3/4, 4/5, 5/6, 6/7","""5/6""","""3/4""","""2/3""","""4/5""","""6/7""",E,easy
+Q0573,Ordering Fractions,"Which is SMALLEST: 3/8, 5/8, 7/8, 1/8, 6/8","""1/8""","""7/8""","""3/8""","""6/8""","""5/8""",A,easy
+Q0574,Ordering Fractions,"Which is LARGEST: 3/8, 5/8, 7/8, 1/8, 6/8","""5/8""","""1/8""","""6/8""","""3/8""","""7/8""",E,easy
+Q0575,Ordering Fractions,"Which is SMALLEST: 2/5, 3/5, 4/5, 1/5, 5/5","""2/5/""","""3/5""","""1/5""","""4/5""","""5/5""",C,easy
+Q0576,Ordering Fractions,"Which is LARGEST: 2/5, 3/5, 4/5, 1/5, 5/5","""5/5""","""1/5""","""2/5""","""3/5""","""4/5""",A,easy
+Q0577,Ordering Fractions,"Which is SMALLEST: 1/7, 2/7, 4/7, 5/7, 6/7","""4/7""","""6/7""","""1/7""","""5/7""","""2/7""",C,easy
+Q0578,Ordering Fractions,"Which is LARGEST: 1/7, 2/7, 4/7, 5/7, 6/7","""6/7""","""5/7""","""4/7""","""2/7""","""1/7""",A,easy
+Q0579,Ordering Fractions,"Which is SMALLEST: 3/11, 5/11, 7/11, 9/11, 1/11","""3/11""","""9/11""","""5/11""","""7/11""","""1/11""",E,easy
+Q0580,Ordering Fractions,"Which is LARGEST: 3/11, 5/11, 7/11, 9/11, 1/11","""7/11""","""3/11""","""9/11""","""5/11""","""1/11""",C,easy
+Q0581,Ordering Fractions,"Which is SMALLEST: 5/13, 7/13, 9/13, 3/13, 11/13","""11/13""","""7/13""","""3/13""","""9/13""","""5/13""",C,easy
+Q0582,Ordering Fractions,"Which is LARGEST: 5/13, 7/13, 9/13, 3/13, 11/13","""5/13""","""11/13""","""7/13""","""9/13""","""3/13""",B,easy
+Q0583,Ordering Fractions,"Which is SMALLEST: 2/9, 4/9, 6/9, 8/9, 1/9","""4/9""","""8/9""","""6/9""","""1/9""","""2/9""",D,easy
+Q0584,Ordering Fractions,"Which is LARGEST: 2/9, 4/9, 6/9, 8/9, 1/9","""4/9""","""1/9""","""2/9""","""6/9""","""8/9""",E,easy
+Q0585,Ordering Fractions,"Which is SMALLEST: 3/10, 7/10, 1/10, 9/10, 5/10","""1/10""","""3/10""","""7/10""","""9/10""","""5/10""",A,easy
+Q0586,Ordering Fractions,"Which is LARGEST: 3/10, 7/10, 1/10, 9/10, 5/10","""7/10""","""1/10""","""5/10""","""9/10""","""3/10""",D,easy
+Q0587,Ordering Fractions,"Which is SMALLEST: 4/12, 8/12, 2/12, 10/12, 6/12","""8/12""","""6/12""","""10/12""","""4/12""","""2/12""",E,easy
+Q0588,Ordering Fractions,"Which is LARGEST: 4/12, 8/12, 2/12, 10/12, 6/12","""8/12""","""2/12""","""10/12""","""6/12""","""4/12""",C,easy
+Q0589,Ordering Fractions,"What is the 2nd SMALLEST: 1/2, 1/3, 1/4, 1/5, 1/6","""1/4""","""1/2""","""1/3""","""1/5""","""1/6""",D,easy
+Q0590,Ordering Fractions,"What is the 2nd LARGEST: 1/2, 1/3, 1/4, 1/5, 1/6","""1/6""","""1/2""","""1/4""","""1/3""","""1/5""",D,easy
+Q0591,Ordering Fractions,"What is the 2nd SMALLEST: 2/3, 3/4, 4/5, 5/6, 6/7","""5/6""","""6/7""","""4/5""","""3/4""","""2/3""",D,easy
+Q0592,Ordering Fractions,"What is the 2nd LARGEST: 2/3, 3/4, 4/5, 5/6, 6/7","""6/7""","""5/6""","""2/3""","""3/4""","""4/5""",B,easy
+Q0593,Ordering Fractions,"Which is SMALLEST: 3/7, 4/9, 5/11, 2/5, 6/13","""6/13""","""3/7""","""2/5""","""4/9""","""5/11""",A,easy
+Q0594,Ordering Fractions,"Which is LARGEST: 3/7, 4/9, 5/11, 2/5, 6/13","""5/11""","""3/7""","""6/13""","""4/9""","""2/5""",E,easy
+Q0595,Ordering Fractions,"Which is SMALLEST: 5/8, 7/12, 3/5, 4/7, 9/16","""4/7""","""3/5""","""9/16""","""7/12""","""5/8""",C,easy
+Q0596,Ordering Fractions,"Which is LARGEST: 5/8, 7/12, 3/5, 4/7, 9/16","""3/5""","""9/16""","""4/7""","""5/8""","""7/12""",A,easy
+Q0597,Ordering Fractions,"Which is SMALLEST: 7/10, 5/7, 3/4, 8/11, 11/15","""5/7""","""7/10""","""11/15""","""3/4""","""8/11""",C,easy
+Q0598,Ordering Fractions,"Which is LARGEST: 7/10, 5/7, 3/4, 8/11, 11/15","""8/11""","""5/7""","""11/15""","""3/4""","""7/10""",D,easy
+Q0599,Ordering Fractions,"Which is SMALLEST: 9/14, 5/8, 7/11, 4/7, 6/10","""7/11""","""5/8""","""4/7""","""6/10""","""9/14""",C,easy
+Q0600,Ordering Fractions,"Which is LARGEST: 9/14, 5/8, 7/11, 4/7, 6/10","""4/7'","""9/14""","""6/10""","""5/8""","""7/11""",D,easy
+Q0601,Ordering Fractions,"Which is SMALLEST: 2/3, 5/9, 4/7, 7/12, 3/5","""2/3""","""4/7""","""5/9""","""3/5""","""7/12""",C,easy
+Q0602,Ordering Fractions,"Which is LARGEST: 2/3, 5/9, 4/7, 7/12, 3/5","""3/5""","""5/9""","""4/7""","""7/12""","""2/3""",E,easy
+Q0603,Ordering Fractions,"Arrange in ASCENDING order: 3/4, 1/6, 2/3, 5/12, 7/18",1/6 < 5/12 < 7/18 < 2/3 < 3/4,1/6 < 7/18 < 5/12 < 2/3 < 3/4,7/18 < 1/6 < 5/12 < 2/3 < 3/4,3/4 > 2/3 > 5/12 > 7/18 > 1/6,1/6 < 2/3 < 5/12 < 7/18 < 3/4,B,medium
+Q0604,Ordering Fractions,"Arrange in DESCENDING order: 3/4, 1/6, 2/3, 5/12, 7/18",3/4 > 5/12 > 2/3 > 7/18 > 1/6,3/4 > 2/3 > 7/18 > 5/12 > 1/6,3/4 > 2/3 > 5/12 > 7/18 > 1/6,1/6 > 7/18 > 5/12 > 2/3 > 3/4,2/3 > 3/4 > 5/12 > 7/18 > 1/6,C,medium
+Q0605,Ordering Fractions,"Arrange in ASCENDING order: 7/8, 5/12, 2/3, 3/4, 11/16",5/12 < 3/4 < 2/3 < 11/16 < 7/8,7/8 > 11/16 > 3/4 > 2/3 > 5/12,2/3 < 5/12 < 3/4 < 11/16 < 7/8,5/12 < 2/3 < 11/16 < 3/4 < 7/8,5/12 < 2/3 < 3/4 < 11/16 < 7/8,E,medium
+Q0606,Ordering Fractions,"Arrange in DESCENDING order: 7/8, 5/12, 2/3, 3/4, 11/16",7/8 > 3/4 > 11/16 > 2/3 > 5/12,7/8 > 11/16 > 3/4 > 2/3 > 5/12,5/12 > 2/3 > 3/4 > 11/16 > 7/8,3/4 > 7/8 > 2/3 > 11/16 > 5/12,7/8 > 2/3 > 3/4 > 11/16 > 5/12,B,medium
+Q0607,Ordering Fractions,"Arrange in ASCENDING order: 9/10, 4/5, 7/8, 11/12, 5/6",4/5 < 5/6 < 9/10 < 7/8 < 11/12,4/5 < 7/8 < 5/6 < 9/10 < 11/12,11/12 > 9/10 > 7/8 > 5/6 > 4/5,5/6 < 4/5 < 7/8 < 9/10 < 11/12,4/5 < 5/6 < 7/8 < 9/10 < 11/12,E,medium
+Q0608,Ordering Fractions,"Arrange in DESCENDING order: 9/10, 4/5, 7/8, 11/12, 5/6",9/10 > 11/12 > 7/8 > 5/6 > 4/5,11/12 > 7/8 > 9/10 > 5/6 > 4/5,11/12 > 9/10 > 5/6 > 7/8 > 4/5,4/5 > 5/6 > 7/8 > 9/10 > 11/12,11/12 > 9/10 > 7/8 > 5/6 > 4/5,E,medium
+Q0609,Ordering Fractions,"Arrange in ASCENDING order: 2/5, 3/7, 4/9, 1/2, 5/11",4/9 < 2/5 < 3/7 < 5/11 < 1/2,2/5 < 4/9 < 5/11 < 3/7 < 1/2,1/2 > 3/7 > 5/11 > 4/9 > 2/5,2/5 < 3/7 < 4/9 < 5/11 < 1/2,3/7 < 2/5 < 4/9 < 5/11 < 1/2,B,medium
+Q0610,Ordering Fractions,"Arrange in DESCENDING order: 2/5, 3/7, 4/9, 1/2, 5/11",1/2 > 3/7 > 4/9 > 5/11 > 2/5,2/5 > 4/9 > 5/11 > 3/7 > 1/2,1/2 > 5/11 > 3/7 > 4/9 > 2/5,1/2 > 3/7 > 5/11 > 4/9 > 2/5,3/7 > 1/2 > 5/11 > 4/9 > 2/5,D,medium
+Q0611,Ordering Fractions,"Arrange in ASCENDING order: 6/7, 7/8, 8/9, 9/10, 10/11",6/7 < 7/8 < 8/9 < 9/10 < 10/11,10/11 > 9/10 > 8/9 > 7/8 > 6/7,6/7 < 8/9 < 7/8 < 9/10 < 10/11,6/7 < 7/8 < 9/10 < 8/9 < 10/11,7/8 < 6/7 < 8/9 < 9/10 < 10/11,A,medium
+Q0612,Ordering Fractions,"Arrange in DESCENDING order: 6/7, 7/8, 8/9, 9/10, 10/11",10/11 > 8/9 > 9/10 > 7/8 > 6/7,10/11 > 9/10 > 7/8 > 8/9 > 6/7,6/7 > 7/8 > 8/9 > 9/10 > 10/11,10/11 > 9/10 > 8/9 > 7/8 > 6/7,9/10 > 10/11 > 8/9 > 7/8 > 6/7,D,medium
+Q0613,Ordering Fractions,"Arrange in ASCENDING order: 4/5, 3/10, 7/15, 2/3, 9/20",3/10 < 9/20 < 7/15 < 2/3 < 4/5,3/10 < 7/15 < 2/3 < 9/20 < 4/5,4/5 > 2/3 > 9/20 > 7/15 > 3/10,7/15 < 3/10 < 9/20 < 2/3 < 4/5,3/10 < 7/15 < 9/20 < 2/3 < 4/5,E,medium
+Q0614,Ordering Fractions,"Arrange in DESCENDING order: 4/5, 3/10, 7/15, 2/3, 9/20",4/5 > 9/20 > 2/3 > 7/15 > 3/10,4/5 > 2/3 > 9/20 > 7/15 > 3/10,4/5 > 2/3 > 7/15 > 9/20 > 3/10,3/10 > 7/15 > 9/20 > 2/3 > 4/5,2/3 > 4/5 > 9/20 > 7/15 > 3/10,B,medium
+Q0615,Ordering Fractions,"Arrange in ASCENDING order: 1/2, 3/8, 5/6, 7/12, 4/9",3/8 < 1/2 < 4/9 < 7/12 < 5/6,3/8 < 4/9 < 1/2 < 7/12 < 5/6,4/9 < 3/8 < 1/2 < 7/12 < 5/6,3/8 < 4/9 < 7/12 < 1/2 < 5/6,5/6 > 7/12 > 1/2 > 4/9 > 3/8,B,medium
+Q0616,Ordering Fractions,"Arrange in DESCENDING order: 1/2, 3/8, 5/6, 7/12, 4/9",5/6 > 1/2 > 7/12 > 4/9 > 3/8,3/8 > 4/9 > 1/2 > 7/12 > 5/6,5/6 > 7/12 > 4/9 > 1/2 > 3/8,7/12 > 5/6 > 1/2 > 4/9 > 3/8,5/6 > 7/12 > 1/2 > 4/9 > 3/8,E,medium
+Q0617,Ordering Fractions,"Arrange in ASCENDING order: 5/6, 2/9, 1/2, 7/18, 4/15",2/9 < 4/15 < 1/2 < 7/18 < 5/6,5/6 > 1/2 > 7/18 > 4/15 > 2/9,2/9 < 4/15 < 7/18 < 1/2 < 5/6,4/15 < 2/9 < 7/18 < 1/2 < 5/6,2/9 < 7/18 < 4/15 < 1/2 < 5/6,C,medium
+Q0618,Ordering Fractions,"Arrange in DESCENDING order: 5/6, 2/9, 1/2, 7/18, 4/15",5/6 > 1/2 > 4/15 > 7/18 > 2/9,2/9 > 4/15 > 7/18 > 1/2 > 5/6,5/6 > 7/18 > 1/2 > 4/15 > 2/9,1/2 > 5/6 > 7/18 > 4/15 > 2/9,5/6 > 1/2 > 7/18 > 4/15 > 2/9,E,medium
+Q0619,Ordering Fractions,"Arrange in ASCENDING order: 11/12, 5/8, 2/3, 7/9, 3/4",5/8 < 2/3 < 7/9 < 3/4 < 11/12,5/8 < 2/3 < 3/4 < 7/9 < 11/12,11/12 > 7/9 > 3/4 > 2/3 > 5/8,5/8 < 3/4 < 2/3 < 7/9 < 11/12,2/3 < 5/8 < 3/4 < 7/9 < 11/12,B,medium
+Q0620,Ordering Fractions,"Arrange in DESCENDING order: 11/12, 5/8, 2/3, 7/9, 3/4",7/9 > 11/12 > 3/4 > 2/3 > 5/8,5/8 > 2/3 > 3/4 > 7/9 > 11/12,11/12 > 7/9 > 2/3 > 3/4 > 5/8,11/12 > 7/9 > 3/4 > 2/3 > 5/8,11/12 > 3/4 > 2/3 > 7/9 > 5/8,D,medium
+Q0621,Ordering Fractions,"Arrange in ASCENDING order: 1/3, 2/5, 3/7, 4/9, 5/11",1/3 < 5/11 < 4/9 < 3/7 < 2/5,5/11 < 1/3 < 4/9 < 3/7 < 2/5,1/3 < 4/9 < 5/11 < 3/7 < 2/5,2/5 > 3/7 > 4/9 > 5/11 > 1/3,1/3 < 3/7 < 4/9 < 5/11 < 2/5,A,medium
+Q0622,Ordering Fractions,"Arrange in DESCENDING order: 1/3, 2/5, 3/7, 4/9, 5/11",2/5 > 3/7 > 4/9 > 5/11 > 1/3,1/3 > 5/11 > 4/9 > 3/7 > 2/5,3/7 > 2/5 > 5/11 > 4/9 > 1/3,2/5 > 3/7 > 5/11 > 4/9 > 1/3,2/5 > 5/11 > 3/7 > 4/9 > 1/3,A,medium
+Q0623,Ordering Fractions,"Arrange in ASCENDING order: 7/11, 5/8, 9/14, 2/3, 11/17",7/11 < 9/14 < 5/8 < 11/17 < 2/3,7/11 < 5/8 < 9/14 < 11/17 < 2/3,2/3 > 11/17 > 5/8 > 9/14 > 7/11,9/14 < 7/11 < 5/8 < 11/17 < 2/3,7/11 < 5/8 < 11/17 < 9/14 < 2/3,A,medium
+Q0624,Ordering Fractions,"Arrange in DESCENDING order: 7/11, 5/8, 9/14, 2/3, 11/17",5/8 > 2/3 > 11/17 > 9/14 > 7/11,2/3 > 11/17 > 5/8 > 9/14 > 7/11,7/11 > 9/14 > 5/8 > 11/17 > 2/3,2/3 > 9/14 > 5/8 > 11/17 > 7/11,2/3 > 5/8 > 11/17 > 9/14 > 7/11,B,medium
+Q0625,Ordering Fractions,"Arrange in ASCENDING order: 8/9, 5/6, 7/8, 11/12, 13/15",13/15 > 11/12 > 8/9 > 7/8 > 5/6,5/6 < 7/8 < 11/12 < 8/9 < 13/15,5/6 < 8/9 < 7/8 < 11/12 < 13/15,5/6 < 7/8 < 8/9 < 11/12 < 13/15,7/8 < 5/6 < 8/9 < 11/12 < 13/15,D,medium
+Q0626,Ordering Fractions,"Arrange in DESCENDING order: 8/9, 5/6, 7/8, 11/12, 13/15",13/15 > 11/12 > 8/9 > 7/8 > 5/6,5/6 > 7/8 > 8/9 > 11/12 > 13/15,13/15 > 11/12 > 7/8 > 8/9 > 5/6,13/15 > 8/9 > 11/12 > 7/8 > 5/6,11/12 > 13/15 > 8/9 > 7/8 > 5/6,A,medium
+Q0627,Ordering Fractions,"Which is SMALLEST: 5/8, 7/10, 3/5, 11/18, 4/7","""7/10""","""4/7""","""11/18""","""3/5""","""5/8""",B,hard
+Q0628,Ordering Fractions,"Which is LARGEST: 5/8, 7/10, 3/5, 11/18, 4/7","""3/5""","""4/7""","""7/10""","""5/8""","""11/18""",C,hard
+Q0629,Ordering Fractions,"Which is SMALLEST: 4/9, 5/11, 3/7, 6/13, 7/15","""4/9""","""6/13""","""7/15""","""5/11""","""3/7""",B,hard
+Q0630,Ordering Fractions,"Which is LARGEST: 4/9, 5/11, 3/7, 6/13, 7/15","""5/11""","""4/9""","""6/13""","""7/15""","""3/7""",E,hard
+Q0631,Ordering Fractions,"Which is SMALLEST: 7/12, 5/9, 3/5, 8/15, 4/7","""4/7""","""7/12""","""3/5""","""8/15""","""5/9""",D,hard
+Q0632,Ordering Fractions,"Which is LARGEST: 7/12, 5/9, 3/5, 8/15, 4/7","""4/7""","""8/15""","""5/9""","""7/12""","""3/5""",E,hard
+Q0633,Ordering Fractions,"Which is SMALLEST: 15/22, 11/16, 9/13, 7/10, 13/19","""15/22""","""13/19""","""11/16""","""7/10""","""9/13""",E,hard
+Q0634,Ordering Fractions,"Which is LARGEST: 15/22, 11/16, 9/13, 7/10, 13/19","""15/22""","""11/16""","""13/19""","""9/13""","""7/10""",E,hard
+Q0635,Ordering Fractions,"Which is SMALLEST: 17/24, 13/18, 11/15, 9/12, 15/21","""13/18""","""17/24""","""9/12""","""11/15""","""15/21""",E,hard
+Q0636,Ordering Fractions,"Which is LARGEST: 17/24, 13/18, 11/15, 9/12, 15/21","""9/12""","""13/18""","""15/21""","""17/24""","""11/15""",A,hard
+Q0637,Ordering Fractions,"Which is SMALLEST: 19/26, 15/20, 13/17, 11/14, 17/23","""19/26""","""13/17""","""11/14""","""15/20""","""17/23""",D,hard
+Q0638,Ordering Fractions,"Which is LARGEST: 19/26, 15/20, 13/17, 11/14, 17/23","""13/17""","""11/14""","""19/26""","""17/23""","""15/20""",B,hard
+Q0639,Comparing Fractions,Which is GREATER: 3/8 or 5/8,"""3/8""","""4/8""","""5/8""","""6/8""","""2/8""",C,easy
+Q0640,Comparing Fractions,Which is GREATER: 2/7 or 5/7,"""5/7""","""2/7""","""3/7""","""6/7""","""1/7""",A,easy
+Q0641,Comparing Fractions,Which is GREATER: 4/9 or 7/9,"""2/9""","""8/9""","""7/9""","""4/9""","""5/9""",C,easy
+Q0642,Comparing Fractions,Which is SMALLER: 3/10 or 7/10,"""1/10""","""9/10""","""7/10""","""3/10""","""5/10""",D,easy
+Q0643,Comparing Fractions,Which is SMALLER: 2/11 or 8/11,"""9/11""","""8/11""","""2/11""","""5/11""","""1/11""",C,easy
+Q0644,Comparing Fractions,Fill the blank: 5/9 ___ 7/9,=,>,<,not equal to,less than or equal to,C,easy
+Q0645,Comparing Fractions,Fill the blank: 8/13 ___ 3/13,less than or equal to,<,>,not equal to,=,C,easy
+Q0646,Comparing Fractions,Fill the blank: 4/15 ___ 11/15,not equal to,less than or equal to,=,<,>,D,easy
+Q0647,Comparing Fractions,Fill the blank: 9/20 ___ 13/20,>,less than or equal to,=,not equal to,<,E,easy
+Q0648,Comparing Fractions,Fill the blank: 17/25 ___ 8/25,less than or equal to,=,<,>,not equal to,D,easy
+Q0649,Comparing Fractions,"Which is GREATEST: 3/11, 7/11, 5/11","""9/11""","""3/11""","""1/11""","""5/11""","""7/11""",E,easy
+Q0650,Comparing Fractions,"Which is SMALLEST: 4/13, 9/13, 2/13","""4/13""","""6/13""","""1/13""","""2/13""","""9/13""",D,easy
+Q0651,Comparing Fractions,"Which is GREATEST: 5/17, 12/17, 8/17","""3/17""","""15/17""","""5/17""","""12/17""","""8/17""",D,easy
+Q0652,Comparing Fractions,"Which is SMALLEST: 7/19, 3/19, 11/19","""9/19""","""7/19""","""1/19""","""11/19""","""3/19""",E,easy
+Q0653,Comparing Fractions,Are 2/4 and 1/2 equal,"No, 2/4 is greater","No, 1/2 is greater",They are not equal,Cannot compare,"Yes, they are equal",E,easy
+Q0654,Comparing Fractions,Are 3/6 and 1/2 equal,"No, 3/6 is greater",They are not equal,"Yes, they are equal","No, 1/2 is greater",Cannot compare,C,easy
+Q0655,Comparing Fractions,Are 4/6 and 2/3 equal,"No, 4/6 is greater","Yes, they are equal","No, 2/3 is greater",Cannot compare,They are not equal,B,easy
+Q0656,Comparing Fractions,Are 6/8 and 3/4 equal,Cannot compare,"No, 6/8 is greater","Yes, they are equal","No, 3/4 is greater",They are not equal,C,easy
+Q0657,Comparing Fractions,Fill the blank: 15/23 ___ 15/23,<,less than or equal to,>,not equal to,=,E,easy
+Q0658,Comparing Fractions,"Which is GREATEST: 7/25, 19/25, 13/25","""21/25""","""5/25""","""7/25""","""13/25""","""19/25""",E,easy
+Q0659,Comparing Fractions,Are 8/10 and 4/5 equal,They are not equal,"Yes, they are equal","No, 4/5 is greater",Cannot compare,"No, 8/10 is greater",B,easy
+Q0660,Comparing Fractions,Are 9/12 and 3/4 equal,"No, 3/4 is greater",Cannot compare,"No, 9/12 is greater",They are not equal,"Yes, they are equal",E,easy
+Q0661,Comparing Fractions,Are 10/15 and 2/3 equal,Cannot compare,"No, 10/15 is greater","Yes, they are equal",They are not equal,"No, 2/3 is greater",C,easy
+Q0662,Comparing Fractions,Are 12/16 and 3/4 equal,"No, 3/4 is greater",Cannot compare,They are not equal,"Yes, they are equal","No, 12/16 is greater",D,easy
+Q0663,Comparing Fractions,Are 15/20 and 3/4 equal,They are not equal,"No, 3/4 is greater","No, 15/20 is greater",Cannot compare,"Yes, they are equal",E,easy
+Q0664,Comparing Fractions,Are 6/10 and 3/5 equal,"No, 3/5 is greater",They are not equal,"Yes, they are equal",Cannot compare,"No, 6/10 is greater",C,easy
+Q0665,Comparing Fractions,Are 14/21 and 2/3 equal,They are not equal,"Yes, they are equal",Cannot compare,"No, 14/21 is greater","No, 2/3 is greater",B,easy
+Q0666,Comparing Fractions,Are 20/25 and 4/5 equal,Cannot compare,"No, 20/25 is greater","Yes, they are equal","No, 4/5 is greater",They are not equal,C,easy
+Q0667,Comparing Fractions,Fill the blank: 43/100 ___ 57/100,less than or equal to,<,=,not equal to,>,B,easy
+Q0668,Comparing Fractions,Which is SMALLER: 23/50 or 31/50,"""31/50""","""35/50""","""23/50""","""27/50""","""20/50""",C,easy
+Q0669,Comparing Fractions,Fill the blank: 33/40 ___ 27/40,<,>,not equal to,less than or equal to,=,B,easy
+Q0670,Comparing Fractions,"Which is SMALLEST: 5/21, 11/21, 8/21","""8/21""","""5/21""","""2/21""","""14/21""","""11/21""",B,easy
+Q0671,Comparing Fractions,"Which is GREATEST: 9/31, 15/31, 12/31","""18/31""","""9/1""","""15/31""","""12/31""","""6/1""",C,easy
+Q0672,Comparing Fractions,Fill the blank: 7/45 ___ 13/45,less than or equal to,>,<,not equal to,=,C,easy
+Q0673,Comparing Fractions,Are 16/24 and 2/3 equal,They are not equal,"Yes, they are equal",Cannot compare,"No, 16/24 is greater","No, 2/3 is greater",B,easy
+Q0674,Comparing Fractions,Which is GREATER: 1/2 or 1/3,"""2/5""","""1/2""","""2/3""","""1/4""","""1/3""",B,medium
+Q0675,Comparing Fractions,Which is GREATER: 2/3 or 3/4,"""5/7""","""4/5""","""3/4""","""1/2""","""2/3""",C,medium
+Q0676,Comparing Fractions,Which is GREATER: 3/5 or 4/7,"""4/7""","""7/12""","""1/2""","""3/5""","""5/8""",D,medium
+Q0677,Comparing Fractions,Which is GREATER: 5/6 or 7/9,"""11/15""","""8/11""","""7/9""","""5/6""","""2/3""",D,medium
+Q0678,Comparing Fractions,Which is SMALLER: 4/7 or 3/5,"""5/8""","""3/5""","""1/3""","""7/12""","""4/7""",E,medium
+Q0679,Comparing Fractions,Which is SMALLER: 1/4 or 1/3,"""1/4""","""2/5""","""1/5""","""1/3""","""2/7""",A,medium
+Q0680,Comparing Fractions,Fill the blank: 3/4 ___ 5/7,less than or equal to,not equal to,>,<,=,C,medium
+Q0681,Comparing Fractions,Fill the blank: 4/9 ___ 3/7,not equal to,<,less than or equal to,>,=,B,medium
+Q0682,Comparing Fractions,Fill the blank: 5/8 ___ 7/11,>,=,<,less than or equal to,not equal to,A,medium
+Q0683,Comparing Fractions,Fill the blank: 7/10 ___ 5/7,=,<,less than or equal to,not equal to,>,B,medium
+Q0684,Comparing Fractions,Fill the blank: 2/3 ___ 3/5,=,less than or equal to,not equal to,<,>,E,medium
+Q0685,Comparing Fractions,Fill the blank: 3/8 ___ 2/5,>,<,less than or equal to,not equal to,=,B,medium
+Q0686,Comparing Fractions,Which is GREATER: 4/5 or 5/6,"""7/8""","""4/5""","""3/4""","""5/6""","""9/11""",D,medium
+Q0687,Comparing Fractions,Which is GREATER: 3/7 or 2/5,"""2/5""","""5/12""","""4/9""","""3/7""","""1/3""",D,medium
+Q0688,Comparing Fractions,Which is SMALLER: 5/9 or 4/7,"""6/11""","""4/7""","""9/16""","""3/5""","""5/9""",E,medium
+Q0689,Comparing Fractions,Which is SMALLER: 7/8 or 8/9,"""5/6""","""8/9""","""9/10""","""7/8""","""15/17""",D,medium
+Q0690,Comparing Fractions,Which is GREATER: 2/5 or 3/8,"""1/4""","""3/7""","""2/5""","""3/8""","""5/13""",C,medium
+Q0691,Comparing Fractions,Which is GREATER: 5/7 or 7/10,"""3/5""","""8/11""","""7/10""","""5/7""","""12/17""",D,medium
+Q0692,Comparing Fractions,Which is SMALLER: 3/4 or 7/9,"""7/9""","""2/3""","""3/4""","""10/13""","""8/11""",C,medium
+Q0693,Comparing Fractions,Which is SMALLER: 2/7 or 3/11,"""1/5""","""2/7""","""4/13""","""5/18""","""3/11""",E,medium
+Q0694,Comparing Fractions,Fill the blank: 5/6 ___ 7/8,not equal to,less than or equal to,>,=,<,E,medium
+Q0695,Comparing Fractions,Fill the blank: 4/5 ___ 7/9,<,>,less than or equal to,not equal to,=,B,medium
+Q0696,Comparing Fractions,Fill the blank: 3/11 ___ 2/7,<,less than or equal to,not equal to,>,=,A,medium
+Q0697,Comparing Fractions,Fill the blank: 7/12 ___ 5/9,<,less than or equal to,not equal to,>,=,D,medium
+Q0698,Comparing Fractions,Which is GREATER: 9/10 or 8/9,"""9/10""","""4/5""","""10/11""","""8/9""","""17/19""",A,medium
+Q0699,Comparing Fractions,Which is SMALLER: 5/13 or 3/8,"""8/21""","""5/13""","""3/8""","""2/7""","""4/11""",B,medium
+Q0700,Comparing Fractions,Which is closer to 1: 4/5 or 5/6,5/6 is closer,Neither is close to 1,Both equally close,Cannot compare,4/5 is closer,A,medium
+Q0701,Comparing Fractions,Which is closer to 0: 1/4 or 2/9,Cannot compare,Neither is close to 0,Both equally close,2/9 is closer,1/4 is closer,D,medium
+Q0702,Comparing Fractions,Which is closer to 1/2: 3/7 or 4/9,Neither is close to 1/2,Cannot compare,4/9 is closer,3/7 is closer,Both equally close,C,medium
+Q0703,Comparing Fractions,"Are 2/3, 4/6, 6/9 all equal","No, none equal",Only 4/6 = 6/9,Only 2/3 = 4/6,"Yes, all three are equal",Only 2/3 = 6/9,D,medium
+Q0704,Comparing Fractions,"Are 1/2, 2/4, 3/6 all equal",Only 1/2 = 3/6,"Yes, all three are equal",Only 2/4 = 3/6,"No, none equal",Only 1/2 = 2/4,B,medium
+Q0705,Comparing Fractions,"Are 3/4, 6/8, 9/12 all equal","Yes, all three are equal","No, none equal",Only 3/4 = 9/12,Only 6/8 = 9/12,Only 3/4 = 6/8,A,medium
+Q0706,Comparing Fractions,Which is GREATER: 11/30 or 19/30,"""21/30""","""9/30""","""19/30""","""11/30""","""15/30""",C,medium
+Q0707,Comparing Fractions,Compare 11/15 and 7/10,11/15 = 7/10,11/15 < 7/10,Both equal to 1,11/15 > 7/10,Cannot compare,D,hard
+Q0708,Comparing Fractions,Compare 9/11 and 7/9,9/11 > 7/9,Both equal to 1,Cannot compare,9/11 = 7/9,9/11 < 7/9,A,hard
+Q0709,Comparing Fractions,Compare 13/17 and 8/11,13/17 > 8/11,Cannot compare,13/17 < 8/11,13/17 = 8/11,Both equal to 1,A,hard
+Q0710,Comparing Fractions,Compare 7/13 and 5/9,Cannot compare,7/13 = 5/9,7/13 > 5/9,7/13 < 5/9,Both equal to 1,D,hard
+Q0711,Comparing Fractions,Compare 11/17 and 8/13,Both equal to 1,11/17 = 8/13,11/17 < 8/13,11/17 > 8/13,Cannot compare,D,hard
+Q0712,Comparing Fractions,Fill the blank: 13/19 ___ 8/12,=,>,<,less than or equal to,not equal to,C,hard
+Q0713,Comparing Fractions,Fill the blank: 17/23 ___ 11/15,less than or equal to,not equal to,>,<,=,C,hard
+Q0714,Comparing Fractions,Fill the blank: 9/14 ___ 7/11,less than or equal to,=,>,<,not equal to,C,hard
+Q0715,Comparing Fractions,Fill the blank: 11/18 ___ 7/12,=,>,less than or equal to,<,not equal to,D,hard
+Q0716,Comparing Fractions,Fill the blank: 13/20 ___ 9/14,<,less than or equal to,=,>,not equal to,D,hard
+Q0717,Comparing Fractions,Which is GREATER: 17/20 or 13/15,"""13/15""",Cannot compare,"""17/20""",Both less than 1/2,They are equal,A,hard
+Q0718,Comparing Fractions,Which is GREATER: 11/13 or 9/11,Both less than 1/2,"""11/13""","""9/11""",Cannot compare,They are equal,B,hard
+Q0719,Comparing Fractions,Which is GREATER: 7/11 or 9/14,"""7/11""","""9/14""",They are equal,Both less than 1/2,Cannot compare,A,hard
+Q0720,Comparing Fractions,Which is GREATER: 13/18 or 8/11,Cannot compare,"""13/18""",They are equal,"""8/11""",Both less than 1/2,B,hard
+Q0721,Comparing Fractions,Which is GREATER: 15/19 or 11/14,Both less than 1/2,They are equal,Cannot compare,"""11/14""","""15/19""",E,hard
+Q0722,Comparing Fractions,Compare 19/25 and 14/19,19/25 = 14/19,Cannot compare,19/25 > 14/19,Both equal to 1,19/25 < 14/19,C,hard
+Q0723,Comparing Fractions,Compare 23/30 and 17/22,23/30 > 17/22,Both equal to 1,23/30 < 17/22,Cannot compare,23/30 = 17/22,C,hard
+Q0724,Comparing Fractions,Compare 17/21 and 13/16,17/21 < 13/16,Both equal to 1,Cannot compare,17/21 > 13/16,17/21 = 13/16,A,hard
+Q0725,Comparing Fractions,Compare 21/26 and 16/20,21/26 < 16/20,21/26 > 16/20,21/26 = 16/20,Both equal to 1,Cannot compare,B,hard
+Q0726,Comparing Fractions,Compare 11/14 and 8/10,11/14 < 8/10,11/14 = 8/10,11/14 > 8/10,Both equal to 1,Cannot compare,A,hard
+Q0727,Comparing Fractions,Fill blank: 19/23 ___ 15/18,<,not equal to,>,less than or equal to,=,A,hard
+Q0728,Comparing Fractions,Fill blank: 23/27 ___ 19/22,=,>,<,less than or equal to,not equal to,C,hard
+Q0729,Comparing Fractions,Fill blank: 17/22 ___ 13/17,less than or equal to,not equal to,<,>,=,D,hard
+Q0730,Comparing Fractions,Fill blank: 21/29 ___ 15/21,<,less than or equal to,not equal to,=,>,A,hard
+Q0731,Comparing Fractions,Fill blank: 25/33 ___ 19/25,>,<,=,less than or equal to,not equal to,B,hard
+Q0732,Comparing Fractions,Which is SMALLER: 7/16 or 5/11,They are equal,"""7/16""",Both equal to 0,"""5/11""",Cannot compare,B,hard
+Q0733,Comparing Fractions,Which is SMALLER: 9/19 or 5/11,Cannot compare,Both equal to 0,"""5/11""",They are equal,"""9/19""",E,hard
+Q0734,Comparing Fractions,Which is SMALLER: 11/23 or 6/13,Both equal to 0,"""6/13""",Cannot compare,They are equal,"""11/23""",E,hard
+Q0735,Comparing Fractions,Which is SMALLER: 13/27 or 7/15,They are equal,"""7/15""","""13/27""",Both equal to 0,Cannot compare,C,hard
+Q0736,Comparing Fractions,Which is SMALLER: 15/31 or 8/17,"""8/17""",They are equal,"""15/31""",Cannot compare,Both equal to 0,C,hard
+Q0737,Comparing Fractions,"Order SMALLEST to LARGEST: 5/8, 2/3, 7/11",5/8 < 2/3 < 7/11,7/11 < 2/3 < 5/8,2/3 < 5/8 < 7/11,5/8 < 7/11 < 2/3,7/11 < 5/8 < 2/3,E,hard
+Q0738,Comparing Fractions,"Order LARGEST to SMALLEST: 3/5, 4/7, 5/9",5/9 > 4/7 > 3/5,3/5 > 4/7 > 5/9,4/7 > 3/5 > 5/9,4/7 > 5/9 > 3/5,3/5 > 5/9 > 4/7,B,hard
+Q0739,Comparing Fractions,"Which is SMALLEST: 4/11, 3/8, 5/14","""4/11""","""6/17""","""3/8""","""5/14""","""2/7""",D,hard
+Q0740,Comparing Fractions,"Which is GREATEST: 7/9, 5/7, 11/14","""13/17""","""11/14""","""5/7""","""8/11""","""7/9""",B,hard
+Q0741,Comparing Fractions,"Which is SMALLEST: 7/16, 5/11, 9/19","""5/11""","""4/9""","""7/16""","""3/8""","""9/19""",C,hard
+Q0742,Simplifying Fractions,Simplify 4/8 to lowest terms,"""3/6""","""2/4""","""2/3""","""1/2""","""1/3""",D,easy
+Q0743,Simplifying Fractions,Simplify 6/9 to lowest terms,"""4/6""","""2/3""","""3/5""","""1/2""","""3/4""",B,easy
+Q0744,Simplifying Fractions,Simplify 8/12 to lowest terms,"""2/3""","""1/2""","""4/6""","""6/9""","""3/4""",A,easy
+Q0745,Simplifying Fractions,Simplify 9/12 to lowest terms,"""6/8""","""1/2""","""3/4""","""4/5""","""2/3""",C,easy
+Q0746,Simplifying Fractions,Simplify 10/15 to lowest terms,"""5/8""","""3/4""","""1/2""","""2/3""","""4/6""",D,easy
+Q0747,Simplifying Fractions,Simplify 12/16 to lowest terms,"""1/2""","""4/5""","""2/3""","""3/4""","""6/8""",D,easy
+Q0748,Simplifying Fractions,Simplify 15/20 to lowest terms,"""4/5""","""2/3""","""3/4""","""5/8""","""6/8""",C,easy
+Q0749,Simplifying Fractions,Simplify 20/25 to lowest terms,"""5/6""","""2/3""","""8/10""","""3/4""","""4/5""",E,easy
+Q0750,Simplifying Fractions,Simplify 14/21 to lowest terms,"""4/6""","""7/10""","""3/4""","""1/2""","""2/3""",E,easy
+Q0751,Simplifying Fractions,Simplify 18/27 to lowest terms,"""3/4""","""1/2""","""9/13""","""2/3""","""6/9""",D,easy
+Q0752,Simplifying Fractions,Simplify 16/20 to lowest terms,"""2/3""","""8/10""","""3/4""","""12/15""","""4/5""",E,easy
+Q0753,Simplifying Fractions,Simplify 21/28 to lowest terms,"""5/7""","""2/3""","""6/8""","""3/4""","""7/9""",D,easy
+Q0754,Simplifying Fractions,Simplify 24/32 to lowest terms,"""4/5""","""2/3""","""6/8""","""3/4""","""12/16""",D,easy
+Q0755,Simplifying Fractions,Simplify 25/30 to lowest terms,"""15/18""","""2/3""","""5/6""","""3/4""","""10/12""",C,easy
+Q0756,Simplifying Fractions,Simplify 27/36 to lowest terms,"""2/3""","""3/4""","""9/12""","""5/6""","""6/8""",B,easy
+Q0757,Simplifying Fractions,Simplify 30/36 to lowest terms,"""10/12""","""15/18""","""5/6""","""3/4""","""2/3""",C,easy
+Q0758,Simplifying Fractions,Simplify 32/40 to lowest terms,"""16/20""","""8/10""","""2/3""","""4/5""","""3/4""",D,easy
+Q0759,Simplifying Fractions,Simplify 35/42 to lowest terms,"""7/9""","""5/6""","""3/4""","""2/3""","""10/12""",B,easy
+Q0760,Simplifying Fractions,Simplify 36/45 to lowest terms,"""8/10""","""2/3""","""3/4""","""12/15""","""4/5""",E,easy
+Q0761,Simplifying Fractions,Simplify 40/48 to lowest terms,"""2/3""","""20/24""","""5/6""","""10/12""","""3/4""",C,easy
+Q0762,Simplifying Fractions,Simplify 9/27 to lowest terms,"""3/9""","""1/3""","""2/6""","""2/3""","""1/2""",B,easy
+Q0763,Simplifying Fractions,Simplify 16/24 to lowest terms,"""3/4""","""4/6""","""8/12""","""1/2""","""2/3""",E,easy
+Q0764,Simplifying Fractions,Simplify 25/75 to lowest terms,"""1/3""","""2/6""","""5/15""","""1/2""","""2/3""",A,easy
+Q0765,Simplifying Fractions,Simplify 30/45 to lowest terms,"""6/9""","""10/15""","""1/2""","""3/4""","""2/3""",E,easy
+Q0766,Simplifying Fractions,Simplify 40/60 to lowest terms,"""1/2""","""2/3""","""3/4""","""20/30""","""4/6""",B,easy
+Q0767,Simplifying Fractions,Simplify 48/64 to lowest terms,"""6/8""","""3/4""","""12/16""","""5/8""","""2/3""",B,easy
+Q0768,Simplifying Fractions,Simplify 56/70 to lowest terms,"""28/35""","""4/5""","""3/4""","""2/3""","""8/10""",B,easy
+Q0769,Simplifying Fractions,Simplify 33/44 to lowest terms,"""2/3""","""5/6""","""11/14""","""6/8""","""3/4""",E,easy
+Q0770,Simplifying Fractions,Simplify 28/42 to lowest terms,"""14/21""","""4/6""","""2/3""","""1/2""","""3/4""",C,easy
+Q0771,Simplifying Fractions,Simplify 50/75 to lowest terms,"""2/3""","""25/37""","""3/4""","""10/15""","""1/2""",A,easy
+Q0772,Simplifying Fractions,Simplify 60/80 to lowest terms,"""6/8""","""4/5""","""30/40""","""3/4""","""2/3""",D,easy
+Q0773,Simplifying Fractions,Simplify 44/66 to lowest terms,"""2/3""","""4/6""","""1/2""","""22/33""","""3/4""",A,easy
+Q0774,Simplifying Fractions,Simplify 45/60 to lowest terms,"""15/20""","""3/4""","""2/3""","""9/12""","""4/5""",B,easy
+Q0775,Simplifying Fractions,Simplify 54/81 to lowest terms,"""1/2""","""3/4""","""18/27""","""2/3""","""6/9""",D,easy
+Q0776,Simplifying Fractions,Simplify 63/84 to lowest terms,"""21/28""","""3/4""","""9/12""","""5/7""","""2/3""",B,easy
+Q0777,Simplifying Fractions,Simplify 42/56 to lowest terms,"""21/28""","""2/3""","""5/7""","""6/8""","""3/4""",E,medium
+Q0778,Simplifying Fractions,Simplify 45/54 to lowest terms,"""15/18""","""2/3""","""3/4""","""9/10""","""5/6""",E,medium
+Q0779,Simplifying Fractions,Simplify 48/60 to lowest terms,"""4/5""","""2/3""","""3/4""","""8/10""","""24/30""",A,medium
+Q0780,Simplifying Fractions,Simplify 50/60 to lowest terms,"""2/3""","""5/6""","""25/30""","""3/4""","""10/12""",B,medium
+Q0781,Simplifying Fractions,Simplify 54/72 to lowest terms,"""6/8""","""3/4""","""5/6""","""27/36""","""2/3""",B,medium
+Q0782,Simplifying Fractions,Simplify 60/72 to lowest terms,"""5/6""","""30/36""","""2/3""","""3/4""","""10/12""",A,medium
+Q0783,Simplifying Fractions,Simplify 66/88 to lowest terms,"""2/3""","""6/8""","""5/7""","""33/44""","""3/4""",E,medium
+Q0784,Simplifying Fractions,Simplify 70/84 to lowest terms,"""5/6""","""10/12""","""2/3""","""3/4""","""35/42""",A,medium
+Q0785,Simplifying Fractions,Simplify 72/90 to lowest terms,"""36/45""","""4/5""","""2/3""","""3/4""","""8/10""",B,medium
+Q0786,Simplifying Fractions,Simplify 75/90 to lowest terms,"""5/6""","""2/3""","""25/30""","""15/18""","""3/4""",A,medium
+Q0787,Simplifying Fractions,Simplify 77/91 to lowest terms,"""7/9""","""22/26""","""2/3""","""3/4""","""11/13""",E,medium
+Q0788,Simplifying Fractions,Simplify 80/96 to lowest terms,"""40/48""","""10/12""","""3/4""","""5/6""","""2/3""",D,medium
+Q0789,Simplifying Fractions,Simplify 84/98 to lowest terms,"""3/4""","""12/14""","""42/49""","""5/6""","""6/7""",E,medium
+Q0790,Simplifying Fractions,Simplify 88/110 to lowest terms,"""8/10""","""4/5""","""2/3""","""44/55""","""3/4""",B,medium
+Q0791,Simplifying Fractions,Simplify 90/108 to lowest terms,"""45/54""","""5/6""","""2/3""","""15/18""","""3/4""",B,medium
+Q0792,Simplifying Fractions,Simplify 96/120 to lowest terms,"""48/60""","""8/10""","""4/5""","""2/3""","""3/4""",C,medium
+Q0793,Simplifying Fractions,Simplify 99/132 to lowest terms,"""3/4""","""5/7""","""9/12""","""2/3""","""33/44""",A,medium
+Q0794,Simplifying Fractions,Simplify 100/150 to lowest terms,"""1/2""","""3/4""","""2/3""","""10/15""","""50/75""",C,medium
+Q0795,Simplifying Fractions,Simplify 108/144 to lowest terms,"""27/36""","""3/4""","""5/6""","""2/3""","""9/12""",B,medium
+Q0796,Simplifying Fractions,Simplify 112/168 to lowest terms,"""3/4""","""1/2""","""2/3""","""14/21""","""56/84""",C,medium
+Q0797,Simplifying Fractions,Simplify 100/125 to lowest terms,"""2/3""","""3/4""","""20/25""","""8/10""","""4/5""",E,hard
+Q0798,Simplifying Fractions,Simplify 104/130 to lowest terms,"""2/3""","""52/65""","""3/4""","""4/5""","""8/10""",D,hard
+Q0799,Simplifying Fractions,Simplify 108/135 to lowest terms,"""36/45""","""12/15""","""2/3""","""4/5""","""3/4""",D,hard
+Q0800,Simplifying Fractions,Simplify 110/143 to lowest terms,"""2/3""","""22/26""","""3/4""","""10/13""","""11/14""",D,hard
+Q0801,Simplifying Fractions,Simplify 112/140 to lowest terms,"""3/4""","""4/5""","""2/3""","""56/70""","""8/10""",B,hard
+Q0802,Simplifying Fractions,Simplify 115/138 to lowest terms,"""3/4""","""2/3""","""23/27""","""5/6""","""46/54""",D,hard
+Q0803,Simplifying Fractions,Simplify 120/144 to lowest terms,"""3/4""","""2/3""","""5/6""","""10/12""","""60/72""",C,hard
+Q0804,Simplifying Fractions,Simplify 121/132 to lowest terms,"""11/12""","""22/24""","""3/4""","""2/3""","""12/13""",A,hard
+Q0805,Simplifying Fractions,Simplify 126/147 to lowest terms,"""5/6""","""42/49""","""18/21""","""6/7""","""3/4""",D,hard
+Q0806,Simplifying Fractions,Simplify 130/143 to lowest terms,"""2/3""","""13/14""","""26/28""","""10/11""","""3/4""",D,hard
+Q0807,Simplifying Fractions,Simplify 132/154 to lowest terms,"""6/7""","""3/4""","""66/77""","""12/14""","""5/6""",A,hard
+Q0808,Simplifying Fractions,Simplify 135/162 to lowest terms,"""3/4""","""2/3""","""45/54""","""27/32""","""5/6""",E,hard
+Q0809,Simplifying Fractions,Simplify 140/168 to lowest terms,"""5/6""","""2/3""","""7/8""","""70/84""","""3/4""",A,hard
+Q0810,Simplifying Fractions,Simplify 143/169 to lowest terms,"""2/3""","""13/15""","""22/26""","""3/4""","""11/13""",E,hard
+Q0811,Simplifying Fractions,Simplify 144/180 to lowest terms,"""72/90""","""3/4""","""2/3""","""8/10""","""4/5""",E,hard
+Q0812,Simplifying Fractions,Simplify 150/175 to lowest terms,"""30/35""","""3/4""","""50/58""","""5/6""","""6/7""",E,hard
+Q0813,Simplifying Fractions,Simplify 154/176 to lowest terms,"""2/3""","""7/8""","""11/12""","""77/88""","""3/4""",B,hard
+Q0814,Simplifying Fractions,Simplify 156/182 to lowest terms,"""5/6""","""3/4""","""6/7""","""12/14""","""78/91""",C,hard
+Q0815,Simplifying Fractions,Simplify 160/200 to lowest terms,"""80/100""","""4/5""","""2/3""","""8/10""","""3/4""",B,hard
+Q0816,Simplifying Fractions,Simplify 165/198 to lowest terms,"""3/4""","""55/66""","""2/3""","""5/6""","""15/18""",D,hard
+Q0817,Simplifying Fractions,Simplify 168/210 to lowest terms,"""84/105""","""8/10""","""3/4""","""4/5""","""2/3""",D,hard
+Q0818,Simplifying Fractions,Simplify 170/204 to lowest terms,"""17/20""","""3/4""","""85/102""","""2/3""","""5/6""",E,hard
+Q0819,Simplifying Fractions,Simplify 175/200 to lowest terms,"""25/28""","""35/40""","""2/3""","""3/4""","""7/8""",E,hard
+Q0820,Simplifying Fractions,Simplify 176/220 to lowest terms,"""2/3""","""3/4""","""8/10""","""88/110""","""4/5""",E,hard
+Q0821,Simplifying Fractions,Simplify 180/216 to lowest terms,"""5/6""","""3/4""","""30/36""","""2/3""","""90/108""",A,hard
+Q0822,Simplifying Fractions,Simplify 182/210 to lowest terms,"""26/30""","""3/4""","""2/3""","""91/105""","""13/15""",E,hard
+Q0823,Simplifying Fractions,Simplify 184/230 to lowest terms,"""4/5""","""8/10""","""3/4""","""92/115""","""2/3""",A,hard
+Q0824,Simplifying Fractions,Simplify 189/252 to lowest terms,"""63/84""","""5/7""","""2/3""","""3/4""","""9/12""",D,hard
+Q0825,Simplifying Fractions,Simplify 190/228 to lowest terms,"""2/3""","""3/4""","""95/114""","""5/6""","""19/22""",D,hard
+Q0826,Simplifying Fractions,Simplify 192/240 to lowest terms,"""8/10""","""4/5""","""3/4""","""96/120""","""2/3""",B,hard
+Q0827,Simplifying Fractions,Simplify 195/234 to lowest terms,"""65/78""","""2/3""","""5/6""","""15/18""","""3/4""",C,hard
+Q0828,Simplifying Fractions,Simplify 196/245 to lowest terms,"""3/4""","""98/122""","""4/5""","""2/3""","""28/35""",C,hard
+Q0829,Simplifying Fractions,Simplify 198/264 to lowest terms,"""3/4""","""9/12""","""5/7""","""66/88""","""2/3""",A,hard
+Q0830,Simplifying Fractions,Simplify 200/250 to lowest terms,"""8/10""","""3/4""","""2/3""","""100/125""","""4/5""",E,hard
+Q0831,Simplifying Fractions,Simplify 204/255 to lowest terms,"""4/5""","""12/15""","""68/85""","""3/4""","""2/3""",A,hard
+Q0832,Simplifying Fractions,Simplify 208/260 to lowest terms,"""104/130""","""3/4""","""2/3""","""4/5""","""8/10""",D,hard
+Q0833,Fraction to Decimal,Convert 1/2 to decimal,0.75,0.25,0.5,0.6,0.4,C,easy
+Q0834,Fraction to Decimal,Convert 1/4 to decimal,0.5,0.25,0.26,0.24,0.125,B,easy
+Q0835,Fraction to Decimal,Convert 3/4 to decimal,0.65,0.85,0.25,0.75,0.5,D,easy
+Q0836,Fraction to Decimal,Convert 1/5 to decimal,0.5,0.1,0.2,0.15,0.3,C,easy
+Q0837,Fraction to Decimal,Convert 2/5 to decimal,0.3,0.45,0.4,0.5,0.2,C,easy
+Q0838,Fraction to Decimal,Convert 3/5 to decimal,0.6,0.65,0.3,0.5,0.7,A,easy
+Q0839,Fraction to Decimal,Convert 4/5 to decimal,0.7,0.9,0.85,0.8,0.4,D,easy
+Q0840,Fraction to Decimal,Convert 1/10 to decimal,0.1,0.11,0.5,0.01,0.09,A,easy
+Q0841,Fraction to Decimal,Convert 3/10 to decimal,0.29,0.5,0.03,0.3,0.31,D,easy
+Q0842,Fraction to Decimal,Convert 7/10 to decimal,0.7,0.69,0.71,0.07,0.5,A,easy
+Q0843,Fraction to Decimal,Convert 9/10 to decimal,0.9,0.89,0.09,0.91,0.5,A,easy
+Q0844,Fraction to Decimal,Convert 1/8 to decimal,0.5,0.125,0.135,0.25,0.115,B,easy
+Q0845,Fraction to Decimal,Convert 3/8 to decimal,0.365,0.385,0.5,0.375,0.25,D,easy
+Q0846,Fraction to Decimal,Convert 5/8 to decimal,0.625,0.75,0.5,0.615,0.635,A,easy
+Q0847,Fraction to Decimal,Convert 7/8 to decimal,0.865,0.75,0.875,0.9,0.885,C,easy
+Q0848,Fraction to Decimal,Convert 1/20 to decimal,0.15,0.05,0.04,0.5,0.06,B,easy
+Q0849,Fraction to Decimal,Convert 3/20 to decimal,0.3,0.15,0.14,0.16,0.5,B,easy
+Q0850,Fraction to Decimal,Convert 7/20 to decimal,0.34,0.36,0.7,0.5,0.35,E,easy
+Q0851,Fraction to Decimal,Convert 9/20 to decimal,0.9,0.44,0.5,0.46,0.45,E,easy
+Q0852,Fraction to Decimal,Convert 11/20 to decimal,0.54,0.56,0.55,0.11,0.5,C,easy
+Q0853,Fraction to Decimal,Convert 13/20 to decimal,0.65,0.13,0.66,0.5,0.64,A,easy
+Q0854,Fraction to Decimal,Convert 17/20 to decimal,0.75,0.86,0.17,0.84,0.85,E,easy
+Q0855,Fraction to Decimal,Convert 19/20 to decimal,0.75,0.96,0.94,0.19,0.95,E,easy
+Q0856,Fraction to Decimal,Convert 1/25 to decimal,0.4,0.05,0.03,0.14,0.04,E,easy
+Q0857,Fraction to Decimal,Convert 3/25 to decimal,0.12,0.11,0.13,0.5,0.3,A,easy
+Q0858,Fraction to Decimal,Convert 7/25 to decimal,0.5,0.27,0.28,0.29,0.7,C,easy
+Q0859,Fraction to Decimal,Convert 9/25 to decimal,0.5,0.9,0.37,0.36,0.35,D,easy
+Q0860,Fraction to Decimal,Convert 11/25 to decimal,0.44,0.11,0.5,0.45,0.43,A,easy
+Q0861,Fraction to Decimal,Convert 13/25 to decimal,0.5,0.13,0.53,0.51,0.52,E,easy
+Q0862,Fraction to Decimal,Convert 17/25 to decimal,0.68,0.69,0.17,0.67,0.5,A,easy
+Q0863,Fraction to Decimal,Convert 19/25 to decimal,0.5,0.77,0.76,0.19,0.75,C,easy
+Q0864,Fraction to Decimal,Convert 21/25 to decimal,0.84,0.85,0.5,0.21,0.83,A,easy
+Q0865,Fraction to Decimal,Convert 23/25 to decimal,0.75,0.92,0.23,0.93,0.91,B,easy
+Q0866,Fraction to Decimal,Convert 1/50 to decimal,0.12,0.2,0.02,0.01,0.03,C,easy
+Q0867,Fraction to Decimal,Convert 3/50 to decimal,0.05,0.6,0.07,0.06,0.16,D,easy
+Q0868,Fraction to Decimal,Convert 7/50 to decimal,0.15,0.13,0.7,0.5,0.14,E,medium
+Q0869,Fraction to Decimal,Convert 9/50 to decimal,0.19,0.17,0.9,0.5,0.18,E,medium
+Q0870,Fraction to Decimal,Convert 11/50 to decimal,0.11,0.5,0.21,0.23,0.22,E,medium
+Q0871,Fraction to Decimal,Convert 13/50 to decimal,0.13,0.27,0.5,0.26,0.25,D,medium
+Q0872,Fraction to Decimal,Convert 17/50 to decimal,0.34,0.35,0.5,0.33,0.17,A,medium
+Q0873,Fraction to Decimal,Convert 19/50 to decimal,0.38,0.37,0.39,0.19,0.5,A,medium
+Q0874,Fraction to Decimal,Convert 21/50 to decimal,0.41,0.43,0.42,0.5,0.21,C,medium
+Q0875,Fraction to Decimal,Convert 23/50 to decimal,0.46,0.5,0.47,0.23,0.45,A,medium
+Q0876,Fraction to Decimal,Convert 27/50 to decimal,0.55,0.53,0.5,0.27,0.54,E,medium
+Q0877,Fraction to Decimal,Convert 29/50 to decimal,0.58,0.29,0.59,0.5,0.57,A,medium
+Q0878,Fraction to Decimal,Convert 31/50 to decimal,0.62,0.5,0.31,0.61,0.63,A,medium
+Q0879,Fraction to Decimal,Convert 33/50 to decimal,0.66,0.33,0.67,0.5,0.65,A,medium
+Q0880,Fraction to Decimal,Convert 37/50 to decimal,0.73,0.5,0.74,0.75,0.37,C,medium
+Q0881,Fraction to Decimal,Convert 39/50 to decimal,0.5,0.78,0.39,0.77,0.79,B,medium
+Q0882,Fraction to Decimal,Convert 41/50 to decimal,0.41,0.81,0.5,0.82,0.83,D,medium
+Q0883,Fraction to Decimal,Convert 43/50 to decimal,0.86,0.87,0.43,0.85,0.75,A,medium
+Q0884,Fraction to Decimal,Convert 47/50 to decimal,0.75,0.93,0.95,0.94,0.47,D,medium
+Q0885,Fraction to Decimal,Convert 49/50 to decimal,0.75,0.98,0.97,0.49,0.99,B,medium
+Q0886,Fraction to Decimal,Convert 5/4 to decimal,2.25,1.15,1.25,1.35,0.25,C,medium
+Q0887,Fraction to Decimal,Convert 7/4 to decimal,2.75,0.75,1.65,1.75,1.85,D,medium
+Q0888,Fraction to Decimal,Convert 11/10 to decimal,1.1,1,1.2,0.11,1.01,A,medium
+Q0889,Fraction to Decimal,Convert 13/10 to decimal,0.13,1.03,1.2,1.4,1.3,E,medium
+Q0890,Fraction to Decimal,Convert 3/16 to decimal,0.5,0.125,0.188,0.187,0.1875,E,medium
+Q0891,Fraction to Decimal,Convert 5/16 to decimal,0.25,0.312,0.5,0.313,0.3125,E,medium
+Q0892,Fraction to Decimal,Convert 7/16 to decimal,0.25,0.437,0.438,0.5,0.4375,E,medium
+Q0893,Fraction to Decimal,Convert 9/16 to decimal,0.5625,0.5,0.75,0.563,0.562,A,medium
+Q0894,Fraction to Decimal,Convert 11/16 to decimal,0.5,0.75,0.6875,0.688,0.687,C,medium
+Q0895,Fraction to Decimal,Convert 13/16 to decimal,0.75,0.812,0.813,0.9,0.8125,E,medium
+Q0896,Fraction to Decimal,Convert 1/6 (2 d.p.) to decimal,0.5,0.16,0.33,0.17,0.18,D,hard
+Q0897,Fraction to Decimal,Convert 5/6 (2 d.p.) to decimal,0.82,0.84,0.83,0.56,0.6,C,hard
+Q0898,Fraction to Decimal,Convert 1/3 (2 d.p.) to decimal,0.5,0.13,0.33,0.32,0.34,C,hard
+Q0899,Fraction to Decimal,Convert 2/3 (2 d.p.) to decimal,0.67,0.75,0.66,0.5,0.68,A,hard
+Q0900,Fraction to Decimal,Convert 1/7 (2 d.p.) to decimal,0.5,0.14,0.7,0.15,0.13,B,hard
+Q0901,Fraction to Decimal,Convert 2/7 (2 d.p.) to decimal,0.28,0.7,0.5,0.3,0.29,E,hard
+Q0902,Fraction to Decimal,Convert 3/7 (2 d.p.) to decimal,0.42,0.3,0.44,0.43,0.5,D,hard
+Q0903,Fraction to Decimal,Convert 4/7 (2 d.p.) to decimal,0.58,0.5,0.56,0.57,0.4,D,hard
+Q0904,Fraction to Decimal,Convert 5/7 (2 d.p.) to decimal,0.7,0.72,0.75,0.71,0.5,D,hard
+Q0905,Fraction to Decimal,Convert 6/7 (2 d.p.) to decimal,0.87,0.75,0.85,0.86,0.6,D,hard
+Q0906,Fraction to Decimal,Convert 1/9 (2 d.p.) to decimal,0.12,0.1,0.11,0.9,0.5,C,hard
+Q0907,Fraction to Decimal,Convert 2/9 (2 d.p.) to decimal,0.23,0.21,0.9,0.22,0.5,D,hard
+Q0908,Fraction to Decimal,Convert 4/9 (2 d.p.) to decimal,0.44,0.9,0.43,0.5,0.45,A,hard
+Q0909,Fraction to Decimal,Convert 5/9 (2 d.p.) to decimal,0.75,0.5,0.55,0.56,0.57,D,hard
+Q0910,Fraction to Decimal,Convert 7/9 (2 d.p.) to decimal,0.79,0.78,0.7,0.77,0.75,B,hard
+Q0911,Fraction to Decimal,Convert 8/9 (2 d.p.) to decimal,0.89,0.9,0.88,0.75,0.8,A,hard
+Q0912,Fraction to Decimal,Convert 1/11 (2 d.p.) to decimal,0.08,0.1,0.09,0.11,0.5,C,hard
+Q0913,Fraction to Decimal,Convert 3/11 (2 d.p.) to decimal,0.26,0.27,0.3,0.28,0.5,B,hard
+Q0914,Fraction to Decimal,Convert 5/11 (2 d.p.) to decimal,0.44,0.46,0.5,0.55,0.45,E,hard
+Q0915,Fraction to Decimal,Convert 7/11 (2 d.p.) to decimal,0.64,0.63,0.65,0.7,0.75,A,hard
+Q0916,Fraction to Decimal,Convert 9/11 (2 d.p.) to decimal,0.82,0.81,0.9,0.75,0.83,A,hard
+Q0917,Fraction to Decimal,Convert 1/12 (2 d.p.) to decimal,0.5,0.09,0.12,0.08,0.07,D,hard
+Q0918,Fraction to Decimal,Convert 5/12 (2 d.p.) to decimal,0.41,0.35,0.43,0.42,0.5,D,hard
+Q0919,Fraction to Decimal,Convert 7/12 (2 d.p.) to decimal,0.59,0.6,0.58,0.57,0.75,C,hard
+Q0920,Fraction to Decimal,Convert 11/12 (2 d.p.) to decimal,0.11,0.93,0.91,0.75,0.92,E,hard
+Q0921,Fraction to Decimal,Convert 1/14 (2 d.p.) to decimal,0.5,0.08,0.14,0.07,0.06,D,hard
+Q0922,Fraction to Decimal,Convert 3/14 (2 d.p.) to decimal,0.2,0.22,0.21,0.5,0.3,C,hard
+Q0923,Fraction to Decimal,Convert 5/14 (2 d.p.) to decimal,0.25,0.37,0.5,0.35,0.36,E,hard
+Q0924,Fraction to Decimal,Convert 9/14 (2 d.p.) to decimal,0.65,0.9,0.64,0.63,0.75,C,hard
+Q0925,Fraction to Decimal,Convert 11/14 (2 d.p.) to decimal,0.75,0.11,0.78,0.8,0.79,E,hard
+Q0926,Fraction to Decimal,Convert 13/14 (2 d.p.) to decimal,0.92,0.75,0.94,0.93,0.13,D,hard
+Q0927,Ordering Fractions,"Which is LARGEST: 11/16, 7/10, 5/7, 9/13, 3/4","""3/4""","""5/7""","""7/10""","""11/16""","""9/13""",A,hard
+Q0928,Ordering Fractions,"Which is SMALLEST: 13/20, 9/14, 7/11, 5/8, 11/17","""11/17""","""7/11""","""9/14""","""5/8""","""13/20""",B,hard
+Q0929,Ordering Fractions,"Which is LARGEST: 13/20, 9/14, 7/11, 5/8, 11/17","""13/20""","""7/11""","""9/14""","""11/17""","""5/8""",A,hard
+Q0930,Ordering Fractions,"Which is SMALLEST: 4/7, 3/5, 5/8, 7/11, 6/9","""7/11""","""6/9""","""5/8""","""4/7""","""3/5""",D,medium
+Q0931,Ordering Fractions,"Which is LARGEST: 4/7, 3/5, 5/8, 7/11, 6/9","""6/9""","""4/7""","""3/5""","""7/11""","""5/8""",A,medium
+Q0932,Comparing Fractions,Fill the blank: 31/40 ___ 23/30,>,not equal to,<,less than or equal to,=,A,hard
+Q0933,Comparing Fractions,Fill the blank: 27/35 ___ 19/25,=,>,not equal to,<,less than or equal to,D,hard
+Q0934,Comparing Fractions,Compare 33/40 and 27/33,Cannot compare,Both equal to 1,33/40 > 27/33,33/40 < 27/33,33/40 = 27/33,D,hard
+Q0935,Comparing Fractions,Which is GREATER: 29/35 or 23/28,"""23/28""","""6/7""","""29/35""","""4/5""","""52/63""",A,hard
+Q0936,Simplifying Fractions,Simplify 210/252 to lowest terms,"""35/42""","""5/6""","""105/126""","""3/4""","""2/3""",B,hard
+Q0937,Simplifying Fractions,Simplify 216/270 to lowest terms,"""4/5""","""2/3""","""3/4""","""8/10""","""108/135""",A,hard
+Q0938,Simplifying Fractions,Simplify 220/264 to lowest terms,"""10/12""","""5/6""","""3/4""","""2/3""","""110/132""",B,hard
+Q0939,Simplifying Fractions,Simplify 225/270 to lowest terms,"""5/6""","""75/90""","""2/3""","""15/18""","""3/4""",A,hard
+Q0940,Simplifying Fractions,Simplify 231/252 to lowest terms,"""11/12""","""2/3""","""3/4""","""21/23""","""22/24""",A,hard
+Q0941,Simplifying Fractions,Simplify 234/312 to lowest terms,"""9/12""","""3/4""","""2/3""","""5/7""","""78/104""",B,hard
+Q0942,Simplifying Fractions,Simplify 238/272 to lowest terms,"""7/8""","""17/19""","""2/3""","""3/4""","""14/16""",A,hard
+Q0943,Simplifying Fractions,Simplify 242/264 to lowest terms,"""2/3""","""121/132""","""3/4""","""22/24""","""11/12""",E,hard
+Q0944,Simplifying Fractions,Simplify 245/280 to lowest terms,"""2/3""","""35/40""","""7/8""","""49/56""","""3/4""",C,hard
+Q0945,Simplifying Fractions,Simplify 252/315 to lowest terms,"""2/3""","""4/5""","""3/4""","""8/10""","""84/105""",B,hard
+Q0946,Simplifying Fractions,Simplify 260/325 to lowest terms,"""4/5""","""52/65""","""3/4""","""2/3""","""8/10""",A,hard
+Q0947,Simplifying Fractions,Simplify 264/330 to lowest terms,"""4/5""","""8/10""","""2/3""","""88/110""","""3/4""",A,hard
+Q0948,Fraction to Decimal,Convert 15/16 to decimal,0.937,1,0.938,0.75,0.9375,E,hard
+Q0949,Fraction to Decimal,Convert 1/16 to decimal,0.063,0.0625,0.5,0.062,0.125,B,hard
+Q0950,Fraction to Decimal,Convert 2/11 to decimal (2 d.p.),0.5,0.18,0.19,0.2,0.17,B,hard
+Q0951,Fraction to Decimal,Convert 4/11 to decimal (2 d.p.),0.5,0.37,0.36,0.4,0.35,C,hard
+Q0952,Fraction to Decimal,Convert 6/11 to decimal (2 d.p.),0.5,0.56,0.6,0.55,0.54,D,hard
+Q0953,Fraction to Decimal,Convert 8/11 to decimal (2 d.p.),0.74,0.72,0.8,0.75,0.73,E,hard
+Q0954,Fraction to Decimal,Convert 10/11 to decimal (2 d.p.),0.92,0.1,0.9,0.91,0.75,D,hard
+Q0955,Fraction to Decimal,Convert 2/13 to decimal (2 d.p.),0.15,0.14,0.5,0.2,0.16,A,hard
+Q0956,Fraction to Decimal,Convert 5/13 to decimal (2 d.p.),0.37,0.38,0.4,0.5,0.39,B,hard
+Q0957,Fraction to Decimal,Convert 9/13 to decimal (2 d.p.),0.7,0.68,0.69,0.75,0.9,C,hard
+Q0958,Fraction to Decimal,Convert 11/13 to decimal (2 d.p.),0.11,0.84,0.75,0.86,0.85,E,hard
+Q0959,Fraction to Decimal,Convert 12/13 to decimal (2 d.p.),0.93,0.75,0.12,0.91,0.92,E,hard
+Q0960,Addition,What is 12.5 + 7.5 = ?,21,20.1,19,19.9,20,E,medium
+Q0961,Addition,What is 23.4 + 16.8 = ?,41.2,40.1,40.2,39.2,40.3,C,medium
+Q0962,Addition,What is 34.7 + 25.6 = ?,60.2,59.3,60.3,61.3,60.4,C,medium
+Q0963,Addition,What is 45.8 + 34.5 = ?,80.2,81.3,79.3,80.3,80.4,D,medium
+Q0964,Addition,What is 56.9 + 43.2 = ?,100.2,100.1,101.1,100,99.1,B,medium
+Q0965,Addition,What is 67.3 + 52.9 = ?,120.3,120.1,121.2,119.2,120.2,E,medium
+Q0966,Addition,What is 78.4 + 61.8 = ?,140.3,140.1,139.2,140.2,141.2,D,medium
+Q0967,Addition,What is 89.5 + 70.7 = ?,160.3,159.2,161.2,160.2,160.1,D,medium
+Q0968,Addition,What is 12.75 + 8.25 = ?,21.1,21,22,20,20.9,B,medium
+Q0969,Addition,What is 23.45 + 16.55 = ?,40,41,39,40.1,39.9,A,medium
+Q0970,Addition,What is 34.65 + 25.35 = ?,60,60.1,61,59,59.9,A,medium
+Q0971,Addition,What is 45.85 + 34.15 = ?,80,81,79.9,79,80.1,A,medium
+Q0972,Addition,What is 56.95 + 43.05 = ?,100.1,101,99.9,100,99,D,medium
+Q0973,Addition,What is 67.35 + 52.65 = ?,120,121,119,119.9,120.1,A,medium
+Q0974,Addition,What is 78.45 + 61.55 = ?,139.9,140,139,141,140.1,B,medium
+Q0975,Subtraction,What is 25.5 - 12.3 = ?,13.3,13.1,13.2,14.2,12.2,C,medium
+Q0976,Subtraction,What is 34.8 - 21.4 = ?,13.3,13.5,14.4,13.4,12.4,D,medium
+Q0977,Subtraction,What is 45.9 - 23.7 = ?,22.2,22.3,21.2,23.2,22.1,A,medium
+Q0978,Subtraction,What is 56.7 - 34.5 = ?,22.1,22.2,21.2,23.2,22.3,B,medium
+Q0979,Subtraction,What is 67.8 - 45.6 = ?,23.2,22.1,22.3,21.2,22.2,E,medium
+Q0980,Subtraction,What is 78.9 - 56.7 = ?,22.3,23.2,22.1,21.2,22.2,E,medium
+Q0981,Subtraction,What is 89.3 - 67.4 = ?,22,21.8,21.9,22.9,20.9,C,medium
+Q0982,Subtraction,What is 90.5 - 78.3 = ?,13.2,12.1,11.2,12.2,12.3,D,medium
+Q0983,Subtraction,What is 25.75 - 12.25 = ?,13.5,13.6,14.5,12.5,13.4,A,medium
+Q0984,Subtraction,What is 34.85 - 21.35 = ?,12.5,13.5,14.5,13.4,13.6,B,medium
+Q0985,Subtraction,What is 45.95 - 23.55 = ?,22.4,23.4,21.4,22.5,22.3,A,medium
+Q0986,Subtraction,What is 56.75 - 34.25 = ?,22.4,22.5,22.6,21.5,23.5,B,medium
+Q0987,Subtraction,What is 67.85 - 45.35 = ?,21.5,22.4,22.5,22.6,23.5,C,medium
+Q0988,Subtraction,What is 78.95 - 56.45 = ?,23.5,21.5,22.6,22.5,22.4,D,medium
+Q0989,Subtraction,What is 89.35 - 67.15 = ?,22.3,22.2,22.1,23.2,21.2,B,medium
+Q0990,Addition,Kamal has Rs. 350 and Nimal has Rs. 500. How much do they have altogether,850,860,950,750,840,A,easy
+Q0991,Addition,A fruit seller had 234 oranges and 189 apples. How many fruits in total,323,423,413,433,523,B,easy
+Q0992,Addition,Amali scored 78 marks in Maths and 85 marks in Science. What is her total score?,163,153,173,263,63,A,easy
+Q0993,Addition,A school has 456 boys and 389 girls. Find the total number of students,835,745,855,945,845,E,easy
+Q0994,Addition,Saman collected 125 stamps last year and 234 stamps this year. How many stamps are there?,349,259,459,359,369,D,easy
+Q0995,Addition,A library received 567 new books in January and 432 in February. Total new books received?,999,899,989,"1,009","1,099",A,medium
+Q0996,Addition,"A vendor sold 1,234 items in the morning and 2,567 items in the afternoon. Total items sold?","3,811","4,801","2,801","3,791","3,801",E,medium
+Q0997,Addition,"Three students saved Rs. 450, Rs. 675 and Rs. 890. What is their total savings?","2,025","3,015","2,005","2,015","1,015",D,medium
+Q0998,Addition,"A factory made 3,456 red pens and 2,789 blue pens. How many pens altogether","5,245","6,235","6,255","6,245","7,245",D,medium
+Q0999,Addition,Nimal walked 2.5 km in the morning and 3.75 km in the evening. Total distance walked,7.25,6.15,6.35,6.25,5.25,D,medium
+Q1000,Addition,"Two water tanks hold 4,567 litres and 3,891 litres. What is the total capacity","7,458","8,468","9,458","8,458","8,448",D,hard
+Q1001,Addition,"A school collected Rs. 12,450 from fees and Rs. 8,975 from donations. Total amount collected","21,435","22,425","21,425","20,425","21,415",C,hard
+Q1002,Addition,"Three villages have populations of 4,521, 6,789 and 3,234. Total population","15,544","14,544","14,554","13,544","14,534",B,hard
+Q1003,Addition,"A shop sold goods worth Rs. 23,456 on Saturday and Rs. 34,789 on Sunday. Total sales","58,245","58,235","58,255","57,245","59,245",A,hard
+Q1004,Subtraction,Sanduni had Rs. 500 and spent Rs. 234. How much money is left,166,366,266,256,276,C,easy
+Q1005,Subtraction,A basket had 150 mangoes. 67 were sold. How many mangoes remain,93,73,63,103,83,E,easy
+Q1006,Subtraction,Kamal had 345 marbles and gave 178 to his friend. How many does he have now,167,157,67,177,267,A,easy
+Q1007,Subtraction,A pond had 780 fish. 234 were caught. How many fish remain in the pond,446,646,556,536,546,E,easy
+Q1008,Subtraction,Amali read 125 pages of a 300-page book. How many pages are left to read,185,165,175,275,75,C,easy
+Q1009,Subtraction,"A shop had Rs. 2,500 in the cash box. Rs. 1,234 was used to pay a supplier. How much remains","1,266","1,276","1,256","2,266",266,A,medium
+Q1010,Subtraction,"A tank was filled with 5,000 litres of water. After use, 2,347 litres remained. How many litres were used","2,643","2,653","1,653","3,653","2,663",B,medium
+Q1011,Subtraction,"A school had 1,500 students. 234 left for another school. How many students remain",266,"1,276","1,256","1,266","2,266",D,medium
+Q1012,Subtraction,The distance from Colombo to Kandy is 116 km. Suresh has already travelled 78 km. How far is left,48,28,38,18,58,C,medium
+Q1013,Subtraction,A rope is 12.5 metres long. Nimal cuts off 4.75 metres. How much rope is left,7.85,7.65,7.75,8.75,6.75,C,medium
+Q1014,Subtraction,"A warehouse had 15,000 items. After two shipments of 4,567 and 3,211 items, how many remain","7,222","7,212","8,222","7,232","6,222",A,hard
+Q1015,Subtraction,"Anura earned Rs. 25,000 in a month. He spent Rs. 8,456 on rent and Rs. 6,789 on food. How much is left","9,765","9,755","8,755","10,755","9,745",B,hard
+Q1016,Subtraction,"A dam had 98,765 litres of water. After a dry season 45,678 litres evaporated. How much water remains","53,087","52,087","53,077","54,087","53,097",A,hard
+Q1017,Multiplication,A crate holds 24 bottles. How many bottles are in 15 crates,460,360,384,260,336,B,easy
+Q1018,Multiplication,Each student needs 12 colour pencils. How many pencils for 35 students,432,408,520,320,420,E,easy
+Q1019,Multiplication,A garden has 18 rows with 25 plants in each row. Total plants in the garden,432,550,468,350,450,E,easy
+Q1020,Multiplication,One bag of rice weighs 25 kg. What is the total weight of 16 bags,300,400,425,375,500,B,medium
+Q1021,Multiplication,A wheel travels 314 cm in one rotation. How far does it travel in 25 rotations,"7,850","6,850","7,536","8,164","8,850",A,medium
+Q1022,Multiplication,A hall has 45 rows with 32 seats in each row. What is the total number of seats,"1,395","1,485","1,440",440,"2,440",C,medium
+Q1023,Multiplication,A car travels 65 km per hour. How far does it travel in 8 hours,620,420,520,585,455,C,medium
+Q1024,Multiplication,One brick weighs 2.5 kg. What is the total weight of 240 bricks,600,575,625,700,500,A,hard
+Q1025,Multiplication,"A school collects Rs. 1,250 from each class. If there are 28 classes how much is collected in total","25,000","33,750","45,000","35,000","36,250",D,hard
+Q1026,Multiplication,A pipe releases 125 litres of water per minute. How many litres in 2 hours,"25,000","14,875","15,000","15,125","5,000",C,hard
+Q1027,Division,225 students are divided equally into 15 groups. How many students in each group,14,20,10,16,15,E,easy
+Q1028,Division,A bag of 168 sweets is shared equally among 12 children. How many sweets does each child get,21,16,7,14,12,D,easy
+Q1029,Division,A farmer harvested 480 kg of vegetables and packed them in bags of 16 kg. How many bags,32,30,28,20,40,B,easy
+Q1030,Division,"Rs. 2,400 prize money is divided equally among 16 winners. How much does each winner get",200,134,150,100,166,C,medium
+Q1031,Division,A ribbon 13.5 metres long is cut into pieces of 0.9 metres each. How many pieces,16,20,15,9,14,C,medium
+Q1032,Division,A bus travels 360 km in 9 hours at constant speed. How many km per hour,30,44,50,40,36,D,medium
+Q1033,Division,"3,600 bricks are needed to build 18 pillars equally. How many bricks per pillar",200,300,182,100,218,A,medium
+Q1034,Division,"A tank holds 8,400 litres. It is filled using a pipe that delivers 12 litres per minute. How many minutes",800,712,700,688,600,C,hard
+Q1035,Division,"Rs. 45,000 is shared equally among 15 workers. How much does each worker receive","2,000","4,000","3,015","2,985","3,000",E,hard
+Q1036,Division,"A school library has 9,600 books arranged equally on 32 shelves. How many books per shelf",300,268,332,400,200,A,hard
+Q1052,Ordering Fractions,"Three students completed 2/3, 3/4 and 5/8 of their homework. Who completed the most",Student with 5/8,All completed equally,Student with 2/3,Student with 3/4,Cannot determine,D,medium
+Q1053,Ordering Fractions,"Three bottles are 1/2, 3/5 and 7/10 full. Which bottle has the least water",Cannot determine,All have equal water,1/2 full bottle,3/5 full bottle,7/10 full bottle,C,medium
+Q1054,Ordering Fractions,"Three pieces of ribbon measure 2/3 m, 3/4 m and 5/8 m. Which is the longest",5/8 m,2/3 m,All are equal,3/4 m,Cannot determine,D,medium
+Q1055,Comparing Fractions,Ruwan drank 3/4 of a glass of juice. Priya drank 5/7 of the same sized glass. Who drank more,Ruwan (3/4 > 5/7),Cannot compare,They are not equal,Both drank the same,Priya (5/7 > 3/4),A,medium
+Q1056,Comparing Fractions,A field is 5/8 planted with rice. Another field is 3/5 planted. Which field has more rice planted,They are not equal,First field (5/8 > 3/5),Cannot compare,Both are equal,Second field (3/5 > 5/8),B,medium
+Q1057,Comparing Fractions,Sunil completed 7/9 of a painting. Kamal completed 4/5. Who completed more of their painting,Sunil (7/9 > 4/5),Both completed equally,Kamal (4/5 > 7/9),They are not equal,Cannot compare,C,hard
+Q1058,Comparing Fractions,Two pipes fill a tank. Pipe A fills 5/12 of the tank per hour. Pipe B fills 3/8 per hour. Which is faster,Cannot compare,Both are equal speed,Pipe A (5/12 > 3/8),They are not equal,Pipe B (3/8 > 5/12),C,hard
+Q1059,Simplifying Fractions,A class has 24 boys out of 36 students. Write the fraction of boys in simplest form,"""12/18""","""2/3""","""4/6""","""1/2""","""3/4""",B,easy
+Q1060,Simplifying Fractions,15 out of 20 fruits in a basket are mangoes. What fraction of the fruits are mangoes in simplest form,"""2/3""","""3/4""","""5/7""","""15/20""","""4/5""",B,easy
+Q1061,Simplifying Fractions,A school raised Rs. 45 out of a target of Rs. 60. What fraction of the target was raised in simplest form,"""9/12""","""3/4""","""45/60""","""4/5""","""2/3""",B,medium
+Q1062,Simplifying Fractions,A survey found 48 out of 72 students prefer cricket. What is this fraction in simplest form,"""3/4""","""4/6""","""1/2""","""2/3""","""16/24""",D,medium
+Q1063,Simplifying Fractions,A farmer uses 63 out of 84 acres for rice. What fraction is used for rice in simplest form,"""9/12""","""2/3""","""5/7""","""3/4""","""21/28""",D,hard
+Q1064,Fraction to Decimal,A student scored 3/4 of the total marks. What is this as a decimal,0.25,0.5,0.65,0.75,0.85,D,easy
+Q1065,Fraction to Decimal,A tank is 2/5 full of water. Express this as a decimal,0.5,0.2,0.6,0.3,0.4,E,easy
+Q1066,Fraction to Decimal,A shopkeeper sold 7/8 of his stock. What decimal represents the fraction sold,0.75,0.875,0.9,0.865,0.885,B,medium
+Q1067,Fraction to Decimal,Amali finished 5/8 of her homework. Express this as a decimal,0.615,0.5,0.635,0.75,0.625,E,medium
+Q1068,Fraction to Decimal,A team won 11/16 of their matches. What is this fraction as a decimal,0.75,0.6875,0.687,0.688,0.5,B,hard
+Q1069,Fraction to Decimal,A factory used 7/9 of its raw materials. Express this as a decimal to 2 decimal places,0.7,0.75,0.79,0.77,0.78,E,hard
+Q1070,Ordering Fractions,"Which fraction is the SMALLEST: 3/4, 1/2, 2/3","""3/5""","""2/3""","""3/4""","""1/4""","""1/2""",E,easy
+Q1071,Ordering Fractions,"Which fraction is the LARGEST: 1/3, 1/4, 1/6","""1/3""","""1/4""","""1/6""","""1/5""","""1/2""",A,easy
+Q1072,Ordering Fractions,"Which fraction has the LEAST value: 5/6, 3/4, 7/8","""7/8""","""5/6""","""3/4""","""2/3""","""4/5""",C,easy
+Q1073,Ordering Fractions,"Which fraction has the GREATEST value: 2/5, 3/7, 1/3","""3/7""","""1/3""","""2/5""","""1/2""","""4/9""",A,easy
+Q1074,Ordering Fractions,"Which is the SMALLEST fraction: 7/8, 5/6, 4/5","""3/4""","""5/6""","""7/8""","""4/5""","""9/10""",D,easy
+Q1075,Ordering Fractions,"Which is the GREATEST fraction: 2/9, 3/11, 1/5","""3/11""","""1/5""","""1/6""","""2/9""","""4/13""",A,easy
+Q1076,Ordering Fractions,"Pick the SMALLEST: 4/7, 3/5, 5/8","""2/5""","""6/9""","""5/8""","""4/7""","""3/5""",D,medium
+Q1077,Ordering Fractions,"Pick the LARGEST: 5/9, 4/7, 7/11","""7/11""","""8/13""","""3/5""","""5/9""","""4/7""",A,medium
+Q1078,Ordering Fractions,"Which fraction is the SMALLEST: 7/10, 3/4, 5/7","""4/6""","""5/7""","""3/4""","""6/8""","""7/10""",B,medium
+Q1079,Ordering Fractions,"Which fraction is the LARGEST: 4/9, 3/7, 5/11","""2/5""","""6/13""","""5/11""","""3/7""","""4/9""",E,medium
+Q1080,Ordering Fractions,"Arrange in order from SMALLEST to LARGEST: 3/4, 1/2, 2/3","3/4, 2/3, 1/2","2/3, 1/2, 3/4","1/2, 3/4, 2/3","2/3, 3/4, 1/2","1/2, 2/3, 3/4",E,easy
+Q1081,Ordering Fractions,"Arrange in order from SMALLEST to LARGEST: 5/6, 2/3, 3/4","2/3, 3/4, 5/6","3/4, 2/3, 5/6","3/4, 5/6, 2/3","2/3, 5/6, 3/4","5/6, 3/4, 2/3",A,easy
+Q1082,Ordering Fractions,"Arrange in order from SMALLEST to LARGEST: 1/4, 1/3, 1/6","1/4, 1/6, 1/3","1/6, 1/4, 1/3","1/6, 1/3, 1/4","1/4, 1/3, 1/6","1/3, 1/4, 1/6",B,easy
+Q1083,Ordering Fractions,"Arrange from LEAST to GREATEST: 4/5, 2/3, 3/4","3/4, 4/5, 2/3","2/3, 4/5, 3/4","4/5, 3/4, 2/3","3/4, 2/3, 4/5","2/3, 3/4, 4/5",E,easy
+Q1084,Ordering Fractions,"Order from SMALLEST to LARGEST: 5/8, 3/5, 2/3","3/5, 5/8, 2/3","5/8, 2/3, 3/5","5/8, 3/5, 2/3","3/5, 2/3, 5/8","2/3, 3/5, 5/8",C,medium
+Q1085,Ordering Fractions,"Order from LEAST to GREATEST: 7/9, 4/5, 5/6","7/9, 5/6, 4/5","5/6, 7/9, 4/5","4/5, 5/6, 7/9","7/9, 4/5, 5/6","5/6, 4/5, 7/9",A,medium
+Q1086,Ordering Fractions,"Arrange from SMALLEST to LARGEST: 3/7, 2/5, 4/9","2/5, 4/9, 3/7","4/9, 3/7, 2/5","3/7, 4/9, 2/5","2/5, 3/7, 4/9","3/7, 2/5, 4/9",D,medium
+Q1087,Ordering Fractions,"Order from LEAST to GREATEST: 5/7, 3/4, 7/10","5/7, 7/10, 3/4","7/10, 5/7, 3/4","7/10, 3/4, 5/7","3/4, 5/7, 7/10","5/7, 3/4, 7/10",B,medium
+Q1088,Ordering Fractions,"Arrange from SMALLEST to LARGEST: 11/12, 7/9, 5/6","5/6, 7/9, 11/12","11/12, 7/9, 5/6","7/9, 11/12, 5/6","5/6, 11/12, 7/9","7/9, 5/6, 11/12",E,hard
+Q1089,Ordering Fractions,"Order from LEAST to GREATEST: 8/9, 5/6, 9/10","8/9, 5/6, 9/10","8/9, 9/10, 5/6","5/6, 9/10, 8/9","5/6, 8/9, 9/10","9/10, 8/9, 5/6",D,hard
+Q1090,Ordering Fractions,"Arrange in order from LARGEST to SMALLEST: 3/4, 1/2, 2/3","3/4, 1/2, 2/3","1/2, 2/3, 3/4","2/3, 3/4, 1/2","2/3, 1/2, 3/4","3/4, 2/3, 1/2",E,easy
+Q1091,Ordering Fractions,"Arrange from GREATEST to LEAST: 5/6, 2/3, 3/4","5/6, 2/3, 3/4","5/6, 3/4, 2/3","3/4, 2/3, 5/6","2/3, 3/4, 5/6","3/4, 5/6, 2/3",B,easy
+Q1092,Ordering Fractions,"Arrange from LARGEST to SMALLEST: 1/4, 1/3, 1/6","1/4, 1/3, 1/6","1/3, 1/6, 1/4","1/3, 1/4, 1/6","1/4, 1/6, 1/3","1/6, 1/4, 1/3",C,easy
+Q1093,Ordering Fractions,"Order from GREATEST to LEAST: 5/8, 3/5, 2/3","5/8, 3/5, 2/3","3/5, 2/3, 5/8","3/5, 5/8, 2/3","2/3, 3/5, 5/8","2/3, 5/8, 3/5",D,medium
+Q1094,Ordering Fractions,"Arrange from LARGEST to SMALLEST: 7/9, 4/5, 5/6","5/6, 4/5, 7/9","4/5, 7/9, 5/6","7/9, 5/6, 4/5","5/6, 7/9, 4/5","4/5, 5/6, 7/9",E,medium
+Q1095,Ordering Fractions,"Order from GREATEST to LEAST: 3/7, 2/5, 4/9","3/7, 2/5, 4/9","4/9, 2/5, 3/7","2/5, 3/7, 4/9","4/9, 3/7, 2/5","3/7, 4/9, 2/5",D,medium
+Q1096,Ordering Fractions,"Arrange from LARGEST to SMALLEST: 11/12, 7/9, 5/6","5/6, 11/12, 7/9","5/6, 7/9, 11/12","11/12, 7/9, 5/6","7/9, 5/6, 11/12","11/12, 5/6, 7/9",E,hard
+Q1097,Ordering Fractions,"Order from GREATEST to LEAST: 8/9, 5/6, 9/10","8/9, 5/6, 9/10","9/10, 8/9, 5/6","8/9, 9/10, 5/6","5/6, 8/9, 9/10","9/10, 5/6, 8/9",B,hard
+Q1098,Ordering Fractions,"Three students drank 1/2, 2/3 and 3/4 of their water bottles. Who drank the least",Student who drank 2/3,Student who drank 1/2,Student who drank 3/4,All drank equally,They did not drink the same amount,B,easy
+Q1099,Ordering Fractions,"Three ribbons measure 3/4 m, 2/3 m and 5/6 m. Which ribbon is the shortest",5/6 m ribbon,They are not equal,All are equal,2/3 m ribbon,3/4 m ribbon,D,easy
+Q1100,Ordering Fractions,"Kamal finished 3/5, Nimal finished 4/7, Sunil finished 2/4 of their work. Who finished the most",All finished equally,Cannot decide,Kamal (3/5),Sunil (2/4),Nimal (4/7),C,medium
+Q1101,Ordering Fractions,"Three boxes weigh 5/8 kg, 3/5 kg and 7/10 kg. Arrange from lightest to heaviest","5/8, 7/10, 3/5","5/8, 3/5, 7/10","7/10, 5/8, 3/5","3/5, 7/10, 5/8","3/5, 5/8, 7/10",E,medium
+Q1102,Ordering Fractions,"A farmer planted 2/3 of field A, 3/4 of field B and 5/8 of field C. Which field has the most planted",Field A (2/3),All are equal,Field B (3/4),Cannot decide,Field C (5/8),C,medium
+Q1103,Ordering Fractions,"Three students completed 7/9, 5/6 and 11/12 of their projects. Order from least to most complete","11/12, 7/9, 5/6","7/9, 5/6, 11/12","5/6, 11/12, 7/9","5/6, 7/9, 11/12","7/9, 11/12, 5/6",B,hard
+Q1128,Multiplication,What is the product of 45 and 23,"1,035","1,135",935,"1,012","1,058",A,medium
+Q1129,Multiplication,Find the product: 67 x 34,"2,312","2,244","2,278","1,278","3,278",C,medium
+Q1130,Multiplication,Multiply 125 by 16,"1,000","2,000","3,000","2,125","1,875",B,medium
+Q1131,Multiplication,What is 234 multiplied by 5,"2,170","1,200","1,170",170,"1,140",C,medium
+Q1132,Multiplication,Calculate: 89 x 47,"4,094","5,183","3,183","4,183","4,272",D,hard
+Q1133,Multiplication,Find the value of 345 x 28,"8,660","9,315","9,660","10,005","10,660",C,hard
+Q1134,Multiplication,What is 456 multiplied by 19,"9,120","7,664","8,664","8,208","9,664",C,hard
+Q1135,Multiplication,A rectangle is 123 cm long and 45 cm wide. Find its area,"5,535","4,535","6,535","5,412","5,658",A,hard
+Q1136,Multiplication,"If one packet costs Rs. 75, what is the cost of 48 packets","3,675","3,600","4,600","3,525","2,600",B,medium
+Q1137,Multiplication,A school needs 36 chairs for each of its 24 classrooms. Total chairs needed,828,764,900,864,964,D,medium
+Q1138,Division,What is 576 divided by 24,24,22,14,26,34,A,medium
+Q1139,Division,Find the quotient: 945 / 27,32,25,38,45,35,E,medium
+Q1140,Division,"Calculate 1,260 / 36",38,35,32,25,45,B,medium
+Q1141,Division,"Divide 2,880 by 48",57,60,63,50,70,B,hard
+Q1142,Division,"What is the quotient when 4,032 is divided by 63",67,61,64,54,74,C,hard
+Q1143,Division,"Find the value of 6,048 / 84",72,75,69,62,82,A,hard
+Q1144,Division,"A school has 1,440 books to place equally on 36 shelves. Books per shelf",30,50,37,40,43,D,medium
+Q1145,Division,"Rs. 5,400 is shared equally among 18 people. How much does each person get",200,282,300,318,400,C,medium
+Q1146,Division,"If 3,375 kg of rice is packed in bags of 25 kg, how many bags are needed",110,160,35,235,135,E,hard
+Q1147,Simplifying Fractions,What is 6/8 in its simplest form,"""5/6""","""1/2""","""4/6""","""2/3""","""3/4""",E,easy
+Q1148,Simplifying Fractions,Reduce 15/25 to its lowest terms,"""3/5""","""6/10""","""5/8""","""4/7""","""2/3""",A,easy
+Q1149,Simplifying Fractions,Express 18/24 in simplest form,"""6/8""","""5/6""","""9/12""","""2/3""","""3/4""",E,easy
+Q1150,Simplifying Fractions,What fraction is equivalent to 20/30 in lowest terms,"""4/6""","""1/2""","""3/4""","""10/15""","""2/3""",E,easy
+Q1151,Simplifying Fractions,A class has 16 girls out of 24 students. What fraction are girls in simplest form,"""1/2""","""8/12""","""3/4""","""2/3""","""4/6""",D,easy
+Q1152,Simplifying Fractions,Write 35/49 in simplest form,"""6/8""","""2/3""","""7/9""","""3/4""","""5/7""",E,medium
+Q1153,Simplifying Fractions,Reduce 56/84 to lowest terms,"""14/21""","""2/3""","""4/6""","""1/2""","""3/4""",B,medium
+Q1154,Simplifying Fractions,What is the simplest form of 72/96,"""3/4""","""4/5""","""2/3""","""6/8""","""36/48""",A,medium
+Q1155,Simplifying Fractions,A shop sold 48 items out of 60 in stock. Express the fraction sold in simplest form,"""4/5""","""24/30""","""2/3""","""3/4""","""8/10""",A,medium
+Q1156,Simplifying Fractions,"Out of 90 students, 75 passed an exam. What fraction passed in simplest form","""2/3""","""5/6""","""3/4""","""25/30""","""15/18""",B,medium
+Q1157,Simplifying Fractions,Write 126/168 in its simplest form,"""63/84""","""3/4""","""2/3""","""9/12""","""5/7""",B,hard
+Q1158,Simplifying Fractions,Reduce 144/192 to lowest terms,"""72/96""","""3/4""","""6/8""","""4/5""","""2/3""",B,hard
+Q1159,Simplifying Fractions,A factory used 180 out of 240 tonnes of material. Simplify this fraction,"""3/4""","""4/5""","""90/120""","""9/12""","""2/3""",A,hard
+Q1160,Comparing Fractions,"Use < , > or = : 3/5 ___ 4/7",>,Not equal,they are equal,<,=,A,medium
+Q1161,Comparing Fractions,"Use < , > or = : 5/9 ___ 4/7",=,>,<,Not equal,they are equal,C,medium
+Q1162,Comparing Fractions,"Use < , > or = : 7/8 ___ 8/9",>,<,they are equal,=,Not equal,B,medium
+Q1163,Comparing Fractions,"Use < , > or = : 11/12 ___ 9/10",Not equal,<,they are equal,>,=,D,hard
+Q1164,Comparing Fractions,"Use < , > or = : 13/15 ___ 17/20",=,<,Not equal,>,they are equal,D,hard
+Q1165,Comparing Fractions,Which symbol goes in the blank? 4/5 ___ 7/9,>,they are equal,<,=,Not equal,A,medium
+Q1166,Comparing Fractions,Which symbol goes in the blank? 3/8 ___ 4/11,Not equal,=,>,<,they are equal,C,medium
+Q1167,Comparing Fractions,"Is 5/6 greater than, less than or equal to 7/8",5/6 > 7/8,Need more info,5/6 < 7/8,Cannot compare,5/6 = 7/8,C,medium
+Q1168,Comparing Fractions,"Is 4/7 greater than, less than or equal to 3/5",4/7 > 3/5,4/7 < 3/5,4/7 = 3/5,Cannot compare,Need more info,B,medium
+Q1169,Comparing Fractions,"Is 9/11 greater than, less than or equal to 7/9",Not equal,Cannot compare,9/11 = 7/9,9/11 < 7/9,9/11 > 7/9,E,hard
+Q1170,Comparing Fractions,Two students got 5/8 and 7/11 in a test. Who scored higher,Student with 7/11,Both scored equally,Cannot decide,Student with 5/8,Both not scored,D,medium
+Q1171,Comparing Fractions,A jug is 3/7 full. Another is 4/9 full. Which jug has more water,Both are equal,First jug (3/7 > 4/9),Second jug (4/9 > 3/7),Cannot compare,Both are not equal,C,medium
+Q1172,Comparing Fractions,Nimal scored 7/10 and Kamal scored 5/7 in an exam. Who scored more,Not scored equally,Kamal (5/7 > 7/10),Both scored equally,Sunil (7/10),Nimal (7/10 > 5/7),E,hard
+Q1173,Fraction to Decimal,What decimal is equal to 3/8,0.385,0.375,0.5,0.365,0.25,B,easy
+Q1174,Fraction to Decimal,Express 7/8 as a decimal,0.875,0.9,0.865,0.885,0.75,A,easy
+Q1175,Fraction to Decimal,Write 4/5 as a decimal number,0.4,0.7,0.9,0.6,0.8,E,easy
+Q1176,Fraction to Decimal,What is 9/20 as a decimal,0.9,0.5,0.45,0.44,0.46,C,easy
+Q1177,Fraction to Decimal,Express 13/50 as a decimal,0.25,0.5,0.26,0.27,0.13,C,medium
+Q1178,Fraction to Decimal,Write 27/50 as a decimal,0.54,0.53,0.5,0.27,0.55,A,medium
+Q1179,Fraction to Decimal,What decimal is equal to 11/16,0.6875,0.75,0.687,0.688,0.5,A,medium
+Q1180,Fraction to Decimal,A student got 3/5 of the questions right. What is this as a decimal,0.7,0.6,0.3,0.9,0.5,B,easy
+Q1181,Fraction to Decimal,A tank is 7/10 full. Express this as a decimal,0.7,0.07,0.69,0.5,0.71,A,easy
+Q1182,Fraction to Decimal,Amali completed 5/6 of her work. Write this as a decimal to 2 decimal places,0.83,0.6,0.56,0.84,0.82,A,hard
+Q1183,Fraction to Decimal,A shop sold 19/25 of its stock. What decimal represents this,0.77,0.5,0.19,0.75,0.76,E,medium
+Q1184,Fraction to Decimal,Convert 7/9 to a decimal rounded to 2 decimal places,0.7,0.75,0.78,0.77,0.79,C,hard
+Q1185,Fraction to Decimal,What decimal is equal to 11/12 rounded to 2 decimal places,0.93,0.11,0.75,0.91,0.92,E,hard
+Q1186,Addition,What is the value of 3.5 + 2.7?,6.2,6.1,6.3,5.2,7.2,A,easy
+Q1187,Addition,What is the value of 12.4 + 5.6?,18,17,19,18.1,17.9,A,easy
+Q1188,Addition,What is the value of 0.75 + 0.25?,1,0.5,1.5,0.75,1.25,A,easy
+Q1189,Addition,What is the value of 4.8 + 3.2?,8,7,9,8.1,7.9,A,easy
+Q1190,Addition,What is the value of 6.35 + 2.15?,8.5,8.4,8.6,9.5,7.5,A,medium
+Q1191,Addition,What is the value of 9.99 + 0.01?,10,9,11,10.1,9.9,A,medium
+Q1192,Addition,What is the value of 15.75 + 4.25?,20,19,21,20.5,19.5,A,medium
+Q1193,Addition,What is the value of 7.123 + 2.877?,10,9,11,10.1,9.9,A,hard
+Q1194,Addition,What is the value of 23.456 + 6.544?,30,29,31,30.1,29.9,A,hard
+Q1195,Addition,What is the value of 0.333 + 0.667?,1,0.9,1.1,1.5,0.5,A,hard
+Q1196,Subtraction,What is the value of 5.8 - 2.3?,3.5,3.4,3.6,4.5,2.5,A,easy
+Q1197,Subtraction,What is the value of 10.0 - 4.5?,5.5,5.4,5.6,6.5,4.5,A,easy
+Q1198,Subtraction,What is the value of 7.9 - 3.4?,4.5,4.4,4.6,5.5,3.5,A,easy
+Q1199,Subtraction,What is the value of 8.75 - 2.25?,6.5,6.4,6.6,7.5,5.5,A,medium
+Q1200,Subtraction,What is the value of 15.5 - 8.3?,7.2,7.1,7.3,8.2,6.2,A,medium
+Q1201,Subtraction,What is the value of 20.0 - 7.5?,12.5,12.4,12.6,13.5,11.5,A,medium
+Q1202,Subtraction,What is the value of 9.99 - 4.44?,5.55,5.54,5.56,6.55,4.55,A,hard
+Q1203,Subtraction,What is the value of 100.0 - 33.5?,66.5,66.4,66.6,67.5,65.5,A,hard
+Q1204,Subtraction,What is the value of 50.25 - 18.75?,31.5,31.4,31.6,32.5,30.5,A,hard
+Q1205,Subtraction,What is the value of 7.007 - 3.003?,4.004,4.003,4.005,5.004,3.004,A,hard

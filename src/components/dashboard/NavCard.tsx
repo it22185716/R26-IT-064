@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 
 type Accent = 'indigo' | 'emerald' | 'amber' | 'violet' | 'slate';
@@ -51,6 +51,18 @@ const ACCENT_BADGE: Record<Accent, string> = {
   slate: 'bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-200',
 };
 
+// Cursor-spotlight tint, one per accent family, as an RGB triplet for use in
+// an inline radial-gradient (see the mousemove handler below). Kept in the
+// same accent language as ACCENT_TILE/ACCENT_GLOW rather than a generic
+// white glow for every card.
+const SPOTLIGHT_RGB: Record<Accent, string> = {
+  indigo: '99,102,241',
+  emerald: '16,185,129',
+  amber: '245,158,11',
+  violet: '217,70,239',
+  slate: '148,163,184',
+};
+
 type Props = {
   href: string;
   title: string;
@@ -67,10 +79,46 @@ type Props = {
 };
 
 const NavCard = forwardRef<HTMLAnchorElement, Props>(
-  ({ href, title, description, icon, primary, badge, accent = 'slate', className = '' }, ref) => (
+  ({ href, title, description, icon, primary, badge, accent = 'slate', className = '' }, ref) => {
+    const localRef = useRef<HTMLAnchorElement | null>(null);
+    const spotlightRef = useRef<HTMLSpanElement | null>(null);
+    const [reduceMotion, setReduceMotion] = useState(false);
+
+    useEffect(() => {
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      setReduceMotion(mq.matches);
+      const onChange = () => setReduceMotion(mq.matches);
+      mq.addEventListener('change', onChange);
+      return () => mq.removeEventListener('change', onChange);
+    }, []);
+
+    // Merges the local ref (needed here for spotlight math) with whatever ref
+    // the parent forwarded (GSAP stagger-reveal reads these via .current) —
+    // both must land on the same anchor node.
+    const setRefs = useCallback(
+      (node: HTMLAnchorElement | null) => {
+        localRef.current = node;
+        if (typeof ref === 'function') ref(node);
+        else if (ref) (ref as React.MutableRefObject<HTMLAnchorElement | null>).current = node;
+      },
+      [ref],
+    );
+
+    // DOM mutation only — no setState per move, so this stays cheap even at
+    // 60fps mousemove rates.
+    function handleMouseMove(e: React.MouseEvent<HTMLAnchorElement>) {
+      const node = spotlightRef.current;
+      if (!node) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      node.style.setProperty('--spotlight-x', `${e.clientX - rect.left}px`);
+      node.style.setProperty('--spotlight-y', `${e.clientY - rect.top}px`);
+    }
+
+    return (
     <Link
-      ref={ref}
+      ref={setRefs}
       href={href}
+      onMouseMove={reduceMotion ? undefined : handleMouseMove}
       className={`group relative flex flex-col overflow-hidden rounded-2xl border p-5 opacity-0 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_20px_rgba(15,23,42,0.05)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(15,23,42,0.10),0_24px_48px_rgba(15,23,42,0.14)] ${primary ? PRIMARY_CARD[accent] : ACCENT_CARD[accent]
         } ${className}`}
     >
@@ -86,6 +134,14 @@ const NavCard = forwardRef<HTMLAnchorElement, Props>(
           className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-[600ms] ease-out group-hover:translate-x-full"
         />
       )}
+      <span
+        ref={spotlightRef}
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 motion-reduce:hidden"
+        style={{
+          background: `radial-gradient(240px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgba(${SPOTLIGHT_RGB[accent]}, ${primary ? 0.22 : 0.16}), transparent 70%)`,
+        }}
+      />
 
       {badge && (
         <span
@@ -127,7 +183,8 @@ const NavCard = forwardRef<HTMLAnchorElement, Props>(
         </svg>
       </span>
     </Link>
-  ),
+    );
+  },
 );
 
 NavCard.displayName = 'NavCard';

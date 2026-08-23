@@ -19,6 +19,7 @@ export type QuizAttempt = {
   totalScore: number;
   maxScore: number;
   completedAt: number;
+  questionIdsByCategory?: Record<string, string[]>;
 };
 
 export type MealOption = {
