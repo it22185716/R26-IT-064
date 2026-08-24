@@ -147,9 +147,9 @@ function growthHeadline(progress: MealPlanProgress): string {
   if (progress.heightChangeCm > 0) wins.push(`grew ${progress.heightChangeCm}cm`);
   if (progress.weightChangeKg > 0) wins.push(`gained ${progress.weightChangeKg}kg`);
   if (wins.length === 0) {
-    return "Your profile is up to date since your last plan — keep it up! 🌱";
+    return "Your profile is up to date since your last plan - keep it up! 🌱";
   }
-  return `You ${wins.join(' and ')} since your last plan — great progress! 🎉`;
+  return `You ${wins.join(' and ')} since your last plan - great progress! 🎉`;
 }
 
 function GrowthStat({ value, label }: { value: string; label: string }) {
@@ -675,7 +675,7 @@ export default function MealPlanPage() {
                   colorTo={remaining > 7 ? '#059669' : remaining > 3 ? '#A9841C' : '#EA580C'}
                 />
                 <p className="mt-4 text-center text-xs text-slate-500">
-                  {remaining > 7 ? 'Plenty of time left 👍' : remaining > 3 ? 'Getting close — nice work so far!' : 'Almost time to refresh!'}
+                  {remaining > 7 ? 'Plenty of time left 👍' : remaining > 3 ? 'Getting close - nice work so far!' : 'Almost time to refresh!'}
                 </p>
               </>
             )}

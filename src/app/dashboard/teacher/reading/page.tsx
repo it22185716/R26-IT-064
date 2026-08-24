@@ -11,11 +11,21 @@ import StatCard from '../../../../components/StatCard';
 import CategoryBreakdownChart from '../../../../components/dashboard/CategoryBreakdownChart';
 import { ReadingAttempt, UserProfile } from '../../../../lib/types';
 
+// Same HIGH/MEDIUM/LOW color mapping as the student-facing reading page's
+// levelBadgeStyle (src/app/dashboard/student/reading/page.tsx), minus the
+// glow shadow — that's sized for a single hero badge, not a table pill.
+const levelPillStyle: Record<string, string> = {
+  HIGH: 'bg-emerald-50 text-emerald-700',
+  MEDIUM: 'bg-amber-50 text-amber-700',
+  LOW: 'bg-rose-50 text-rose-700',
+};
+
 export default function TeacherReadingProgressPage() {
   const router = useRouter();
   const { user, profile, loading } = useAuthUser();
   const [students, setStudents] = useState<UserProfile[] | null>(null);
   const [attempts, setAttempts] = useState<ReadingAttempt[] | null>(null);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     if (loading) return;
@@ -112,6 +122,25 @@ export default function TeacherReadingProgressPage() {
     return count;
   }, [attemptsByStudent]);
 
+  // Name-alphabetical is the predictable default — a "needs attention first"
+  // sort would need a defined tiebreak policy across LOW/never-assessed/etc.
+  // that nobody has specified yet, so keep this simple and scannable.
+  // Only students with at least one recorded attempt belong in this table.
+  const assessedStudents = useMemo(() => {
+    if (!students) return [];
+    return [...students]
+      .filter((s) => latestByStudent.has(s.uid))
+      .sort((a, b) => (a.name || a.email).localeCompare(b.name || b.email));
+  }, [students, latestByStudent]);
+
+  const filteredStudents = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return assessedStudents;
+    return assessedStudents.filter(
+      (s) => (s.name || '').toLowerCase().includes(term) || (s.email || '').toLowerCase().includes(term)
+    );
+  }, [assessedStudents, search]);
+
   if (loading || !user) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-slate-50">
@@ -185,6 +214,73 @@ export default function TeacherReadingProgressPage() {
               <CategoryBreakdownChart categoryScores={levelDistributionPct} weakestCategory="LOW" />
             </div>
           )}
+        </GlassCard>
+
+        <GlassCard hover={false} className="mt-6 p-6">
+          <h3 className="font-semibold text-slate-900">Student Progress</h3>
+          <p className="mt-1 text-sm text-slate-500">
+            Reading level, accuracy, and assessment activity for students who have completed at least one assessment.
+          </p>
+
+          <div className="mt-4">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name or email…"
+              className="w-full max-w-sm rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
+            />
+          </div>
+
+          <div className="mt-4 overflow-x-auto">
+            {!students || !attempts ? (
+              <p className="text-sm text-slate-400">Loading…</p>
+            ) : students.length === 0 ? (
+              <p className="text-sm text-slate-500">No students registered yet.</p>
+            ) : assessedStudents.length === 0 ? (
+              <p className="text-sm text-slate-500">No students have completed a reading assessment yet.</p>
+            ) : filteredStudents.length === 0 ? (
+              <p className="text-sm text-slate-500">No students match this search.</p>
+            ) : (
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-slate-400 border-b border-slate-100">
+                    <th className="py-2 font-medium">Student</th>
+                    <th className="py-2 font-medium">Level</th>
+                    <th className="py-2 font-medium">Accuracy</th>
+                    <th className="py-2 font-medium">Assessments</th>
+                    <th className="py-2 font-medium">Last activity</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filteredStudents.map((s, idx) => {
+                    const latest = latestByStudent.get(s.uid);
+                    const attemptCount = attemptsByStudent.get(s.uid)?.length ?? 0;
+                    return (
+                      <tr key={s.uid} className={idx % 2 === 1 ? 'bg-slate-50' : 'bg-white'}>
+                        <td className="py-3">
+                          <p className="font-medium text-slate-700">{s.name || s.email}</p>
+                          <p className="text-xs text-slate-400">{s.email}</p>
+                        </td>
+                        <td className="py-3">
+                          {latest && (
+                            <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${levelPillStyle[latest.level]}`}>
+                              {latest.level}
+                            </span>
+                          )}
+                        </td>
+                        <td className="py-3 text-slate-600">{latest ? `${latest.accuracy}%` : '—'}</td>
+                        <td className="py-3 text-slate-600">{attemptCount}</td>
+                        <td className="py-3 text-slate-500">
+                          {latest ? new Date(latest.completedAt).toLocaleDateString() : '—'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
         </GlassCard>
       </main>
     </TeacherShell>

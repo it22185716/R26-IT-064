@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
@@ -10,7 +10,11 @@ import { ScrollTrigger } from '../../../components/home/gsapClient';
 import TeacherShell from '../../../components/dashboard/TeacherShell';
 import StatCard from '../../../components/StatCard';
 import GlassCard from '../../../components/dashboard/GlassCard';
-import { QuizAttempt, UserProfile } from '../../../lib/types';
+import ImprovementBadge from '../../../components/dashboard/ImprovementBadge';
+import { fetchAllPostTestResults, groupPostTestResultsByStudent } from '../../../lib/postTestResults';
+import { QuizAttempt, UserProfile, VideoPostTestResult } from '../../../lib/types';
+
+type StatusFilter = 'all' | 'completed' | 'pending';
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -24,6 +28,10 @@ export default function TeacherDashboard() {
   const { user, profile, loading } = useAuthUser();
   const [students, setStudents] = useState<UserProfile[] | null>(null);
   const [attempts, setAttempts] = useState<QuizAttempt[] | null>(null);
+  const [postTestResults, setPostTestResults] = useState<VideoPostTestResult[] | null>(null);
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const [categoryFilter, setCategoryFilter] = useState('all');
 
   const pageRef = useRef<HTMLDivElement>(null);
   const bannerRef = useRef<HTMLDivElement>(null);
@@ -66,11 +74,53 @@ export default function TeacherDashboard() {
   }, [profile]);
 
   useEffect(() => {
+    if (!profile || profile.role !== 'teacher') return;
+    fetchAllPostTestResults().then(setPostTestResults);
+  }, [profile]);
+
+  useEffect(() => {
     // The students table's height changes once data loads, which can leave
     // ScrollTrigger's cached trigger positions stale for anything below the
     // fold. Recalculate them against the real, final layout.
-    if (students && attempts) ScrollTrigger.refresh();
-  }, [students, attempts]);
+    if (students && attempts && postTestResults) ScrollTrigger.refresh();
+  }, [students, attempts, postTestResults]);
+
+  const attemptsByStudent = useMemo(() => {
+    const map = new Map<string, QuizAttempt[]>();
+    attempts?.forEach((a) => {
+      const list = map.get(a.studentId) || [];
+      list.push(a);
+      map.set(a.studentId, list);
+    });
+    return map;
+  }, [attempts]);
+
+  const postTestByStudent = useMemo(
+    () => groupPostTestResultsByStudent(postTestResults || []),
+    [postTestResults]
+  );
+
+  const categories = useMemo(
+    () => Array.from(new Set(attempts?.map((a) => a.weakestCategory) || [])).sort(),
+    [attempts]
+  );
+
+  const filteredStudents = useMemo(() => {
+    if (!students) return [];
+    const term = search.trim().toLowerCase();
+
+    return students.filter((s) => {
+      const latest = attemptsByStudent.get(s.uid)?.[0];
+
+      if (statusFilter === 'completed' && !latest) return false;
+      if (statusFilter === 'pending' && latest) return false;
+      if (categoryFilter !== 'all' && latest?.weakestCategory !== categoryFilter) return false;
+      if (term && !(s.name || '').toLowerCase().includes(term) && !(s.email || '').toLowerCase().includes(term)) {
+        return false;
+      }
+      return true;
+    });
+  }, [students, attemptsByStudent, search, statusFilter, categoryFilter]);
 
   if (loading || !user) {
     return (
@@ -93,6 +143,13 @@ export default function TeacherDashboard() {
   const topWeakCategory = sortedCategoryCounts[0]?.[0] || '—';
 
   const assessedCount = latestByStudent.size;
+
+  const latestPostTestByStudent = new Map<string, VideoPostTestResult>();
+  postTestResults?.forEach((r) => {
+    if (!latestPostTestByStudent.has(r.studentId)) latestPostTestByStudent.set(r.studentId, r);
+  });
+  const postTestedCount = latestPostTestByStudent.size;
+  const postTestImprovedCount = Array.from(latestPostTestByStudent.values()).filter((r) => r.improved).length;
   const classAveragePct =
     latestByStudent.size > 0
       ? Math.round(
@@ -111,7 +168,7 @@ export default function TeacherDashboard() {
   });
 
   return (
-    <TeacherShell userName={profile?.name || user.email || ''} title="Overview">
+    <TeacherShell userName={profile?.name || user.email || ''} title="Adaptive Learning">
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
       <div ref={pageRef} className="space-y-8">
       <div ref={bannerRef} className="opacity-0">
@@ -133,7 +190,7 @@ export default function TeacherDashboard() {
 
             <div className="mt-6">
               <a
-                href="/dashboard/teacher/students"
+                href="#students"
                 className="inline-flex items-center gap-1.5 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition-colors hover:bg-slate-100"
               >
                 View all students
@@ -184,7 +241,7 @@ export default function TeacherDashboard() {
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-slate-900">Recent students</h3>
             {students && students.length > 0 && (
-              <a href="/dashboard/teacher/students" className="text-sm font-medium text-sky-700 transition-colors hover:text-sky-900">
+              <a href="#students" className="text-sm font-medium text-sky-700 transition-colors hover:text-sky-900">
                 View all
               </a>
             )}
@@ -248,6 +305,122 @@ export default function TeacherDashboard() {
               ))}
             </ul>
           )}
+        </GlassCard>
+      </div>
+
+      <div id="students" className="scroll-mt-8">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold tracking-tight text-slate-900">Student Roster</h2>
+            <p className="mt-1 text-sm text-slate-500">Full roster with quiz activity.</p>
+          </div>
+          {postTestedCount > 0 && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+              {postTestImprovedCount} of {postTestedCount} student{postTestedCount === 1 ? '' : 's'} improved on their last post-test
+            </span>
+          )}
+        </div>
+
+        <GlassCard hover={false} className="mt-4 p-6">
+          <div className="flex flex-wrap gap-3">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name or email…"
+              className="flex-1 min-w-[200px] rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
+            />
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+              className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
+            >
+              <option value="all">All statuses</option>
+              <option value="completed">Completed a quiz</option>
+              <option value="pending">Not attempted</option>
+            </select>
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
+            >
+              <option value="all">All weak categories</option>
+              {categories.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mt-6 overflow-x-auto">
+            {!students || !attempts || !postTestResults ? (
+              <p className="text-sm text-slate-400">Loading…</p>
+            ) : students.length === 0 ? (
+              <p className="text-sm text-slate-500">No students registered yet.</p>
+            ) : filteredStudents.length === 0 ? (
+              <p className="text-sm text-slate-500">No students match these filters.</p>
+            ) : (
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-slate-400 border-b border-slate-100">
+                    <th className="py-2 font-medium">Student</th>
+                    <th className="py-2 font-medium">Attempts</th>
+                    <th className="py-2 font-medium">Weakest category</th>
+                    <th className="py-2 font-medium">Score</th>
+                    <th className="py-2 font-medium">Last attempt</th>
+                    <th className="py-2 font-medium">Post-test progress</th>
+                    <th className="py-2 font-medium"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filteredStudents.map((s) => {
+                    const studentAttempts = attemptsByStudent.get(s.uid) || [];
+                    const latest = studentAttempts[0];
+                    const latestPostTest = postTestByStudent.get(s.uid)?.[0];
+                    return (
+                      <tr
+                        key={s.uid}
+                        onClick={() => router.push(`/dashboard/teacher/students/${s.uid}`)}
+                        className="cursor-pointer hover:bg-slate-50"
+                      >
+                        <td className="py-3">
+                          <p className="font-medium text-slate-700">{s.name || s.email}</p>
+                          <p className="text-xs text-slate-400">{s.email}</p>
+                        </td>
+                        <td className="py-3 text-slate-600">{studentAttempts.length}</td>
+                        <td className="py-3">
+                          {latest ? (
+                            <span className="inline-flex items-center rounded-full bg-rose-50 text-rose-600 px-2.5 py-1 text-xs font-medium">
+                              {latest.weakestCategory}
+                            </span>
+                          ) : (
+                            <span className="text-slate-400">No attempts</span>
+                          )}
+                        </td>
+                        <td className="py-3 text-slate-600">
+                          {latest ? `${latest.totalScore}/${latest.maxScore}` : '—'}
+                        </td>
+                        <td className="py-3 text-slate-500">
+                          {latest ? new Date(latest.completedAt).toLocaleDateString() : '—'}
+                        </td>
+                        <td className="py-3">
+                          {latestPostTest ? (
+                            <ImprovementBadge improved={latestPostTest.improved}>
+                              {latestPostTest.preScore}% → {latestPostTest.postScore}%
+                            </ImprovementBadge>
+                          ) : (
+                            <span className="text-slate-400">No post-test yet</span>
+                          )}
+                        </td>
+                        <td className="py-3 text-right text-sky-600 font-medium whitespace-nowrap">Continue →</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
         </GlassCard>
       </div>
       </div>

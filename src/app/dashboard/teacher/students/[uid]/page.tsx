@@ -8,7 +8,11 @@ import { useAuthUser } from '../../../../../hooks/useAuthUser';
 import TeacherShell from '../../../../../components/dashboard/TeacherShell';
 import GlassCard from '../../../../../components/dashboard/GlassCard';
 import AssignVideosPanel from '../../../../../components/dashboard/AssignVideosPanel';
-import { QuizAttempt, UserProfile } from '../../../../../lib/types';
+import TeacherGrowthHistoryView from '../../../../../components/dashboard/TeacherGrowthHistoryView';
+import ImprovementBadge from '../../../../../components/dashboard/ImprovementBadge';
+import { fetchMealPlanHistoryForStudent } from '../../../../../lib/mealPlan';
+import { fetchPostTestResultsForStudent } from '../../../../../lib/postTestResults';
+import { MealPlan, QuizAttempt, UserProfile, VideoPostTestResult } from '../../../../../lib/types';
 
 export default function StudentDetailPage() {
   const router = useRouter();
@@ -17,6 +21,8 @@ export default function StudentDetailPage() {
   const { user, profile, loading } = useAuthUser();
   const [student, setStudent] = useState<UserProfile | null>(null);
   const [attempts, setAttempts] = useState<QuizAttempt[] | null>(null);
+  const [mealPlans, setMealPlans] = useState<MealPlan[] | null>(null);
+  const [postTestResults, setPostTestResults] = useState<VideoPostTestResult[] | null>(null);
 
   useEffect(() => {
     if (loading) return;
@@ -48,6 +54,16 @@ export default function StudentDetailPage() {
     return () => unsubscribe();
   }, [profile, uid]);
 
+  useEffect(() => {
+    if (!profile || profile.role !== 'teacher' || !uid) return;
+    fetchMealPlanHistoryForStudent(uid).then(setMealPlans);
+  }, [profile, uid]);
+
+  useEffect(() => {
+    if (!profile || profile.role !== 'teacher' || !uid) return;
+    fetchPostTestResultsForStudent(uid).then(setPostTestResults);
+  }, [profile, uid]);
+
   if (loading || !user) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-slate-50">
@@ -61,8 +77,8 @@ export default function StudentDetailPage() {
   return (
     <TeacherShell userName={profile?.name || user.email || ''} title={student?.name || student?.email || 'Student'}>
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <a href="/dashboard/teacher/students" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
-          ← Back to students
+        <a href="/dashboard/teacher#students" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+          ← Back to Adaptive Learning
         </a>
         <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900">
           {student?.name || student?.email || 'Student'}
@@ -149,6 +165,80 @@ export default function StudentDetailPage() {
               ))}
             </tbody>
           </table>
+        )}
+      </GlassCard>
+
+      <GlassCard hover={false} className="mt-6 overflow-x-auto p-6">
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-400 to-indigo-600 text-white shadow-inner">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+              />
+            </svg>
+          </div>
+          <h3 className="font-semibold">Adaptive Learning Progress</h3>
+        </div>
+        {!postTestResults ? (
+          <p className="mt-4 text-sm text-slate-400">Loading…</p>
+        ) : postTestResults.length === 0 ? (
+          <p className="mt-4 text-sm text-slate-500">This student hasn&apos;t completed a post-test yet.</p>
+        ) : (
+          <table className="mt-4 w-full text-sm">
+            <thead>
+              <tr className="text-left text-slate-400 border-b border-slate-100">
+                <th className="py-2 font-medium">Date</th>
+                <th className="py-2 font-medium">Weak area</th>
+                <th className="py-2 font-medium">Pre-test score</th>
+                <th className="py-2 font-medium">Post-test score</th>
+                <th className="py-2 font-medium">Result</th>
+                <th className="py-2 font-medium">Improved</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {postTestResults.map((r) => (
+                <tr key={r.id}>
+                  <td className="py-3 text-slate-600 whitespace-nowrap">
+                    {new Date(r.completedAt).toLocaleDateString()}
+                  </td>
+                  <td className="py-3">
+                    <span className="inline-flex items-center rounded-full bg-rose-50 text-rose-600 px-2.5 py-1 text-xs font-medium whitespace-nowrap">
+                      {r.weakArea}
+                    </span>
+                  </td>
+                  <td className="py-3 text-slate-600 whitespace-nowrap">{r.preScore}%</td>
+                  <td className="py-3 font-medium text-slate-700 whitespace-nowrap">{r.postScore}%</td>
+                  <td className="py-3 text-slate-500 whitespace-nowrap">
+                    {r.correctCount}/{r.totalQuestions}
+                  </td>
+                  <td className="py-3">
+                    <ImprovementBadge improved={r.improved}>{r.improved ? 'Improved' : 'Not yet'}</ImprovementBadge>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </GlassCard>
+
+      <GlassCard hover={false} className="mt-6 overflow-x-auto p-6">
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 to-indigo-600 text-white shadow-inner">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.306a11.95 11.95 0 015.814-5.518l2.74-1.22m0 0l-5.94-2.281m5.94 2.28l-2.28 5.941" />
+            </svg>
+          </div>
+          <h3 className="font-semibold">Meal Plan History</h3>
+        </div>
+        {!mealPlans ? (
+          <p className="mt-4 text-sm text-slate-400">Loading…</p>
+        ) : mealPlans.length === 0 ? (
+          <p className="mt-4 text-sm text-slate-500">This student hasn&apos;t generated a meal plan yet.</p>
+        ) : (
+          <TeacherGrowthHistoryView plans={mealPlans} />
         )}
       </GlassCard>
 
