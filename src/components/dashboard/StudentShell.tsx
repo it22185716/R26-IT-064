@@ -137,25 +137,25 @@ export default function StudentShell({ userName, title, children }: Props) {
   }
 
   const sidebar = (
-    <div className="flex h-full flex-col border-r border-slate-200 bg-white">
-      <Link href="/dashboard/student" className="flex items-center gap-3 border-b border-slate-200 px-5 py-5">
+    <div className="flex h-full flex-col border-r border-stone-200 bg-white">
+      <Link href="/dashboard/student" className="flex items-center gap-3 border-b border-stone-200 px-5 py-5">
         <Image
           src="/logo.png"
           alt="Hayagiri International Buddhist College crest"
           width={36}
           height={36}
-          className="h-9 w-9 shrink-0 rounded-full"
+          className="h-9 w-9 shrink-0 rounded-full ring-2 ring-gold-100"
         />
         <span className="flex min-w-0 flex-col leading-tight">
-          <span className="truncate text-sm font-semibold text-slate-900">Hayagiri</span>
-          <span className="truncate text-xs text-slate-500">AI Learning Platform</span>
+          <span className="truncate text-sm font-semibold text-stone-900">Hayagiri</span>
+          <span className="truncate text-xs text-stone-500">AI Learning Platform</span>
         </span>
       </Link>
 
       <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-5">
         {NAV_SECTIONS.map((section) => (
           <div key={section.heading}>
-            <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+            <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-stone-400">
               {section.heading}
             </p>
             <ul className="space-y-0.5">
@@ -167,13 +167,16 @@ export default function StudentShell({ userName, title, children }: Props) {
                       href={item.href}
                       aria-current={active ? 'page' : undefined}
                       className={`group relative flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-all duration-150 ${active
-                          ? 'bg-gradient-to-r from-indigo-50 to-violet-50 font-semibold text-indigo-700'
-                          : 'font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                          ? 'bg-gold-50 font-semibold text-gold-800 shadow-sm ring-1 ring-gold-100'
+                          : 'font-medium text-stone-600 hover:bg-gold-50/60 hover:text-stone-900'
                         }`}
                     >
+                      {active && (
+                        <span aria-hidden className="absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-gold-500" />
+                      )}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className={`h-[18px] w-[18px] shrink-0 ${active ? 'text-indigo-600' : 'text-slate-400 group-hover:text-slate-600'}`}
+                        className={`h-[18px] w-[18px] shrink-0 ${active ? 'text-gold-600' : 'text-stone-400 group-hover:text-stone-600'}`}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -185,7 +188,7 @@ export default function StudentShell({ userName, title, children }: Props) {
                       {item.href === VIDEO_LIBRARY_HREF && assignedVideoCount > 0 && (
                         <span
                           title="Your teacher recommended videos for you"
-                          className="ml-auto inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-indigo-600 px-1 text-[11px] font-semibold text-white"
+                          className="ml-auto inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-maroon-500 px-1 text-[11px] font-semibold text-white"
                         >
                           {assignedVideoCount}
                         </span>
@@ -199,21 +202,21 @@ export default function StudentShell({ userName, title, children }: Props) {
         ))}
       </nav>
 
-      <div className="border-t border-slate-200 p-3">
+      <div className="border-t border-stone-200 p-3">
         <div className="flex items-center gap-3 rounded-xl px-3 py-2">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 via-indigo-600 to-violet-600 text-xs font-semibold text-white shadow-md shadow-indigo-500/30">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold-400 via-gold-500 to-maroon-600 text-xs font-semibold text-white shadow-md shadow-gold-900/20">
             {getInitials(userName)}
           </div>
           <div className="min-w-0 flex-1 leading-tight">
-            <p className="truncate text-sm font-medium text-slate-900">{userName}</p>
-            <p className="text-xs text-slate-500">Student</p>
+            <p className="truncate text-sm font-medium text-stone-900">{userName}</p>
+            <p className="text-xs text-stone-500">Student</p>
           </div>
           <button
             type="button"
             onClick={() => setShowSignOutConfirm(true)}
             aria-label="Sign out"
             title="Sign out"
-            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-400 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-700"
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-stone-400 transition-colors duration-150 hover:bg-stone-100 hover:text-stone-700"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
               <path
@@ -229,12 +232,11 @@ export default function StudentShell({ userName, title, children }: Props) {
   );
 
   return (
-    <div className="relative min-h-screen bg-slate-50">
+    <div className="relative min-h-screen bg-stone-50">
       <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-24 left-1/4 h-[28rem] w-[28rem] rounded-full bg-indigo-200/40 blur-3xl" />
-        <div className="absolute top-1/3 -right-32 h-[26rem] w-[26rem] rounded-full bg-rose-200/35 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-amber-200/30 blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 h-80 w-80 rounded-full bg-emerald-200/25 blur-3xl" />
+        <div className="absolute -top-24 left-1/4 h-[28rem] w-[28rem] rounded-full bg-gold-200/35 blur-3xl" />
+        <div className="absolute top-1/3 -right-32 h-[26rem] w-[26rem] rounded-full bg-maroon-200/20 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-amber-100/40 blur-3xl" />
       </div>
 
       {/* Desktop: permanent rail */}
@@ -258,19 +260,19 @@ export default function StudentShell({ userName, title, children }: Props) {
 
       <div className="lg:pl-64">
         {/* Mobile top bar — the only place the menu button lives */}
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-slate-200 bg-white/90 px-4 backdrop-blur lg:hidden">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-stone-200 bg-white/90 px-4 backdrop-blur lg:hidden">
           <button
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Open navigation menu"
             aria-expanded={open}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-slate-100"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-stone-600 transition-colors hover:bg-stone-100"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <span className="text-sm font-semibold text-slate-900">{title}</span>
+          <span className="text-sm font-semibold text-stone-900">{title}</span>
         </header>
 
         {children}
@@ -279,20 +281,20 @@ export default function StudentShell({ userName, title, children }: Props) {
       {showSignOutConfirm && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 px-6">
           <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-            <h3 className="text-lg font-semibold text-slate-900">Sign out?</h3>
-            <p className="mt-2 text-sm text-slate-600">You&apos;ll need to sign in again to access your dashboard.</p>
+            <h3 className="text-lg font-semibold text-stone-900">Sign out?</h3>
+            <p className="mt-2 text-sm text-stone-600">You&apos;ll need to sign in again to access your dashboard.</p>
             <div className="mt-6 flex gap-3">
               <button
                 type="button"
                 onClick={() => setShowSignOutConfirm(false)}
-                className="flex-1 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+                className="flex-1 rounded-lg border border-stone-200 px-4 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="flex-1 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
+                className="flex-1 rounded-lg bg-gold-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gold-700"
               >
                 Sign out
               </button>

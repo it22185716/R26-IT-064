@@ -211,7 +211,11 @@ export default function TeacherReadingProgressPage() {
             <p className="mt-4 text-sm text-slate-500">No reading assessments recorded yet.</p>
           ) : (
             <div className="mt-4 max-w-md">
-              <CategoryBreakdownChart categoryScores={levelDistributionPct} weakestCategory="LOW" />
+              <CategoryBreakdownChart
+                categoryScores={levelDistributionPct}
+                weakestCategory="LOW"
+                order={['LOW', 'MEDIUM', 'HIGH']}
+              />
             </div>
           )}
         </GlassCard>
@@ -272,7 +276,13 @@ export default function TeacherReadingProgressPage() {
                         <td className="py-3 text-slate-600">{latest ? `${latest.accuracy}%` : '—'}</td>
                         <td className="py-3 text-slate-600">{attemptCount}</td>
                         <td className="py-3 text-slate-500">
-                          {latest ? new Date(latest.completedAt).toLocaleDateString() : '—'}
+                          {latest
+                            ? new Date(latest.completedAt).toLocaleDateString('en-US', {
+                                month: 'long',
+                                day: 'numeric',
+                                year: 'numeric',
+                              })
+                            : '—'}
                         </td>
                       </tr>
                     );

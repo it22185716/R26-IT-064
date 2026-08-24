@@ -5,10 +5,14 @@ import { formatCategory } from '../../lib/format';
 type Props = {
   categoryScores: Record<string, number>;
   weakestCategory?: string;
+  /** Fixed display order (e.g. LOW → MEDIUM → HIGH) instead of sorting by score. */
+  order?: string[];
 };
 
-export default function CategoryBreakdownChart({ categoryScores, weakestCategory }: Props) {
-  const entries = Object.entries(categoryScores).sort((a, b) => b[1] - a[1]);
+export default function CategoryBreakdownChart({ categoryScores, weakestCategory, order }: Props) {
+  const entries = order
+    ? order.filter((category) => category in categoryScores).map((category): [string, number] => [category, categoryScores[category]])
+    : Object.entries(categoryScores).sort((a, b) => b[1] - a[1]);
 
   if (entries.length === 0) {
     return (

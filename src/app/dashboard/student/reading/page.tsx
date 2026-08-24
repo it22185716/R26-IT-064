@@ -7,8 +7,6 @@ import DashboardShell from '../../../../components/DashboardShell';
 import { fetchPassage, submitReadingAttempt, ReadingAssessResult } from '../../../../lib/reading';
 import { ReadingDifficulty, ReadingPassage } from '../../../../lib/types';
 
-const DIFFICULTIES: ReadingDifficulty[] = ['Easy', 'Medium', 'Hard'];
-
 const levelBadgeStyle: Record<string, string> = {
   HIGH: 'bg-emerald-50 text-emerald-700 shadow-md shadow-emerald-500/20',
   MEDIUM: 'bg-amber-50 text-amber-700 shadow-md shadow-amber-500/20',
@@ -165,11 +163,6 @@ export default function ReadingPracticePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  function selectDifficulty(next: ReadingDifficulty) {
-    setDifficulty(next);
-    loadPassage(next);
-  }
-
   async function startRecording() {
     setRecordError('');
     try {
@@ -260,26 +253,6 @@ export default function ReadingPracticePage() {
       backHref="/dashboard/student"
       backLabel="Back to Overview"
     >
-      <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
-        <span className="text-sm font-medium text-slate-700">Difficulty</span>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {DIFFICULTIES.map((d) => (
-            <button
-              key={d}
-              type="button"
-              onClick={() => selectDifficulty(d)}
-              className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
-                difficulty === d
-                  ? 'border-gold-400 bg-gold-50 text-gold-700'
-                  : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
-            >
-              {d}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {passageLoading && <p className="text-sm text-slate-400">Loading passage…</p>}
 
       {passageError && (

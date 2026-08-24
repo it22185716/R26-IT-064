@@ -172,32 +172,149 @@ export default function TeacherDashboard() {
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
       <div ref={pageRef} className="space-y-8">
       <div ref={bannerRef} className="opacity-0">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 px-6 py-8 sm:px-10 sm:py-10">
-          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute -top-16 -left-10 h-64 w-64 rounded-full bg-indigo-500/30 blur-3xl animate-blob" />
-            <div className="absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-gold-400/20 blur-3xl animate-blob [animation-delay:3s]" />
-            <div className="absolute top-1/2 right-1/4 h-48 w-48 rounded-full bg-sky-400/10 blur-3xl animate-blob [animation-delay:5s]" />
-          </div>
+        {/* 1px gradient "edge light" border — a lit rim catching a key light
+            from above-left, the signature cinematic-glass touch also used on
+            the student hero. */}
+        <div className="relative rounded-[2rem] bg-gradient-to-br from-white/25 via-white/10 to-transparent p-px shadow-[0_30px_80px_-24px_rgba(8,5,30,0.65)]">
+          <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#080b18] via-indigo-950 to-[#1b0f2e] px-6 py-9 sm:px-10 sm:py-12">
+            {/* Atmosphere: drifting color blobs */}
+            <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+              <div className="absolute -top-16 -left-10 h-64 w-64 rounded-full bg-indigo-500/30 blur-3xl animate-blob" />
+              <div className="absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-gold-400/20 blur-3xl animate-blob [animation-delay:3s]" />
+              <div className="absolute top-1/2 right-1/4 h-48 w-48 rounded-full bg-sky-400/15 blur-3xl animate-blob [animation-delay:5s]" />
+            </div>
 
-          <div className="relative">
-            <p className="text-sm font-medium text-indigo-200">{getGreeting()}</p>
-            <h1 className="mt-1 text-3xl font-semibold tracking-tight text-white">{profile?.name || 'Teacher'}</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300">
-              {assessedCount > 0
-                ? `${assessedCount} student${assessedCount === 1 ? ' has' : 's have'} completed a diagnostic. ${topWeakCategory} is the most common weak area right now.`
-                : 'See which students need support, and where — no diagnostics submitted yet.'}
-            </p>
+            {/* Faint dot grid, spotlight-faded toward the edges */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.18]"
+              style={{
+                backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 1px, transparent 0)',
+                backgroundSize: '26px 26px',
+                maskImage: 'radial-gradient(ellipse 90% 70% at 50% 0%, black 25%, transparent 75%)',
+                WebkitMaskImage: 'radial-gradient(ellipse 90% 70% at 50% 0%, black 25%, transparent 75%)',
+              }}
+            />
 
-            <div className="mt-6">
-              <a
-                href="#students"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition-colors hover:bg-slate-100"
-              >
-                View all students
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
+            {/* Film grain — kills banding on the flat dark gradient */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+              }}
+            />
+
+            {/* Vignette — pulls focus back toward the greeting/stats */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_50%_-10%,transparent_35%,rgba(2,6,23,0.55)_100%)]"
+            />
+
+            <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-gold-300 backdrop-blur-md">
+                  <span
+                    aria-hidden
+                    className="h-1.5 w-1.5 rounded-full bg-gold-400 animate-pulse-glow motion-reduce:animate-none"
+                    style={{ '--pulse-glow-rgb': '219,178,51' } as React.CSSProperties}
+                  />
+                  {getGreeting()}
+                </span>
+                <h1 className="mt-3 bg-gradient-to-br from-white via-white to-slate-300 bg-clip-text text-4xl font-bold tracking-tight text-transparent drop-shadow-[0_4px_30px_rgba(99,102,241,0.35)] sm:text-[2.75rem]">
+                  {profile?.name || 'Teacher'}
+                </h1>
+                <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-300/90">
+                  {assessedCount > 0
+                    ? `${assessedCount} student${assessedCount === 1 ? ' has' : 's have'} completed a diagnostic. ${topWeakCategory} is the most common weak area right now.`
+                    : 'See which students need support, and where — no diagnostics submitted yet.'}
+                </p>
+
+                <div className="mt-6">
+                  <a
+                    href="#students"
+                    className="group/cta inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-[0_10px_30px_-10px_rgba(255,255,255,0.4)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_36px_-10px_rgba(255,255,255,0.55)]"
+                  >
+                    View all students
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div className="grid shrink-0 grid-cols-3 gap-3 sm:gap-4">
+                {[
+                  {
+                    key: 'assessed',
+                    icon: <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />,
+                    value: students ? `${assessedCount}/${students.length}` : '—',
+                    label: 'Assessed',
+                    tile: 'from-blue-500 to-indigo-600',
+                    glow: 'bg-indigo-500/40',
+                    hoverShadow: 'hover:shadow-[0_16px_40px_-12px_rgba(99,102,241,0.45)]',
+                  },
+                  {
+                    key: 'average',
+                    icon: (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 17V9m6 8V5M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"
+                      />
+                    ),
+                    value: classAveragePct !== null ? `${classAveragePct}%` : '—',
+                    label: 'Class average',
+                    tile: 'from-emerald-500 to-teal-600',
+                    glow: 'bg-emerald-500/40',
+                    hoverShadow: 'hover:shadow-[0_16px_40px_-12px_rgba(16,185,129,0.45)]',
+                  },
+                  {
+                    key: 'weakarea',
+                    icon: (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                      />
+                    ),
+                    value: topWeakCategory,
+                    label: 'Top weak area',
+                    tile: 'from-rose-500 to-pink-600',
+                    glow: 'bg-rose-500/40',
+                    hoverShadow: 'hover:shadow-[0_16px_40px_-12px_rgba(244,63,94,0.45)]',
+                  },
+                ].map((stat) => (
+                  <div
+                    key={stat.key}
+                    className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3.5 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.1] ${stat.hoverShadow}`}
+                  >
+                    <span
+                      aria-hidden
+                      className={`pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100 ${stat.glow}`}
+                    />
+                    <div
+                      className={`relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br text-white shadow-lg ring-1 ring-inset ring-white/25 transition-transform duration-200 group-hover:scale-105 ${stat.tile}`}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        {stat.icon}
+                      </svg>
+                    </div>
+                    <p className="relative mt-3 break-words text-2xl font-bold text-white sm:text-3xl">{stat.value}</p>
+                    <p className="relative mt-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-400">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

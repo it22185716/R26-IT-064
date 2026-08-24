@@ -89,6 +89,27 @@ const TIMELINE_ICON_STYLE: Record<TimelineEntry['type'], string> = {
   reading: 'bg-amber-50 text-amber-600 ring-1 ring-inset ring-amber-100 shadow-sm shadow-amber-500/10',
 };
 
+// Hero stat tiles (glass chips in the greeting banner) — each accent drives
+// the icon tile gradient and the hover glow, echoing the same indigo/amber/
+// emerald language the Quick actions cards use for these same three features.
+const HERO_STAT_ACCENT: Record<'indigo' | 'amber' | 'emerald', { icon: string; glow: string; hoverShadow: string }> = {
+  indigo: {
+    icon: 'from-blue-500 to-indigo-600',
+    glow: 'bg-indigo-500/40',
+    hoverShadow: 'hover:shadow-[0_16px_40px_-12px_rgba(99,102,241,0.45)]',
+  },
+  amber: {
+    icon: 'from-amber-500 to-orange-600',
+    glow: 'bg-amber-500/40',
+    hoverShadow: 'hover:shadow-[0_16px_40px_-12px_rgba(245,158,11,0.45)]',
+  },
+  emerald: {
+    icon: 'from-emerald-500 to-teal-600',
+    glow: 'bg-emerald-500/40',
+    hoverShadow: 'hover:shadow-[0_16px_40px_-12px_rgba(16,185,129,0.45)]',
+  },
+};
+
 // Small repeated gold motif tying each section heading back to the hero's
 // gold accent language — purely decorative, sits before the heading text.
 function SectionHeading({ children }: { children: ReactNode }) {
@@ -125,32 +146,32 @@ function bmiGaugePercent(bmi: number): number {
 // sections, regardless of the specific state. The RadialGauge's own ring
 // still uses bmiZone()'s colorFrom/colorTo, so the health-status signal isn't
 // lost, it just lives inside the gauge instead of tinting the whole card.
-const MEAL_PROGRESS_CARD = 'border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-white';
+const MEAL_PROGRESS_CARD = 'border-emerald-100/70 bg-gradient-to-br from-emerald-50/90 via-white/70 to-white/50';
 const MEAL_PROGRESS_TILE = 'bg-gradient-to-br from-emerald-500 to-teal-600 shadow-emerald-500/30';
-const READING_PROGRESS_CARD = 'border-amber-100 bg-gradient-to-br from-amber-50 via-white to-white';
+const READING_PROGRESS_CARD = 'border-amber-100/70 bg-gradient-to-br from-amber-50/90 via-white/70 to-white/50';
 const READING_PROGRESS_TILE = 'bg-gradient-to-br from-amber-500 to-orange-600 shadow-amber-500/30';
 
 const ACHIEVEMENT_THEME: Record<string, { card: string; tile: string; shadow: string; pill: string }> = {
   'first-quiz': {
-    card: 'border-indigo-100 bg-gradient-to-br from-indigo-50 to-white',
+    card: 'border-indigo-100/70 bg-gradient-to-br from-indigo-50/90 to-white/60',
     tile: 'bg-gradient-to-br from-blue-500 to-indigo-600',
     shadow: 'shadow-indigo-500/30',
     pill: 'bg-indigo-50 text-indigo-700',
   },
   'consistent-learner': {
-    card: 'border-violet-100 bg-gradient-to-br from-violet-50 to-white',
+    card: 'border-violet-100/70 bg-gradient-to-br from-violet-50/90 to-white/60',
     tile: 'bg-gradient-to-br from-purple-500 to-violet-600',
     shadow: 'shadow-violet-500/30',
     pill: 'bg-violet-50 text-violet-700',
   },
   'meal-planner': {
-    card: 'border-emerald-100 bg-gradient-to-br from-emerald-50 to-white',
+    card: 'border-emerald-100/70 bg-gradient-to-br from-emerald-50/90 to-white/60',
     tile: 'bg-gradient-to-br from-emerald-500 to-teal-600',
     shadow: 'shadow-emerald-500/30',
     pill: 'bg-emerald-50 text-emerald-700',
   },
   bookworm: {
-    card: 'border-amber-100 bg-gradient-to-br from-amber-50 to-white',
+    card: 'border-amber-100/70 bg-gradient-to-br from-amber-50/90 to-white/60',
     tile: 'bg-gradient-to-br from-amber-500 to-orange-600',
     shadow: 'shadow-amber-500/30',
     pill: 'bg-amber-50 text-amber-700',
@@ -382,6 +403,8 @@ export default function StudentDashboard() {
   const navGridRef = useRef<HTMLDivElement>(null);
   const activityRef = useRef<HTMLDivElement>(null);
   const recommendedRef = useRef<HTMLDivElement>(null);
+  const ambientBlob1Ref = useRef<HTMLDivElement>(null);
+  const ambientBlob2Ref = useRef<HTMLDivElement>(null);
 
   const navCardRef0 = useRef<HTMLAnchorElement>(null);
   const navCardRef1 = useRef<HTMLAnchorElement>(null);
@@ -410,7 +433,14 @@ export default function StudentDashboard() {
   const recommendationRef3 = useRef<HTMLAnchorElement>(null);
   const recommendationRefs = [recommendationRef0, recommendationRef1, recommendationRef2, recommendationRef3];
 
-  useParallax({ containerRef: mainRef, entranceRefs: [heroRef, activityRef, recommendedRef] });
+  useParallax({
+    containerRef: mainRef,
+    entranceRefs: [heroRef, activityRef, recommendedRef],
+    layers: [
+      { ref: ambientBlob1Ref, speed: -120 },
+      { ref: ambientBlob2Ref, speed: 90 },
+    ],
+  });
   useStaggerReveal(navGridRef, navCardRefs);
   useStaggerReveal(progressGridRef, progressCardRefs, { start: 'top 80%' });
   useStaggerReveal(achievementsGridRef, achievementRefs, { start: 'top 80%' });
@@ -471,6 +501,33 @@ export default function StudentDashboard() {
   const timeline = buildTimeline(attempts, mealPlans, readingAttempts);
   const achievements = dataLoaded ? buildAchievements(attempts, mealPlans, readingAttempts) : [];
 
+  const heroStats: { key: string; icon: ReactNode; value: string; valueClassName: string; label: string; accent: keyof typeof HERO_STAT_ACCENT }[] = [
+    {
+      key: 'quizzes',
+      icon: QUIZ_ICON,
+      value: attempts ? String(attempts.length) : '—',
+      valueClassName: 'text-2xl sm:text-3xl',
+      label: attempts && attempts.length === 1 ? 'Quiz taken' : 'Quizzes taken',
+      accent: 'indigo',
+    },
+    {
+      key: 'reading',
+      icon: READING_ICON,
+      value: readingAttempts?.[0]?.level || 'No reading yet',
+      valueClassName: 'text-sm sm:text-base leading-snug',
+      label: 'Reading level',
+      accent: 'amber',
+    },
+    {
+      key: 'nutrition',
+      icon: MEAL_ICON,
+      value: mealPlans?.[0] ? bmiZone(mealPlans[0].profile.bmi).label : 'No meal plan yet',
+      valueClassName: 'text-sm sm:text-base leading-snug',
+      label: 'Nutrition',
+      accent: 'emerald',
+    },
+  ];
+
   // Corner badges for the Quick actions cards below the floating bar.
   const quickActionBadges: Record<string, string | undefined> = {
     '/quiz': attempts && attempts.length > 0 ? `${attempts.length} taken` : undefined,
@@ -485,69 +542,109 @@ export default function StudentDashboard() {
             the hero's own blob placement so the rest of the page reads as
             the same atmosphere rather than a hard cut to flat white. */}
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute left-[8%] top-0 h-[32rem] w-[32rem] rounded-full bg-indigo-500/5 blur-3xl animate-blob" />
-          <div className="absolute right-0 top-[26rem] h-[28rem] w-[28rem] rounded-full bg-gold-400/5 blur-3xl animate-blob [animation-delay:4s]" />
+          <div
+            ref={ambientBlob1Ref}
+            className="absolute left-[8%] top-0 h-[32rem] w-[32rem] rounded-full bg-indigo-500/[0.06] blur-3xl animate-blob"
+          />
+          <div
+            ref={ambientBlob2Ref}
+            className="absolute right-0 top-[26rem] h-[28rem] w-[28rem] rounded-full bg-gold-400/[0.07] blur-3xl animate-blob [animation-delay:4s]"
+          />
+          <div className="absolute left-1/3 top-[46rem] h-[24rem] w-[24rem] rounded-full bg-violet-400/[0.05] blur-3xl animate-blob [animation-delay:2s]" />
+          <div className="absolute right-[10%] top-[64rem] h-[26rem] w-[26rem] rounded-full bg-emerald-400/[0.05] blur-3xl animate-blob [animation-delay:6s]" />
         </div>
 
         <div ref={heroRef} className="opacity-0">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 px-6 py-9 sm:px-10 sm:py-12">
-            <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-              <div className="absolute -top-16 -left-10 h-64 w-64 rounded-full bg-indigo-500/25 blur-3xl animate-blob" />
-              <div className="absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-gold-400/10 blur-3xl animate-blob [animation-delay:3s]" />
-              <div className="absolute -bottom-24 right-0 h-64 w-64 rounded-full bg-violet-400/15 blur-3xl animate-blob [animation-delay:5s]" />
-            </div>
-            <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_100%_0%,rgba(255,255,255,0.06),transparent)]" />
-
-            <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <span className="inline-flex items-center gap-2 text-sm font-medium text-gold-300">
-                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-gold-400" />
-                  {getGreeting()}
-                </span>
-                <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-[2.75rem]">
-                  {profile?.name || 'Student'}
-                </h1>
-                <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-300">
-                  Track your quizzes, get a personalized meal plan, sharpen your reading, and explore recommended
-                  videos — all in one place.
-                </p>
+          {/* 1px gradient "edge light" border, cheaper than a real glass
+              refraction and gives the panel a lit rim like it's catching a
+              key light from above-left — signature of the cinematic look. */}
+          <div className="relative rounded-[2rem] bg-gradient-to-br from-white/25 via-white/10 to-transparent p-px shadow-[0_30px_80px_-24px_rgba(8,5,30,0.65)]">
+            <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#080b18] via-indigo-950 to-[#1b0f2e] px-6 py-9 sm:px-10 sm:py-12">
+              {/* Atmosphere: drifting color blobs */}
+              <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+                <div className="absolute -top-16 -left-10 h-64 w-64 rounded-full bg-indigo-500/30 blur-3xl animate-blob" />
+                <div className="absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-gold-400/15 blur-3xl animate-blob [animation-delay:3s]" />
+                <div className="absolute -bottom-24 right-0 h-64 w-64 rounded-full bg-violet-400/20 blur-3xl animate-blob [animation-delay:5s]" />
+                <div className="absolute -top-10 right-1/4 h-56 w-56 rounded-full bg-maroon-500/15 blur-3xl animate-blob [animation-delay:2s]" />
               </div>
 
-              <div className="grid shrink-0 grid-cols-3 gap-3 sm:gap-4">
-                <div className="group rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/20 transition-colors duration-200 group-hover:bg-indigo-500/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      {QUIZ_ICON}
-                    </svg>
-                  </div>
-                  <p className="mt-3 text-2xl font-bold leading-none text-white">{attempts ? attempts.length : '—'}</p>
-                  <p className="mt-1.5 text-[11px] font-medium text-slate-400">
-                    {attempts && attempts.length === 1 ? 'Quiz taken' : 'Quizzes taken'}
+              {/* Faint dot grid, spotlight-faded toward the edges — the
+                  "technical HUD" texture cinematic dashboards lean on. */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 opacity-[0.18]"
+                style={{
+                  backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.6) 1px, transparent 0)',
+                  backgroundSize: '26px 26px',
+                  maskImage: 'radial-gradient(ellipse 90% 70% at 50% 0%, black 25%, transparent 75%)',
+                  WebkitMaskImage: 'radial-gradient(ellipse 90% 70% at 50% 0%, black 25%, transparent 75%)',
+                }}
+              />
+
+              {/* Film grain — kills the banding a flat dark gradient gets on
+                  low-color-depth displays, and reads as deliberate texture. */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
+                style={{
+                  backgroundImage:
+                    "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+                }}
+              />
+
+              {/* Vignette — pulls focus back toward the greeting/stats. */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_50%_-10%,transparent_35%,rgba(2,6,23,0.55)_100%)]"
+              />
+
+              <div className="relative flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <span
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-gold-300 backdrop-blur-md"
+                  >
+                    <span
+                      aria-hidden
+                      className="h-1.5 w-1.5 rounded-full bg-gold-400 animate-pulse-glow motion-reduce:animate-none"
+                      style={{ '--pulse-glow-rgb': '219,178,51' } as React.CSSProperties}
+                    />
+                    {getGreeting()}
+                  </span>
+                  <h1 className="mt-3 bg-gradient-to-br from-white via-white to-slate-300 bg-clip-text text-4xl font-bold tracking-tight text-transparent drop-shadow-[0_4px_30px_rgba(99,102,241,0.35)] sm:text-[2.75rem]">
+                    {profile?.name || 'Student'}
+                  </h1>
+                  <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-300/90">
+                    Track your quizzes, get a personalized meal plan, sharpen your reading, and explore recommended
+                    videos — all in one place.
                   </p>
                 </div>
 
-                <div className="group rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/20 transition-colors duration-200 group-hover:bg-amber-500/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      {READING_ICON}
-                    </svg>
-                  </div>
-                  <p className="mt-3 text-sm font-bold leading-snug text-white sm:text-base">
-                    {readingAttempts?.[0]?.level || 'No reading yet'}
-                  </p>
-                  <p className="mt-1.5 text-[11px] font-medium text-slate-400">Reading level</p>
-                </div>
-
-                <div className="group rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/20 transition-colors duration-200 group-hover:bg-emerald-500/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      {MEAL_ICON}
-                    </svg>
-                  </div>
-                  <p className="mt-3 text-sm font-bold leading-snug text-white sm:text-base">
-                    {mealPlans?.[0] ? bmiZone(mealPlans[0].profile.bmi).label : 'No meal plan yet'}
-                  </p>
-                  <p className="mt-1.5 text-[11px] font-medium text-slate-400">Nutrition</p>
+                <div className="grid shrink-0 grid-cols-3 gap-3 sm:gap-4">
+                  {heroStats.map((stat) => {
+                    const accent = HERO_STAT_ACCENT[stat.accent];
+                    return (
+                      <div
+                        key={stat.key}
+                        className={`group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3.5 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.1] ${accent.hoverShadow}`}
+                      >
+                        <span
+                          aria-hidden
+                          className={`pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100 ${accent.glow}`}
+                        />
+                        <div
+                          className={`relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br text-white shadow-lg ring-1 ring-inset ring-white/25 transition-transform duration-200 group-hover:scale-105 ${accent.icon}`}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            {stat.icon}
+                          </svg>
+                        </div>
+                        <p className={`relative mt-3 break-words font-bold text-white ${stat.valueClassName}`}>{stat.value}</p>
+                        <p className="relative mt-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-400">
+                          {stat.label}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -658,11 +755,6 @@ export default function StudentDashboard() {
               <GlassCard hover={false} className="p-6">
                 <div className="flex items-center justify-between">
                   <h3 className="text-base font-semibold text-slate-900">Recent activity</h3>
-                  {attempts && attempts.length > 0 && (
-                    <a href="/quiz" className="text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-700">
-                      View quiz history
-                    </a>
-                  )}
                 </div>
                 {!dataLoaded ? (
                   <p className="mt-4 text-sm text-slate-400">Loading…</p>
@@ -682,7 +774,9 @@ export default function StudentDashboard() {
                         </span>
                         <span className="flex-1 font-medium text-slate-700">{entry.label}</span>
                         <span className="hidden text-slate-500 sm:inline">{entry.detail}</span>
-                        <span className="shrink-0 text-xs font-medium text-slate-400">{new Date(entry.date).toLocaleDateString()}</span>
+                        <span className="shrink-0 text-xs font-medium text-slate-400">
+                          {new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
                       </li>
                     ))}
                   </ul>

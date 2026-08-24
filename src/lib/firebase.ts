@@ -1,6 +1,6 @@
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, initializeFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -19,7 +19,20 @@ if (!getApps().length) {
 }
 
 const auth = getAuth(app);
-const db = getFirestore(app);
+
+// Chrome's QUIC transport can fail outright on some networks (VPNs,
+// corporate proxies, flaky Wi-Fi) — ERR_QUIC_PROTOCOL_ERROR / QUIC_TOO_MANY_RTOS
+// on the Firestore Listen channel. Auto-detecting long polling falls back to
+// plain XHR polling in those environments instead of insisting on QUIC.
+let db;
+try {
+  db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+} catch {
+  // Settings can only be set once per app — if this module re-runs (e.g. Fast
+  // Refresh) after Firestore already started, just reuse the existing instance.
+  db = getFirestore(app);
+}
+
 const googleProvider = new GoogleAuthProvider();
 
 export { app, auth, db, googleProvider };

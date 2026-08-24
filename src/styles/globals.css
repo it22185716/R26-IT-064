@@ -54,6 +54,99 @@ body {
   margin: 1px 0;
 }
 
+/* Summary page (allergies, full meal calendar table, diagnosis row) —
+   precedes the per-day pages, so it always breaks to a page of its own. */
+.meal-plan-print-view .print-summary {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  break-after: page;
+  page-break-after: always;
+}
+
+.meal-plan-print-view .print-summary-section {
+  margin-bottom: 16px;
+}
+
+.meal-plan-print-view .print-summary-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #cbd5e1;
+}
+
+.meal-plan-print-view .print-summary-empty {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.meal-plan-print-view .print-allergy-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.meal-plan-print-view .print-allergy-tag {
+  display: inline-block;
+  border-radius: 999px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 3px 10px;
+}
+
+.meal-plan-print-view .print-calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10.5px;
+}
+
+.meal-plan-print-view .print-calendar-table th {
+  text-align: left;
+  font-weight: 700;
+  color: #64748b;
+  border-bottom: 1px solid #cbd5e1;
+  padding: 4px 6px;
+}
+
+.meal-plan-print-view .print-calendar-table td {
+  color: #334155;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 4px 6px;
+}
+
+.meal-plan-print-view .print-diagnosis-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.meal-plan-print-view .print-diagnosis-item {
+  min-width: 110px;
+}
+
+.meal-plan-print-view .print-diagnosis-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin: 0 0 2px;
+}
+
+.meal-plan-print-view .print-diagnosis-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+}
+
 .meal-plan-print-view .print-day {
   break-inside: avoid;
   page-break-inside: avoid;

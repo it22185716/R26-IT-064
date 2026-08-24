@@ -22,12 +22,6 @@ type MetricConfig = {
   changeLabel: (delta: number) => string;
 };
 
-function heightLabel(delta: number): string {
-  if (delta > 0) return 'Grew taller';
-  if (delta < 0) return 'Height changed';
-  return 'Height steady';
-}
-
 function weightLabel(delta: number): string {
   if (delta > 0) return 'Gained weight';
   if (delta < 0) return 'Weight changed';
@@ -139,17 +133,6 @@ export default function GrowthHistoryView({ plans }: { plans: MealPlan[] }) {
   const metrics: { config: MetricConfig; values: number[] }[] = [
     {
       config: {
-        title: 'Height',
-        color: '#059669',
-        accentText: 'text-emerald-700',
-        unit: 'cm',
-        format: (v) => `${v}cm`,
-        changeLabel: heightLabel,
-      },
-      values: chronological.map((p) => p.profile.height_cm),
-    },
-    {
-      config: {
         title: 'Weight',
         color: '#4F46E5',
         accentText: 'text-indigo-700',
@@ -197,7 +180,7 @@ export default function GrowthHistoryView({ plans }: { plans: MealPlan[] }) {
             </div>
           </div>
 
-          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {metrics.map((m) => (
               <MetricPanel key={m.config.title} config={m.config} values={m.values} />
             ))}

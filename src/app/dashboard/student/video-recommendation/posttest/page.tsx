@@ -41,6 +41,26 @@ function AmbientBlobs() {
   );
 }
 
+// Some post-test question text follows a "Label: value, value, value" shape
+// (e.g. "Which is SMALLEST: 1/7, 2/7, 4/7, 5/7, 6/7"). Splitting on the first
+// colon and giving the value list its own, more prominent line keeps a
+// comma-separated list from wrapping awkwardly mid-sentence on narrow
+// screens. Plain-sentence questions (no colon) render unchanged.
+function renderQuestionText(text: string) {
+  const colonIndex = text.indexOf(':');
+  if (colonIndex === -1) return text;
+
+  const label = text.slice(0, colonIndex + 1);
+  const values = text.slice(colonIndex + 1).trim();
+
+  return (
+    <>
+      <span className="block">{label}</span>
+      <span className="mt-2 block text-xl font-bold sm:text-2xl">{values}</span>
+    </>
+  );
+}
+
 export default function VideoPostTestPage() {
   return (
     <Suspense fallback={<LoadingScreen />}>
@@ -355,7 +375,9 @@ function VideoPostTestPageInner() {
         <div className="relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-6 shadow-lg shadow-slate-200/50 sm:p-8">
           <div aria-hidden className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-gold-300 via-gold-500 to-amber-400" />
 
-          <h2 className="text-lg font-semibold leading-snug text-slate-900 sm:text-xl">{q.question}</h2>
+          <h2 className="text-lg font-semibold leading-snug text-slate-900 sm:text-xl">
+            {renderQuestionText(q.question)}
+          </h2>
 
           <div role="radiogroup" aria-label={`Question ${current + 1} answer choices`} className="mt-6 space-y-3">
             {q.options.map((opt) => {

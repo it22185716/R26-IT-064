@@ -1,42 +1,117 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../../../../lib/firebase';
 import { useAuthUser } from '../../../../hooks/useAuthUser';
+import { useStaggerReveal } from '../../../../components/dashboard/useStaggerReveal';
+import { useCountUp } from '../../../../components/dashboard/useCountUp';
 import TeacherShell from '../../../../components/dashboard/TeacherShell';
 import GlassCard from '../../../../components/dashboard/GlassCard';
-import StatCard from '../../../../components/StatCard';
 import { fetchMealPlanHistory } from '../../../../lib/mealPlan';
 import { MealPlan, UserProfile } from '../../../../lib/types';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const EXPIRING_SOON_WINDOW_MS = 3 * DAY_MS;
 
+type StatusMeta = { badgeBg: string; badgeText: string; dot: string; icon: React.ReactNode };
+
+const CHECK_ICON = (
+  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75l2.25 2.25 4.5-4.5m5.25 2.25a9 9 0 11-18 0 9 9 0 0118 0z" />
+);
+const UP_ICON = <path strokeLinecap="round" strokeLinejoin="round" d="M12 19V5m0 0l-6 6m6-6l6 6" />;
+const DOWN_ICON = <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m0 0l6-6m-6 6l-6-6" />;
+const WARNING_ICON = (
+  <path
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+  />
+);
+
 // Cosmetic only — falls back to slate for any status string not seen here, so
 // an unexpected value from the ML service still renders instead of breaking.
-function statusBadgeClasses(status: string): string {
-  switch (status) {
-    case 'Normal':
-      return 'bg-emerald-50 text-emerald-700';
-    case 'Overweight':
-      return 'bg-amber-50 text-amber-700';
-    case 'Obesity':
-    case 'Severe Thinness':
-      return 'bg-red-50 text-red-700';
-    case 'Thinness':
-      return 'bg-amber-50 text-amber-700';
-    default:
-      return 'bg-slate-100 text-slate-600';
-  }
+const STATUS_META: Record<string, StatusMeta> = {
+  Normal: { badgeBg: 'bg-emerald-50', badgeText: 'text-emerald-700', dot: 'bg-emerald-500', icon: CHECK_ICON },
+  Overweight: { badgeBg: 'bg-amber-50', badgeText: 'text-amber-700', dot: 'bg-amber-500', icon: UP_ICON },
+  Obesity: { badgeBg: 'bg-red-50', badgeText: 'text-red-700', dot: 'bg-red-500', icon: WARNING_ICON },
+  'Severe Thinness': { badgeBg: 'bg-red-50', badgeText: 'text-red-700', dot: 'bg-red-500', icon: WARNING_ICON },
+  Thinness: { badgeBg: 'bg-amber-50', badgeText: 'text-amber-700', dot: 'bg-amber-500', icon: DOWN_ICON },
+};
+const DEFAULT_STATUS_META: StatusMeta = {
+  badgeBg: 'bg-slate-100',
+  badgeText: 'text-slate-600',
+  dot: 'bg-slate-400',
+  icon: <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />,
+};
+
+function getStatusMeta(status: string): StatusMeta {
+  return STATUS_META[status] || DEFAULT_STATUS_META;
+}
+
+function filterPillClasses(active: boolean): string {
+  return `inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-semibold transition-all duration-150 ${
+    active ? 'bg-slate-900 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+  }`;
+}
+
+function getInitials(name: string): string {
+  const initials = name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase())
+    .join('');
+  return initials || '?';
 }
 
 function formatExpiry(expiresAt: number, now: number): string {
   const daysLeft = Math.ceil((expiresAt - now) / DAY_MS);
   if (daysLeft <= 0) return 'Expired';
-  return `${daysLeft}d left`;
+  return `${daysLeft} ${daysLeft === 1 ? 'day' : 'days'} left`;
 }
+
+type MealStatTileProps = {
+  icon: React.ReactNode;
+  value: string;
+  label: string;
+  /** Tailwind gradient classes for the icon chip, e.g. "from-violet-500 to-purple-600". */
+  tile: string;
+  /** Tailwind bg color class for the ambient glow blob, e.g. "bg-violet-400". */
+  glow: string;
+};
+
+// Frosted-glass stat tile — an icon chip in brand color floats on translucent
+// glass instead of the flat gradient fill StatCard uses elsewhere, so this
+// row reads as "glass over content" rather than a solid color block.
+const MealStatTile = forwardRef<HTMLDivElement, MealStatTileProps>(({ icon, value, label, tile, glow }, ref) => {
+  const valueRef = useCountUp(value);
+
+  return (
+    <div
+      ref={ref}
+      className="group relative overflow-hidden rounded-2xl border border-white/60 bg-white/60 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_rgba(15,23,42,0.07)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-white/80 hover:bg-white/75 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_2px_6px_rgba(15,23,42,0.06),0_20px_40px_rgba(15,23,42,0.14)]"
+    >
+      <span
+        aria-hidden
+        className={`pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full opacity-40 blur-2xl transition-opacity duration-300 group-hover:opacity-70 ${glow}`}
+      />
+      <div
+        className={`relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg ring-1 ring-inset ring-white/40 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${tile}`}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          {icon}
+        </svg>
+      </div>
+      <p ref={valueRef} className="relative mt-4 text-[1.75rem] font-bold leading-none tracking-tight text-slate-900">
+        {value}
+      </p>
+      <p className="relative mt-1.5 text-sm font-medium text-slate-500">{label}</p>
+    </div>
+  );
+});
+MealStatTile.displayName = 'MealStatTile';
 
 export default function TeacherMealPlanPage() {
   const router = useRouter();
@@ -45,9 +120,19 @@ export default function TeacherMealPlanPage() {
   const [mealPlans, setMealPlans] = useState<MealPlan[] | null>(null);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [planFilter, setPlanFilter] = useState<'all' | 'has' | 'none'>('all');
   const [expandedUid, setExpandedUid] = useState<string | null>(null);
   const [historyByStudent, setHistoryByStudent] = useState<Record<string, MealPlan[]>>({});
   const [historyLoadingUid, setHistoryLoadingUid] = useState<string | null>(null);
+
+  const statsGridRef = useRef<HTMLDivElement>(null);
+  const statTileRefs = [
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+  ];
+  useStaggerReveal(statsGridRef, statTileRefs);
 
   useEffect(() => {
     if (loading) return;
@@ -133,13 +218,15 @@ export default function TeacherMealPlanPage() {
 
     return students.filter((s) => {
       const latest = latestMealPlanByStudent.get(s.uid);
+      if (planFilter === 'has' && !latest) return false;
+      if (planFilter === 'none' && latest) return false;
       if (statusFilter !== 'all' && latest?.nutritionalStatus !== statusFilter) return false;
       if (term && !(s.name || '').toLowerCase().includes(term) && !(s.email || '').toLowerCase().includes(term)) {
         return false;
       }
       return true;
     });
-  }, [students, latestMealPlanByStudent, search, statusFilter]);
+  }, [students, latestMealPlanByStudent, search, statusFilter, planFilter]);
 
   async function toggleExpanded(uid: string) {
     if (expandedUid === uid) {
@@ -174,11 +261,13 @@ export default function TeacherMealPlanPage() {
           Meal plan coverage, nutritional status, and allergy monitoring across your students.
         </p>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <StatCard
+        <div ref={statsGridRef} className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <MealStatTile
+            ref={statTileRefs[0]}
             label="Meal plans generated"
             value={students && mealPlans ? `${mealPlanCoverage}/${students.length}` : '—'}
-            gradient="from-violet-500 to-purple-600"
+            tile="from-violet-500 to-purple-600"
+            glow="bg-violet-400"
             icon={
               <path
                 strokeLinecap="round"
@@ -187,10 +276,12 @@ export default function TeacherMealPlanPage() {
               />
             }
           />
-          <StatCard
+          <MealStatTile
+            ref={statTileRefs[1]}
             label="Nutritional status"
             value={mealPlans ? topNutritionalStatusLabel : '—'}
-            gradient="from-lime-500 to-green-600"
+            tile="from-lime-500 to-green-600"
+            glow="bg-lime-400"
             icon={
               <path
                 strokeLinecap="round"
@@ -199,10 +290,12 @@ export default function TeacherMealPlanPage() {
               />
             }
           />
-          <StatCard
+          <MealStatTile
+            ref={statTileRefs[2]}
             label="Allergy alerts"
             value={mealPlans ? String(allergyAlertCount) : '—'}
-            gradient="from-amber-500 to-red-600"
+            tile="from-amber-500 to-red-600"
+            glow="bg-amber-400"
             icon={
               <path
                 strokeLinecap="round"
@@ -211,40 +304,88 @@ export default function TeacherMealPlanPage() {
               />
             }
           />
-          <StatCard
+          <MealStatTile
+            ref={statTileRefs[3]}
             label="Plans expiring soon"
             value={mealPlans ? String(expiringSoonCount) : '—'}
-            gradient="from-yellow-500 to-orange-600"
+            tile="from-yellow-500 to-orange-600"
+            glow="bg-orange-400"
             icon={<path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />}
           />
         </div>
 
         <GlassCard hover={false} className="mt-8 p-6">
-          <div className="flex flex-wrap gap-3">
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by name or email…"
-              className="flex-1 min-w-[200px] rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
-            />
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
-            >
-              <option value="all">All nutritional statuses</option>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative min-w-[200px] flex-1">
+              <svg
+                aria-hidden
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+              >
+                <circle cx="10.5" cy="10.5" r="6.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M20 20l-4.3-4.3" />
+              </svg>
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by name or email…"
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2 pl-9 pr-3 text-sm outline-none focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-100"
+              />
+            </div>
+
+            <div className="relative">
+              <select
+                value={planFilter}
+                onChange={(e) => setPlanFilter(e.target.value as 'all' | 'has' | 'none')}
+                className="appearance-none rounded-lg border border-slate-200 bg-slate-50 py-2 pl-3 pr-8 text-sm font-medium text-slate-700 outline-none focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-100"
+              >
+                <option value="all">All students</option>
+                <option value="has">Has a meal plan</option>
+                <option value="none">No meal plan yet</option>
+              </select>
+              <svg
+                aria-hidden
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5">
+              <button type="button" onClick={() => setStatusFilter('all')} className={filterPillClasses(statusFilter === 'all')}>
+                All
+              </button>
               {nutritionalStatusOptions.map((s) => (
-                <option key={s} value={s}>
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setStatusFilter(s)}
+                  className={filterPillClasses(statusFilter === s)}
+                >
+                  <span className={`h-1.5 w-1.5 rounded-full ${statusFilter === s ? 'bg-white' : getStatusMeta(s).dot}`} />
                   {s}
-                </option>
+                </button>
               ))}
-            </select>
+            </div>
           </div>
 
           <div className="mt-6 overflow-x-auto">
             {!students || !mealPlans ? (
-              <p className="text-sm text-slate-400">Loading…</p>
+              <div className="space-y-2.5">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="h-12 animate-pulse rounded-lg bg-slate-100" />
+                ))}
+              </div>
             ) : mealPlans.length === 0 ? (
               <p className="text-sm text-slate-500">No meal plans generated yet.</p>
             ) : filteredStudents.length === 0 ? (
@@ -267,24 +408,35 @@ export default function TeacherMealPlanPage() {
                     const latest = latestMealPlanByStudent.get(s.uid);
                     const expanded = expandedUid === s.uid;
                     const history = historyByStudent[s.uid];
+                    const meta = latest ? getStatusMeta(latest.nutritionalStatus) : null;
+                    const expiry = latest ? formatExpiry(latest.expiresAt, now) : null;
+                    const expiryUrgent = latest ? latest.expiresAt <= now + EXPIRING_SOON_WINDOW_MS : false;
 
                     return (
                       <React.Fragment key={s.uid}>
                         <tr
                           onClick={() => latest && toggleExpanded(s.uid)}
-                          className={latest ? 'cursor-pointer hover:bg-slate-50' : 'text-slate-400'}
+                          className={`group transition-colors ${latest ? 'cursor-pointer hover:bg-slate-50/80' : ''}`}
                         >
                           <td className="py-3">
-                            <p className="font-medium text-slate-700">{s.name || s.email}</p>
-                            <p className="text-xs text-slate-400">{s.email}</p>
+                            <div className="flex items-center gap-3">
+                              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold-400 via-gold-500 to-maroon-600 text-[11px] font-semibold text-white shadow-sm">
+                                {getInitials(s.name || s.email)}
+                              </span>
+                              <span className="min-w-0">
+                                <p className="truncate font-medium text-slate-700">{s.name || s.email}</p>
+                                <p className="truncate text-xs text-slate-400">{s.email}</p>
+                              </span>
+                            </div>
                           </td>
                           <td className="py-3">
-                            {latest ? (
+                            {latest && meta ? (
                               <span
-                                className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${statusBadgeClasses(
-                                  latest.nutritionalStatus
-                                )}`}
+                                className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${meta.badgeBg} ${meta.badgeText}`}
                               >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                  {meta.icon}
+                                </svg>
                                 {latest.nutritionalStatus}
                               </span>
                             ) : (
@@ -295,7 +447,7 @@ export default function TeacherMealPlanPage() {
                           <td className="py-3">
                             {latest && latest.profile.allergies.length > 0 ? (
                               <div className="flex flex-wrap gap-1">
-                                {latest.profile.allergies.map((a) => (
+                                {latest.profile.allergies.slice(0, 3).map((a) => (
                                   <span
                                     key={a}
                                     className="inline-flex items-center rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700"
@@ -303,6 +455,9 @@ export default function TeacherMealPlanPage() {
                                     {a}
                                   </span>
                                 ))}
+                                {latest.profile.allergies.length > 3 && (
+                                  <span className="text-xs text-slate-400">+{latest.profile.allergies.length - 3}</span>
+                                )}
                               </div>
                             ) : (
                               <span className="text-slate-400">None</span>
@@ -311,21 +466,44 @@ export default function TeacherMealPlanPage() {
                           <td className="py-3 text-slate-500">
                             {latest ? new Date(latest.createdAt).toLocaleDateString() : '—'}
                           </td>
-                          <td className="py-3 text-slate-500">{latest ? formatExpiry(latest.expiresAt, now) : '—'}</td>
-                          <td className="py-3 text-right font-medium whitespace-nowrap">
+                          <td className="py-3">
+                            {latest ? (
+                              <span
+                                className={`text-xs font-semibold ${
+                                  expiry === 'Expired' ? 'text-red-600' : expiryUrgent ? 'text-amber-600' : 'text-slate-500'
+                                }`}
+                              >
+                                {expiry}
+                              </span>
+                            ) : (
+                              <span className="text-slate-400">—</span>
+                            )}
+                          </td>
+                          <td className="py-3 text-right">
                             {latest && (
-                              <span className="text-sky-600">{expanded ? 'Hide history ▴' : 'View history ▾'}</span>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 ${
+                                  expanded ? 'rotate-180 text-sky-600' : 'text-slate-400 group-hover:text-slate-600'
+                                }`}
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                              </svg>
                             )}
                           </td>
                         </tr>
 
                         {expanded && latest && (
                           <tr>
-                            <td colSpan={7} className="bg-slate-50 px-4 py-5">
+                            <td colSpan={7} className="bg-slate-50/70 px-4 py-5">
                               {historyLoadingUid === s.uid || !history ? (
                                 <p className="text-sm text-slate-400">Loading history…</p>
                               ) : (
-                                <div className="grid gap-6 lg:grid-cols-2">
+                                <div className="animate-fade-in-up grid gap-6 lg:grid-cols-2">
                                   <div>
                                     <h4 className="text-sm font-semibold text-slate-900">BMI trend</h4>
                                     <ul className="mt-2 space-y-1.5">
@@ -334,7 +512,8 @@ export default function TeacherMealPlanPage() {
                                           <span className="text-slate-500">
                                             {new Date(p.createdAt).toLocaleDateString()}
                                           </span>
-                                          <span className="text-slate-700">
+                                          <span className="inline-flex items-center gap-1.5 text-slate-700">
+                                            <span className={`h-1.5 w-1.5 rounded-full ${getStatusMeta(p.nutritionalStatus).dot}`} />
                                             BMI {p.profile.bmi} · {p.nutritionalStatus}
                                           </span>
                                         </li>
@@ -345,20 +524,29 @@ export default function TeacherMealPlanPage() {
                                   <div>
                                     <h4 className="text-sm font-semibold text-slate-900">Change since previous plan</h4>
                                     {latest.progressSinceLastPlan ? (
-                                      <ul className="mt-2 space-y-1.5 text-sm text-slate-600">
-                                        <li>
-                                          Weight: {latest.progressSinceLastPlan.weightChangeKg! > 0 ? '+' : ''}
-                                          {latest.progressSinceLastPlan.weightChangeKg} kg
+                                      <ul className="mt-2 space-y-1.5 text-sm">
+                                        <li className="flex items-center justify-between">
+                                          <span className="text-slate-500">Weight</span>
+                                          <span className="font-medium text-slate-700">
+                                            {latest.progressSinceLastPlan.weightChangeKg! > 0 ? '+' : ''}
+                                            {latest.progressSinceLastPlan.weightChangeKg} kg
+                                          </span>
                                         </li>
-                                        <li>
-                                          Height: {latest.progressSinceLastPlan.heightChangeCm! > 0 ? '+' : ''}
-                                          {latest.progressSinceLastPlan.heightChangeCm} cm
+                                        <li className="flex items-center justify-between">
+                                          <span className="text-slate-500">Height</span>
+                                          <span className="font-medium text-slate-700">
+                                            {latest.progressSinceLastPlan.heightChangeCm! > 0 ? '+' : ''}
+                                            {latest.progressSinceLastPlan.heightChangeCm} cm
+                                          </span>
                                         </li>
-                                        <li>
-                                          BMI: {latest.progressSinceLastPlan.bmiChange! > 0 ? '+' : ''}
-                                          {latest.progressSinceLastPlan.bmiChange}
+                                        <li className="flex items-center justify-between">
+                                          <span className="text-slate-500">BMI</span>
+                                          <span className="font-medium text-slate-700">
+                                            {latest.progressSinceLastPlan.bmiChange! > 0 ? '+' : ''}
+                                            {latest.progressSinceLastPlan.bmiChange}
+                                          </span>
                                         </li>
-                                        <li className="text-slate-400">
+                                        <li className="pt-1 text-xs text-slate-400">
                                           {latest.progressSinceLastPlan.daysSinceLastPlan} days since previous plan
                                         </li>
                                       </ul>
