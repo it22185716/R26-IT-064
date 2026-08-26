@@ -27,7 +27,7 @@ export default function DashboardShell({ role, title, subtitle, userName, action
         <DashboardHeader role={role} title={title} userName={userName || ''} />
 
         <main ref={mainRef} className="min-w-0 flex-1">
-          <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 md:px-10 md:py-10">
+          <div className="mx-auto w-full max-w-[1800px] px-4 py-8 sm:px-6 md:px-10 md:py-10">
             {backHref && (
               <a
                 href={backHref}
