@@ -192,13 +192,13 @@ export default function GrowthHistoryView({ plans }: { plans: MealPlan[] }) {
       <div className="rounded-xl border border-slate-100 bg-white p-6 shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-slate-400 border-b border-slate-100">
-              <th className="py-2 pr-4 font-medium">Date</th>
-              <th className="py-2 pr-4 font-medium">Height</th>
-              <th className="py-2 pr-4 font-medium">Weight</th>
-              <th className="py-2 pr-4 font-medium">BMI</th>
-              <th className="py-2 pr-4 font-medium">Nutritional Status</th>
-              <th className="py-2 pr-4 font-medium">Meal Goal</th>
+            <tr className="text-left bg-gold-100 border-b-2 border-slate-300">
+              <th className="py-3 pr-4 font-bold text-slate-800">Date</th>
+              <th className="py-3 pr-4 font-bold text-slate-800">Height</th>
+              <th className="py-3 pr-4 font-bold text-slate-800">Weight</th>
+              <th className="py-3 pr-4 font-bold text-slate-800">BMI</th>
+              <th className="py-3 pr-4 font-bold text-slate-800">Nutritional Status</th>
+              <th className="py-3 pr-4 font-bold text-slate-800">Meal Goal</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
