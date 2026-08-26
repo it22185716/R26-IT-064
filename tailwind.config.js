@@ -62,6 +62,14 @@ module.exports = {
           '0%': { transform: 'scale(1.05)' },
           '100%': { transform: 'scale(1.15)' },
         },
+        'modal-pop': {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'modal-pop-out': {
+          '0%': { opacity: '1', transform: 'scale(1)' },
+          '100%': { opacity: '0', transform: 'scale(0.95)' },
+        },
       },
       animation: {
         'fade-in-up': 'fade-in-up 0.5s ease-out both',
@@ -70,6 +78,12 @@ module.exports = {
         shimmer: 'shimmer 1.6s ease-in-out infinite',
         'pulse-glow': 'pulse-glow 2.4s ease-in-out infinite',
         'ken-burns': 'ken-burns 20s ease-in-out infinite alternate',
+        // Modal enter/exit — two distinct keyframes (not a single one
+        // toggled via animation-direction) because swapping direction on an
+        // already-finished CSS animation doesn't restart playback; changing
+        // which named animation is applied does.
+        'modal-pop': 'modal-pop 0.2s cubic-bezier(0.16,1,0.3,1) both',
+        'modal-pop-out': 'modal-pop-out 0.18s cubic-bezier(0.4,0,1,1) both',
       },
     },
   },

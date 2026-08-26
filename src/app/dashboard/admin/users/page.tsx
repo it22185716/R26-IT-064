@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState, type FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useMemo, useState, type FormEvent } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthUser } from '../../../../hooks/useAuthUser';
 import AdminShell from '../../../../components/dashboard/AdminShell';
 import GlassCard from '../../../../components/dashboard/GlassCard';
@@ -20,14 +20,57 @@ const ROLE_FILTERS: { value: RoleFilter; label: string }[] = [
 const CREATE_ROLES: UserRole[] = ['student', 'teacher', 'admin'];
 const PASSWORD_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
 
+// Per-role tint for the role pill-select — mirrors the sky/indigo/gold
+// vocabulary already used for students/teachers/admins on the admin
+// overview page (StatCard gradients, "Users by role" legend dots).
+const ROLE_SELECT_STYLES: Record<UserRole, string> = {
+  student: 'border-sky-200 bg-sky-50 text-sky-700 focus:ring-sky-200',
+  teacher: 'border-indigo-200 bg-indigo-50 text-indigo-700 focus:ring-indigo-200',
+  admin: 'border-gold-300 bg-gold-50 text-gold-800 focus:ring-gold-200',
+};
+
 function generatePassword(): string {
   const bytes = new Uint32Array(12);
   crypto.getRandomValues(bytes);
   return Array.from(bytes, (b) => PASSWORD_CHARS[b % PASSWORD_CHARS.length]).join('');
 }
 
+function prefersReducedMotion(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+// Shared open/close choreography for the two modals below: flips a
+// "closing" flag (which swaps in the animate-modal-pop-out class) and only
+// tears the modal's data down once that exit animation has actually had
+// time to play — instant under reduced motion instead of a pointless delay.
+function closeWithAnimation(setClosing: (v: boolean) => void, after: () => void) {
+  setClosing(true);
+  window.setTimeout(
+    () => {
+      after();
+      setClosing(false);
+    },
+    prefersReducedMotion() ? 0 : 180,
+  );
+}
+
 export default function AdminUsersPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-slate-50">
+          <p className="text-sm text-slate-500">Loading…</p>
+        </main>
+      }
+    >
+      <AdminUsersPageInner />
+    </Suspense>
+  );
+}
+
+function AdminUsersPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, profile, loading } = useAuthUser();
 
   const [users, setUsers] = useState<UserProfile[] | null>(null);
@@ -39,8 +82,10 @@ export default function AdminUsersPage() {
   const [deleteTarget, setDeleteTarget] = useState<UserProfile | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [deleteModalClosing, setDeleteModalClosing] = useState(false);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [createModalClosing, setCreateModalClosing] = useState(false);
   const [createName, setCreateName] = useState('');
   const [createEmail, setCreateEmail] = useState('');
   const [createPassword, setCreatePassword] = useState('');
@@ -78,6 +123,19 @@ export default function AdminUsersPage() {
     loadUsers();
   }, [profile]);
 
+  // Lets the admin overview hero's "Create user" quick action deep-link
+  // straight into this page's existing create-user modal instead of
+  // duplicating its form/logic elsewhere.
+  useEffect(() => {
+    if (!profile || profile.role !== 'admin') return;
+    if (searchParams.get('action') !== 'create') return;
+    openCreateModal();
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('action');
+    router.replace(params.size ? `/dashboard/admin/users?${params.toString()}` : '/dashboard/admin/users');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile, searchParams]);
+
   const filteredUsers = useMemo(() => {
     if (!users) return [];
     const term = search.trim().toLowerCase();
@@ -111,6 +169,14 @@ export default function AdminUsersPage() {
     }
   }
 
+  function closeDeleteModal() {
+    if (deleting) return;
+    closeWithAnimation(setDeleteModalClosing, () => {
+      setDeleteTarget(null);
+      setDeleteError(null);
+    });
+  }
+
   async function handleDeleteConfirm() {
     if (!deleteTarget) return;
     setDeleting(true);
@@ -118,7 +184,7 @@ export default function AdminUsersPage() {
     try {
       await deleteUser(deleteTarget.uid);
       setUsers((list) => list && list.filter((u) => u.uid !== deleteTarget.uid));
-      setDeleteTarget(null);
+      closeWithAnimation(setDeleteModalClosing, () => setDeleteTarget(null));
     } catch (err) {
       setDeleteError(err instanceof Error ? err.message : 'Failed to delete user');
     } finally {
@@ -138,7 +204,7 @@ export default function AdminUsersPage() {
 
   function closeCreateModal() {
     if (createSubmitting) return;
-    setShowCreateModal(false);
+    closeWithAnimation(setCreateModalClosing, () => setShowCreateModal(false));
   }
 
   function handleGeneratePassword() {
@@ -169,7 +235,7 @@ export default function AdminUsersPage() {
         role: createRole,
       });
       setUsers((list) => (list ? [created, ...list] : [created]));
-      setShowCreateModal(false);
+      closeWithAnimation(setCreateModalClosing, () => setShowCreateModal(false));
       setCreatedConfirmation({ name: created.name || created.email, password: createPassword });
     } catch (err) {
       setCreateError(err instanceof Error ? err.message : 'Failed to create user');
@@ -188,17 +254,42 @@ export default function AdminUsersPage() {
 
   return (
     <AdminShell userName={profile?.name || user.email || ''} title="Users">
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <main className="relative z-0 mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+        {/* Ambient colorful backdrop — contained to this main's own box via
+            overflow-hidden on the wrapper so nothing bleeds past the page.
+            `z-0` here (not just `relative`) matters: without an explicit
+            z-index, `main` never becomes its own stacking context, so the
+            -z-10 blob div below would be compared against the *root*
+            stacking context instead and render fully behind AdminShell's
+            opaque bg-stone-50 wrapper — invisible rather than just behind
+            the cards. Confirmed by screenshot before/after this fix. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute -top-24 left-[6%] h-80 w-80 rounded-full bg-gold-300/20 blur-3xl animate-blob motion-reduce:animate-none" />
+          <div className="absolute top-1/4 -right-20 h-96 w-96 rounded-full bg-violet-300/20 blur-3xl animate-blob [animation-delay:3s] motion-reduce:animate-none" />
+          <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-emerald-300/15 blur-3xl animate-blob [animation-delay:6s] motion-reduce:animate-none" />
+        </div>
+
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-sm text-slate-500">Management</p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">Users</h1>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-gold-600">Management</p>
+            <div className="mt-1.5 flex items-center gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-gold-400 to-violet-600 text-white shadow-md shadow-gold-500/20">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-4.13a4 4 0 10-4-4 4 4 0 004 4zm6 0a4 4 0 10-4-4"
+                  />
+                </svg>
+              </span>
+              <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Users</h1>
+            </div>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500">All registered accounts.</p>
           </div>
           <button
             type="button"
             onClick={openCreateModal}
-            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-sky-700 hover:shadow-md active:scale-[0.98]"
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-gradient-to-r from-gold-500 to-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-gold-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/25 hover:scale-[1.02] active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -227,116 +318,141 @@ export default function AdminUsersPage() {
           </div>
         )}
 
-        <GlassCard hover={false} className="mt-8 p-6">
-          <div className="flex flex-wrap items-center gap-3">
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by name or email…"
-              className="flex-1 min-w-[200px] rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
-            />
-            <div className="flex flex-wrap gap-2">
-              {ROLE_FILTERS.map((f) => (
-                <button
-                  key={f.value}
-                  type="button"
-                  onClick={() => setRoleFilter(f.value)}
-                  className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors duration-150 ${
-                    roleFilter === f.value
-                      ? 'bg-slate-900 text-white'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  {f.label}
-                </button>
-              ))}
+        <div className="relative mt-8 rounded-2xl shadow-xl shadow-gold-500/10">
+          <GlassCard hover={false} className="p-6">
+            <div className="flex flex-wrap items-center gap-3">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by name or email…"
+                className="flex-1 min-w-[200px] rounded-lg border border-white/60 bg-white/50 px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 outline-none backdrop-blur-sm transition-all focus:border-gold-400 focus:ring-2 focus:ring-gold-200 focus:bg-white/80"
+              />
+              <div className="flex flex-wrap gap-2">
+                {ROLE_FILTERS.map((f) => (
+                  <button
+                    key={f.value}
+                    type="button"
+                    onClick={() => setRoleFilter(f.value)}
+                    className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-300 motion-reduce:transition-none motion-reduce:scale-100 ${
+                      roleFilter === f.value
+                        ? 'scale-[1.03] bg-gradient-to-r from-gold-500 to-violet-600 text-white shadow-md shadow-gold-500/25'
+                        : 'bg-white/50 text-slate-600 hover:bg-white/80 hover:text-slate-900'
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="mt-6">
-            {loadError ? (
-              <div className="flex flex-wrap items-center gap-3 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-                <span>{loadError}</span>
-                <button type="button" onClick={loadUsers} className="font-medium underline hover:text-rose-900">
-                  Retry
-                </button>
-              </div>
-            ) : !users ? (
-              <p className="text-sm text-slate-400">Loading…</p>
-            ) : filteredUsers.length === 0 ? (
-              <p className="text-sm text-slate-500">No users match these filters.</p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="text-left text-slate-400 border-b border-slate-100">
-                      <th className="py-2 font-medium">Name</th>
-                      <th className="py-2 font-medium">Email</th>
-                      <th className="py-2 font-medium">Role</th>
-                      <th className="py-2 font-medium">Joined</th>
-                      <th className="py-2 font-medium"></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {filteredUsers.map((u) => {
-                      const isSelf = u.uid === user.uid;
-                      return (
-                        <tr key={u.uid}>
-                          <td className="py-3 font-medium text-slate-700">{u.name || '—'}</td>
-                          <td className="py-3 text-slate-600">{u.email}</td>
-                          <td className="py-3">
-                            <select
-                              value={u.role}
-                              disabled={isSelf || updatingUid === u.uid}
-                              onChange={(e) => handleRoleChange(u, e.target.value as UserRole)}
-                              title={isSelf ? "You can't change your own role" : undefined}
-                              className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-medium capitalize outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white disabled:cursor-not-allowed disabled:opacity-50"
-                            >
-                              <option value="student">Student</option>
-                              <option value="teacher">Teacher</option>
-                              <option value="admin">Admin</option>
-                            </select>
-                            {rowErrors[u.uid] && (
-                              <p className="mt-1 text-xs text-rose-600">{rowErrors[u.uid]}</p>
-                            )}
-                          </td>
-                          <td className="py-3 text-slate-500">{new Date(u.createdAt).toLocaleDateString()}</td>
-                          <td className="py-3 text-right">
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setDeleteError(null);
-                                setDeleteTarget(u);
-                              }}
-                              disabled={isSelf}
-                              aria-label="Delete user"
-                              title={isSelf ? "You can't delete your own account" : 'Delete user'}
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors duration-150 hover:bg-rose-50 hover:text-rose-600 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-slate-400"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                                />
-                              </svg>
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </GlassCard>
+            <div className="mt-6">
+              {loadError ? (
+                <div className="flex flex-wrap items-center gap-3 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                  <span>{loadError}</span>
+                  <button type="button" onClick={loadUsers} className="font-medium underline hover:text-rose-900">
+                    Retry
+                  </button>
+                </div>
+              ) : !users ? (
+                <p className="text-sm text-slate-400">Loading…</p>
+              ) : filteredUsers.length === 0 ? (
+                <p className="text-sm text-slate-500">No users match these filters.</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-left text-slate-400 border-b border-white/70">
+                        <th className="py-2 font-medium">Name</th>
+                        <th className="py-2 font-medium">Email</th>
+                        <th className="py-2 font-medium">Role</th>
+                        <th className="py-2 font-medium">Joined</th>
+                        <th className="py-2 font-medium"></th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/50">
+                      {filteredUsers.map((u, idx) => {
+                        const isSelf = u.uid === user.uid;
+                        return (
+                          <tr
+                            key={u.uid}
+                            style={{ animationDelay: `${Math.min(idx, 12) * 30}ms` }}
+                            className={`motion-safe:animate-fade-in-up transition-shadow duration-150 hover:shadow-md hover:shadow-gold-500/5 ${
+                              idx % 2 === 0 ? 'bg-white/30' : 'bg-white/10'
+                            } hover:bg-white/60`}
+                          >
+                            <td className="py-3 pl-2 font-medium text-slate-700">{u.name || '—'}</td>
+                            <td className="py-3 text-slate-600">{u.email}</td>
+                            <td className="py-3">
+                              <div className="relative inline-block">
+                                <select
+                                  value={u.role}
+                                  disabled={isSelf || updatingUid === u.uid}
+                                  onChange={(e) => handleRoleChange(u, e.target.value as UserRole)}
+                                  title={isSelf ? "You can't change your own role" : undefined}
+                                  className={`appearance-none rounded-full border py-1.5 pl-3 pr-7 text-xs font-semibold capitalize outline-none transition-colors focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50 ${ROLE_SELECT_STYLES[u.role]}`}
+                                >
+                                  <option value="student">Student</option>
+                                  <option value="teacher">Teacher</option>
+                                  <option value="admin">Admin</option>
+                                </select>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  aria-hidden
+                                  className="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-current opacity-60"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={2.5}
+                                >
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                </svg>
+                              </div>
+                              {rowErrors[u.uid] && (
+                                <p className="mt-1 text-xs text-rose-600">{rowErrors[u.uid]}</p>
+                              )}
+                            </td>
+                            <td className="py-3 text-slate-500">{new Date(u.createdAt).toLocaleDateString()}</td>
+                            <td className="py-3 pr-2 text-right">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setDeleteError(null);
+                                  setDeleteTarget(u);
+                                }}
+                                disabled={isSelf}
+                                aria-label="Delete user"
+                                title={isSelf ? "You can't delete your own account" : 'Delete user'}
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-rose-400 transition-colors duration-150 hover:bg-rose-50 hover:text-rose-600 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-rose-400"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                  />
+                                </svg>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </GlassCard>
+        </div>
       </main>
 
       {deleteTarget && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 px-6">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 px-6 backdrop-blur-sm">
+          <div
+            className={`w-full max-w-sm rounded-2xl border border-white/70 bg-white/90 p-6 shadow-2xl shadow-rose-500/10 backdrop-blur-xl ${
+              deleteModalClosing ? 'motion-safe:animate-modal-pop-out' : 'motion-safe:animate-modal-pop'
+            }`}
+          >
             <h3 className="text-lg font-semibold text-slate-900">Delete this account?</h3>
             <p className="mt-2 text-sm text-slate-600">
               This permanently deletes <span className="font-medium text-slate-800">{deleteTarget.name || deleteTarget.email}</span>&apos;s
@@ -346,12 +462,9 @@ export default function AdminUsersPage() {
             <div className="mt-6 flex gap-3">
               <button
                 type="button"
-                onClick={() => {
-                  setDeleteTarget(null);
-                  setDeleteError(null);
-                }}
+                onClick={closeDeleteModal}
                 disabled={deleting}
-                className="flex-1 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50"
+                className="flex-1 rounded-lg border border-white/60 bg-white/50 px-4 py-2.5 text-sm font-medium text-slate-700 backdrop-blur-sm transition-colors hover:bg-white/90 disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -359,7 +472,7 @@ export default function AdminUsersPage() {
                 type="button"
                 onClick={handleDeleteConfirm}
                 disabled={deleting}
-                className="flex-1 rounded-lg bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-rose-700 disabled:opacity-50"
+                className="flex-1 rounded-lg bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-rose-700 hover:shadow-md hover:shadow-rose-500/20 disabled:opacity-50"
               >
                 {deleting ? 'Deleting…' : 'Delete'}
               </button>
@@ -369,8 +482,12 @@ export default function AdminUsersPage() {
       )}
 
       {showCreateModal && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 px-6">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 px-6 backdrop-blur-sm">
+          <div
+            className={`w-full max-w-md rounded-2xl border border-white/70 bg-white/90 p-6 shadow-2xl shadow-gold-500/10 backdrop-blur-xl ${
+              createModalClosing ? 'motion-safe:animate-modal-pop-out' : 'motion-safe:animate-modal-pop'
+            }`}
+          >
             <h3 className="text-lg font-semibold text-slate-900">Create user</h3>
             <p className="mt-1 text-sm text-slate-500">Sets up an account and profile immediately — no signup required.</p>
 
@@ -392,7 +509,7 @@ export default function AdminUsersPage() {
                   placeholder="Jane Silva"
                   value={createName}
                   onChange={(e) => setCreateName(e.target.value)}
-                  className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none transition-all focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
+                  className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none transition-all focus:border-gold-400 focus:ring-2 focus:ring-gold-200 focus:bg-white"
                 />
               </label>
 
@@ -404,7 +521,7 @@ export default function AdminUsersPage() {
                   placeholder="you@example.com"
                   value={createEmail}
                   onChange={(e) => setCreateEmail(e.target.value)}
-                  className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none transition-all focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
+                  className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none transition-all focus:border-gold-400 focus:ring-2 focus:ring-gold-200 focus:bg-white"
                 />
               </label>
 
@@ -419,7 +536,7 @@ export default function AdminUsersPage() {
                       placeholder="At least 6 characters"
                       value={createPassword}
                       onChange={(e) => setCreatePassword(e.target.value)}
-                      className="block w-full rounded-lg border border-slate-200 bg-slate-50 pl-3 pr-10 py-2.5 text-sm outline-none transition-all focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
+                      className="block w-full rounded-lg border border-slate-200 bg-slate-50 pl-3 pr-10 py-2.5 text-sm outline-none transition-all focus:border-gold-400 focus:ring-2 focus:ring-gold-200 focus:bg-white"
                     />
                     <button
                       type="button"
@@ -451,7 +568,7 @@ export default function AdminUsersPage() {
                   <button
                     type="button"
                     onClick={handleCopyPassword}
-                    className="mt-1.5 text-xs font-medium text-sky-600 hover:text-sky-800"
+                    className="mt-1.5 text-xs font-medium text-violet-600 hover:text-violet-800"
                   >
                     {passwordCopied ? 'Copied!' : 'Copy password'}
                   </button>
@@ -466,9 +583,9 @@ export default function AdminUsersPage() {
                       key={r}
                       type="button"
                       onClick={() => setCreateRole(r)}
-                      className={`rounded-lg border px-3 py-2.5 text-sm font-medium capitalize transition-colors ${
+                      className={`rounded-lg border px-3 py-2.5 text-sm font-medium capitalize transition-all ${
                         createRole === r
-                          ? 'border-sky-600 bg-sky-50 text-sky-700'
+                          ? 'border-transparent bg-gradient-to-br from-gold-500 to-violet-600 text-white shadow-sm shadow-gold-500/20'
                           : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                       }`}
                     >
@@ -490,7 +607,7 @@ export default function AdminUsersPage() {
                 <button
                   type="submit"
                   disabled={createSubmitting}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-sky-700 hover:shadow-md active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-gold-500 to-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-gold-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/25 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 motion-reduce:transition-none motion-reduce:hover:scale-100"
                 >
                   {createSubmitting && (
                     <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">

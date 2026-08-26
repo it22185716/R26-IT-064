@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthUser } from '../../../hooks/useAuthUser';
+import { useParallax } from '../../../components/home/useParallax';
 import AdminShell from '../../../components/dashboard/AdminShell';
 import GlassCard from '../../../components/dashboard/GlassCard';
-import StatCard from '../../../components/StatCard';
+import AdminStatCard from '../../../components/dashboard/AdminStatCard';
 import { fetchAdminStats, fetchServiceHealth, AdminStats, ServiceHealthResponse } from '../../../lib/adminApi';
 import { formatRelativeTime } from '../../../lib/format';
 
@@ -25,6 +27,53 @@ function formatShortDate(dateKey: string): string {
   return new Date(year, month - 1, day).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
+// Small time-of-day glyph next to the greeting — sunrise/sun/moon mirrors the
+// three getGreeting() buckets so it never drifts out of sync with the text.
+function GreetingIcon({ greeting }: { greeting: string }) {
+  return (
+    <span aria-hidden className="pointer-events-none relative inline-flex h-4 w-4 shrink-0 items-center justify-center">
+      <span className="absolute inset-0 rounded-full bg-gold-400/40 blur-[6px]" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.75}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="relative h-4 w-4 text-gold-300"
+      >
+        {greeting === 'Good morning' && (
+          <>
+            <path d="M17 18a5 5 0 00-10 0" />
+            <line x1="12" y1="2" x2="12" y2="9" />
+            <line x1="4.22" y1="10.22" x2="5.64" y2="11.64" />
+            <line x1="18.36" y1="11.64" x2="19.78" y2="10.22" />
+            <line x1="1" y1="18" x2="3" y2="18" />
+            <line x1="21" y1="18" x2="23" y2="18" />
+            <line x1="1" y1="22" x2="23" y2="22" />
+            <polyline points="8 6 12 2 16 6" />
+          </>
+        )}
+        {greeting === 'Good afternoon' && (
+          <>
+            <circle cx="12" cy="12" r="4" />
+            <line x1="12" y1="2" x2="12" y2="4" />
+            <line x1="12" y1="20" x2="12" y2="22" />
+            <line x1="4.93" y1="4.93" x2="6.34" y2="6.34" />
+            <line x1="17.66" y1="17.66" x2="19.07" y2="19.07" />
+            <line x1="2" y1="12" x2="4" y2="12" />
+            <line x1="20" y1="12" x2="22" y2="12" />
+            <line x1="4.93" y1="19.07" x2="6.34" y2="17.66" />
+            <line x1="17.66" y1="6.34" x2="19.07" y2="4.93" />
+          </>
+        )}
+        {greeting === 'Good evening' && <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />}
+      </svg>
+    </span>
+  );
+}
+
 export default function AdminDashboard() {
   const router = useRouter();
   const { user, profile, loading } = useAuthUser();
@@ -33,6 +82,11 @@ export default function AdminDashboard() {
   const [serviceHealth, setServiceHealth] = useState<ServiceHealthResponse | null>(null);
   const [healthError, setHealthError] = useState<string | null>(null);
   const healthIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const pageRef = useRef<HTMLDivElement>(null);
+  const bannerTextRef = useRef<HTMLDivElement>(null);
+
+  useParallax({ containerRef: pageRef, entranceRefs: [bannerTextRef] });
 
   useEffect(() => {
     if (loading) return;
@@ -104,24 +158,99 @@ export default function AdminDashboard() {
 
   const maxSignups = Math.max(1, ...(stats?.signupsByDay.map((d) => d.count) || [0]));
   const totalUsers = stats ? stats.studentCount + stats.teacherCount + stats.adminCount : 0;
+  const greeting = getGreeting();
+
+  const signupsToday = stats?.signupsByDay.length ? stats.signupsByDay[stats.signupsByDay.length - 1].count : null;
+  const downServices = serviceHealth?.services.filter((svc) => svc.status !== 'up') ?? [];
+  const systemStatusLabel = !serviceHealth
+    ? null
+    : downServices.length === 0
+      ? 'All systems operational'
+      : `${downServices.length} service${downServices.length === 1 ? '' : 's'} down`;
+  const systemStatusOk = downServices.length === 0;
 
   return (
     <AdminShell userName={profile?.name || user.email || ''} title="Overview">
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <div className="space-y-8">
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 px-6 py-8 sm:px-10 sm:py-10">
+        <div ref={pageRef} className="space-y-8">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 px-6 py-8 ring-1 ring-white/10 sm:px-10 sm:py-10">
             <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
               <div className="absolute -top-16 -left-10 h-64 w-64 rounded-full bg-indigo-500/30 blur-3xl animate-blob" />
               <div className="absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-gold-400/20 blur-3xl animate-blob [animation-delay:3s]" />
               <div className="absolute top-1/2 right-1/4 h-48 w-48 rounded-full bg-sky-400/10 blur-3xl animate-blob [animation-delay:5s]" />
             </div>
 
-            <div className="relative">
-              <p className="text-sm font-medium text-indigo-200">{getGreeting()}</p>
+            {/* Glass highlight sweep across the upper portion, echoing the
+                same technique used on AdminStatCard's top-edge sheen. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-br from-white/10 via-transparent to-transparent"
+            />
+
+            {/* Restrained one-time shine sweep on load — same shimmer
+                keyframe AdminStatCard uses on hover, but a single pass. */}
+            <div
+              aria-hidden
+              style={{ animationIterationCount: 1 }}
+              className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(115deg,transparent_40%,rgba(255,255,255,0.15)_50%,transparent_60%)] animate-shimmer motion-reduce:hidden"
+            />
+
+            <div ref={bannerTextRef} className="relative opacity-0">
+              <p className="flex items-center gap-1.5 text-sm font-medium text-indigo-200">
+                <GreetingIcon greeting={greeting} />
+                {greeting}
+              </p>
               <h1 className="mt-1 text-3xl font-semibold tracking-tight text-white">{profile?.name || 'Admin'}</h1>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300">
                 Welcome to the admin dashboard.
               </p>
+
+              <div className="mt-5 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-slate-100 ring-1 ring-inset ring-white/15 backdrop-blur-sm">
+                  {stats ? `${stats.studentCount} students · ${stats.teacherCount} teachers` : 'Loading roster…'}
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-slate-100 ring-1 ring-inset ring-white/15 backdrop-blur-sm">
+                  {signupsToday === null ? 'Loading signups…' : `${signupsToday} signup${signupsToday === 1 ? '' : 's'} today`}
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-slate-100 ring-1 ring-inset ring-white/15 backdrop-blur-sm">
+                  <span className="relative flex h-2 w-2 shrink-0">
+                    {systemStatusLabel && (
+                      <span
+                        className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 ${
+                          systemStatusOk ? 'bg-emerald-400' : 'bg-rose-400'
+                        }`}
+                      />
+                    )}
+                    <span
+                      className={`relative inline-flex h-2 w-2 rounded-full ${
+                        !systemStatusLabel ? 'bg-slate-400' : systemStatusOk ? 'bg-emerald-500' : 'bg-rose-500'
+                      }`}
+                    />
+                  </span>
+                  {systemStatusLabel ?? 'Checking systems…'}
+                </span>
+              </div>
+
+              <div className="mt-4 flex flex-wrap items-center gap-2.5">
+                <Link
+                  href="/dashboard/admin/users?action=create"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-3.5 py-2 text-sm font-medium text-white backdrop-blur-sm ring-1 ring-inset ring-white/15 transition-colors hover:bg-white/20"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                  Create user
+                </Link>
+                <Link
+                  href="/dashboard/admin/audit-log"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-3.5 py-2 text-sm font-medium text-white backdrop-blur-sm ring-1 ring-inset ring-white/15 transition-colors hover:bg-white/20"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  View audit log
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -135,7 +264,7 @@ export default function AdminDashboard() {
           )}
 
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
-            <StatCard
+            <AdminStatCard
               label="Total students"
               value={stats ? String(stats.studentCount) : '—'}
               gradient="from-sky-500 to-blue-600"
@@ -147,7 +276,7 @@ export default function AdminDashboard() {
                 />
               }
             />
-            <StatCard
+            <AdminStatCard
               label="Total teachers"
               value={stats ? String(stats.teacherCount) : '—'}
               gradient="from-blue-500 to-indigo-600"
@@ -159,13 +288,13 @@ export default function AdminDashboard() {
                 />
               }
             />
-            <StatCard
+            <AdminStatCard
               label="Quiz attempts"
               value={stats ? String(stats.quizAttemptCount) : '—'}
               gradient="from-violet-500 to-purple-600"
               icon={<path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />}
             />
-            <StatCard
+            <AdminStatCard
               label="Meal plans created"
               value={stats ? String(stats.mealPlanCount) : '—'}
               gradient="from-emerald-500 to-teal-600"
@@ -177,7 +306,7 @@ export default function AdminDashboard() {
                 />
               }
             />
-            <StatCard
+            <AdminStatCard
               label="Reading attempts"
               value={stats ? String(stats.readingAttemptCount) : '—'}
               gradient="from-amber-500 to-orange-600"
@@ -189,7 +318,7 @@ export default function AdminDashboard() {
                 />
               }
             />
-            <StatCard
+            <AdminStatCard
               label="Videos assigned"
               value={stats ? String(stats.assignedVideoCount) : '—'}
               gradient="from-rose-500 to-pink-600"
@@ -204,7 +333,7 @@ export default function AdminDashboard() {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
-            <GlassCard hover={false} className="p-6 lg:col-span-2">
+            <div className="rounded-2xl border border-white/70 bg-white/70 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_rgba(15,23,42,0.08)] backdrop-blur-md lg:col-span-2">
               <h3 className="font-semibold text-slate-900">Signups (last 14 days)</h3>
               {!stats ? (
                 <p className="mt-4 text-sm text-slate-400">Loading…</p>
@@ -229,9 +358,9 @@ export default function AdminDashboard() {
                   </div>
                 </>
               )}
-            </GlassCard>
+            </div>
 
-            <GlassCard hover={false} className="p-6">
+            <div className="rounded-2xl border border-white/70 bg-white/70 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_rgba(15,23,42,0.08)] backdrop-blur-md">
               <h3 className="font-semibold text-slate-900">Users by role</h3>
               {!stats ? (
                 <p className="mt-4 text-sm text-slate-400">Loading…</p>
@@ -280,7 +409,7 @@ export default function AdminDashboard() {
                   </ul>
                 </>
               )}
-            </GlassCard>
+            </div>
           </div>
 
           <GlassCard hover={false} className="p-6">
