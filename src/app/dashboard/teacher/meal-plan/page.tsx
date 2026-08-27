@@ -56,6 +56,7 @@ function filterPillClasses(active: boolean): string {
   }`;
 }
 
+// First letter of up to the first two words of a name, falling back to '?' when there's nothing to initialize.
 function getInitials(name: string): string {
   const initials = name
     .trim()
@@ -66,6 +67,7 @@ function getInitials(name: string): string {
   return initials || '?';
 }
 
+// Turns a raw expiry timestamp into a human "N days left"/"Expired" label for the table.
 function formatExpiry(expiresAt: number, now: number): string {
   const daysLeft = Math.ceil((expiresAt - now) / DAY_MS);
   if (daysLeft <= 0) return 'Expired';
@@ -134,6 +136,7 @@ export default function TeacherMealPlanPage() {
   ];
   useStaggerReveal(statsGridRef, statTileRefs);
 
+  // Redirect unauthenticated users to sign in, and non-teachers away from this page.
   useEffect(() => {
     if (loading) return;
     if (!user) {
@@ -178,11 +181,13 @@ export default function TeacherMealPlanPage() {
     return map;
   }, [mealPlans]);
 
+  // Distinct statuses seen across all plans, used to populate the filter pills.
   const nutritionalStatusOptions = useMemo(
     () => Array.from(new Set((mealPlans || []).map((p) => p.nutritionalStatus))).sort(),
     [mealPlans]
   );
 
+  // Tallies each student's latest status so the stat tile can show the most common one.
   const nutritionalStatusCounts = useMemo(() => {
     const counts = new Map<string, number>();
     latestMealPlanByStudent.forEach((p) => {
@@ -197,6 +202,7 @@ export default function TeacherMealPlanPage() {
 
   const mealPlanCoverage = latestMealPlanByStudent.size;
 
+  // Counts students whose latest plan lists at least one allergy, for the "Allergy alerts" tile.
   const allergyAlertCount = useMemo(
     () =>
       Array.from(latestMealPlanByStudent.values()).filter(
@@ -205,6 +211,7 @@ export default function TeacherMealPlanPage() {
     [latestMealPlanByStudent]
   );
 
+  // Plans expiring within the next 3 days, so teachers can nudge students to regenerate in time.
   const expiringSoonCount = useMemo(() => {
     const now = Date.now();
     return Array.from(latestMealPlanByStudent.values()).filter(
@@ -212,6 +219,7 @@ export default function TeacherMealPlanPage() {
     ).length;
   }, [latestMealPlanByStudent]);
 
+  // Applies the search box and the status/plan-presence filters together to the student list.
   const filteredStudents = useMemo(() => {
     if (!students) return [];
     const term = search.trim().toLowerCase();
@@ -228,6 +236,7 @@ export default function TeacherMealPlanPage() {
     });
   }, [students, latestMealPlanByStudent, search, statusFilter, planFilter]);
 
+  // Expands a student's row and lazy-loads their meal plan history only the first time it's opened.
   async function toggleExpanded(uid: string) {
     if (expandedUid === uid) {
       setExpandedUid(null);

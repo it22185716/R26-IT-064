@@ -54,6 +54,7 @@ export default function StudentDetailPage() {
     return () => unsubscribe();
   }, [profile, uid]);
 
+  // Load this student's meal plan history for the Meal Plan History section below.
   useEffect(() => {
     if (!profile || profile.role !== 'teacher' || !uid) return;
     fetchMealPlanHistoryForStudent(uid).then(setMealPlans);
@@ -224,6 +225,7 @@ export default function StudentDetailPage() {
         )}
       </GlassCard>
 
+      {/* Meal Plan History: growth trends (BMI, weight, height) across this student's past meal plans. */}
       <GlassCard hover={false} className="mt-6 overflow-x-auto p-6">
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 to-indigo-600 text-white shadow-inner">
@@ -238,6 +240,7 @@ export default function StudentDetailPage() {
         ) : mealPlans.length === 0 ? (
           <p className="mt-4 text-sm text-slate-500">This student hasn&apos;t generated a meal plan yet.</p>
         ) : (
+          // Delegates the actual trend rendering to the shared teacher-facing growth history view.
           <TeacherGrowthHistoryView plans={mealPlans} />
         )}
       </GlassCard>

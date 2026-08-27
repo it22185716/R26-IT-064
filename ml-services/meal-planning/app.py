@@ -17,6 +17,7 @@ MAX_OPTIONS_PER_MEAL = 6
 app = Flask(__name__)
 CORS(app)
 
+# Load the trained model, feature scaler, and label encoders once at startup so requests don't pay that cost.
 with open(os.path.join(MODELS_DIR, "meal_plan_model.pkl"), "rb") as f:
     model = pickle.load(f)
 with open(os.path.join(MODELS_DIR, "scaler.pkl"), "rb") as f:
@@ -29,6 +30,7 @@ food_db = pd.read_pickle(os.path.join(MODELS_DIR, "food_database.pkl"))
 FEATURE_NAMES = encoders.get("feature_names", ["age_years", "height_cm", "weight_kg", "bmi", "gender_encoded"])
 
 
+# Accepts either a comma-separated string or a list and turns it into a lowercase set for matching.
 def normalize_allergies(raw):
     if raw is None:
         return set()
@@ -36,6 +38,7 @@ def normalize_allergies(raw):
     return {str(a).strip().lower() for a in items if str(a).strip()}
 
 
+# A food is unsafe if any of its allergen tags overlap with the student's allergy set.
 def food_is_safe(unsafe_field, allergy_set):
     if not allergy_set:
         return True
@@ -70,6 +73,7 @@ def health():
     )
 
 
+# Predicts nutritional status from the student's profile, then returns allergy-safe meal options for each meal type.
 @app.route("/api/predict-meal-plan", methods=["POST"])
 def predict_meal_plan():
     try:
@@ -99,6 +103,7 @@ def predict_meal_plan():
         bmi = calculate_bmi(weight_kg, height_cm)
         gender_encoded = int(encoders["gender"].transform([gender])[0])
 
+        # Built as a dict and reordered via FEATURE_NAMES so the column order always matches what the model was trained on.
         feature_values = {
             "age_years": age,
             "height_cm": height_cm,
@@ -107,20 +112,24 @@ def predict_meal_plan():
             "gender_encoded": gender_encoded,
         }
         features = np.array([[feature_values[name] for name in FEATURE_NAMES]])
+        # Scale with the same scaler fit during training so inputs match the model's expected distribution.
         features_scaled = scaler.transform(features)
 
         predicted_encoded = model.predict(features_scaled)[0]
         nutritional_status = encoders["nutritional_status"].inverse_transform([int(predicted_encoded)])[0]
 
+        # Only available for models that support probability estimates.
         confidence = None
         if hasattr(model, "predict_proba"):
             confidence = float(np.max(model.predict_proba(features_scaled)[0]))
 
         meal_goal = get_meal_goal(nutritional_status)
 
+        # Filter out foods containing any of the student's allergens before building meal options.
         safe_mask = food_db["unsafe_for_allergies"].apply(lambda tags: food_is_safe(tags, allergy_set))
         safe_foods = food_db[safe_mask]
 
+        # Cap each meal type to a fixed number of options so the response stays a manageable size.
         meal_options = {}
         for meal_type in MEAL_TYPES:
             subset = safe_foods[safe_foods["meal_type"] == meal_type].head(MAX_OPTIONS_PER_MEAL)

@@ -13,6 +13,7 @@ export default function MealPlanHistoryPage() {
   const { user, profile, loading } = useAuthUser();
   const [plans, setPlans] = useState<MealPlan[] | null>(null);
 
+  // Redirect unauthenticated users to sign in, and non-students away from this page.
   useEffect(() => {
     if (loading) return;
     if (!user) {
@@ -24,6 +25,7 @@ export default function MealPlanHistoryPage() {
     }
   }, [loading, user, profile, router]);
 
+  // Load all of this student's past meal plans once authenticated.
   useEffect(() => {
     if (!user) return;
     fetchMealPlanHistory(user.uid).then(setPlans);

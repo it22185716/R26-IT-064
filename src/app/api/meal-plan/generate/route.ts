@@ -8,6 +8,7 @@ const PLAN_DURATION_MS = 14 * DAY_MS;
 const CALENDAR_DAYS = 14;
 const MEAL_TYPES: (keyof MealOptions)[] = ['breakfast', 'lunch', 'dinner', 'snack'];
 
+// Rounds to one decimal place so growth deltas display cleanly (e.g. "1.3cm" not "1.2999999...").
 function round1(n: number): number {
   return Math.round(n * 10) / 10;
 }
@@ -27,6 +28,7 @@ function buildWeeklyCalendar(mealOptions: MealOptions): DayPlan[] | null {
   }));
 }
 
+// Generates a new 14-day meal plan for a student and stores it, tracking growth since their last plan.
 export async function POST(request: Request) {
   const body = (await request.json()) as {
     uid: string;
@@ -46,6 +48,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Missing required field(s): age, height, weight, gender' }, { status: 400 });
   }
 
+  // Calls the Flask ML service to get a nutritional status prediction and meal options.
   let mlResponse: Response;
   try {
     mlResponse = await fetch(`${MEAL_PLAN_SERVICE_URL}/api/predict-meal-plan`, {
@@ -79,6 +82,7 @@ export async function POST(request: Request) {
   const previous = previousDoc ? ({ id: previousDoc.id, ...previousDoc.data() } as MealPlan) : null;
 
   const now = Date.now();
+  // Compute what's changed since the student's last plan, if one exists, for the growth-progress UI.
   const progressSinceLastPlan = previous
     ? {
         previousPlanId: previous.id,

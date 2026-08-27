@@ -26,6 +26,7 @@ export default function TeacherReadingProgressPage() {
   const [students, setStudents] = useState<UserProfile[] | null>(null);
   const [attempts, setAttempts] = useState<ReadingAttempt[] | null>(null);
   const [search, setSearch] = useState('');
+  const [levelFilter, setLevelFilter] = useState<'ALL' | 'LOW' | 'MEDIUM' | 'HIGH'>('ALL');
 
   useEffect(() => {
     if (loading) return;
@@ -122,24 +123,46 @@ export default function TeacherReadingProgressPage() {
     return count;
   }, [attemptsByStudent]);
 
-  // Name-alphabetical is the predictable default — a "needs attention first"
-  // sort would need a defined tiebreak policy across LOW/never-assessed/etc.
-  // that nobody has specified yet, so keep this simple and scannable.
+  // 4+ LOW attempts (not just the last two) signals a sustained struggle
+  // worth flagging for teacher follow-up.
+  const needsAttentionByStudent = useMemo(() => {
+    const map = new Map<string, boolean>();
+    attemptsByStudent.forEach((list, studentId) => {
+      const lowCount = list.filter((a) => a.level === 'LOW').length;
+      map.set(studentId, lowCount >= 4);
+    });
+    return map;
+  }, [attemptsByStudent]);
+
+  const needsAttentionCount = useMemo(
+    () => Array.from(needsAttentionByStudent.values()).filter(Boolean).length,
+    [needsAttentionByStudent]
+  );
+
+  // Flagged students sort first so teachers see who needs attention without
+  // scrolling; name-alphabetical order is preserved within each group.
   // Only students with at least one recorded attempt belong in this table.
   const assessedStudents = useMemo(() => {
     if (!students) return [];
     return [...students]
       .filter((s) => latestByStudent.has(s.uid))
-      .sort((a, b) => (a.name || a.email).localeCompare(b.name || b.email));
-  }, [students, latestByStudent]);
+      .sort((a, b) => {
+        const flaggedA = needsAttentionByStudent.get(a.uid) ?? false;
+        const flaggedB = needsAttentionByStudent.get(b.uid) ?? false;
+        if (flaggedA !== flaggedB) return flaggedA ? -1 : 1;
+        return (a.name || a.email).localeCompare(b.name || b.email);
+      });
+  }, [students, latestByStudent, needsAttentionByStudent]);
 
   const filteredStudents = useMemo(() => {
     const term = search.trim().toLowerCase();
-    if (!term) return assessedStudents;
-    return assessedStudents.filter(
-      (s) => (s.name || '').toLowerCase().includes(term) || (s.email || '').toLowerCase().includes(term)
-    );
-  }, [assessedStudents, search]);
+    return assessedStudents.filter((s) => {
+      const matchesTerm =
+        !term || (s.name || '').toLowerCase().includes(term) || (s.email || '').toLowerCase().includes(term);
+      const matchesLevel = levelFilter === 'ALL' || latestByStudent.get(s.uid)?.level === levelFilter;
+      return matchesTerm && matchesLevel;
+    });
+  }, [assessedStudents, search, levelFilter, latestByStudent]);
 
   if (loading || !user) {
     return (
@@ -225,8 +248,16 @@ export default function TeacherReadingProgressPage() {
           <p className="mt-1 text-sm text-slate-500">
             Reading level, accuracy, and assessment activity for students who have completed at least one assessment.
           </p>
+          {needsAttentionCount > 0 && (
+            <p className="mt-2 flex items-center gap-1.5 text-sm font-medium text-rose-700">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4 shrink-0">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+              </svg>
+              {needsAttentionCount} student{needsAttentionCount === 1 ? '' : 's'} need{needsAttentionCount === 1 ? 's' : ''} extra attention
+            </p>
+          )}
 
-          <div className="mt-4">
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row">
             <input
               type="text"
               value={search}
@@ -234,6 +265,16 @@ export default function TeacherReadingProgressPage() {
               placeholder="Search by name or email…"
               className="w-full max-w-sm rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white"
             />
+            <select
+              value={levelFilter}
+              onChange={(e) => setLevelFilter(e.target.value as 'ALL' | 'LOW' | 'MEDIUM' | 'HIGH')}
+              className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white sm:w-40"
+            >
+              <option value="ALL">All levels</option>
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+            </select>
           </div>
 
           <div className="mt-4 overflow-x-auto">
@@ -244,7 +285,7 @@ export default function TeacherReadingProgressPage() {
             ) : assessedStudents.length === 0 ? (
               <p className="text-sm text-slate-500">No students have completed a reading assessment yet.</p>
             ) : filteredStudents.length === 0 ? (
-              <p className="text-sm text-slate-500">No students match this search.</p>
+              <p className="text-sm text-slate-500">No students match this search and filter.</p>
             ) : (
               <table className="w-full text-sm">
                 <thead>
@@ -260,10 +301,22 @@ export default function TeacherReadingProgressPage() {
                   {filteredStudents.map((s, idx) => {
                     const latest = latestByStudent.get(s.uid);
                     const attemptCount = attemptsByStudent.get(s.uid)?.length ?? 0;
+                    const needsAttention = needsAttentionByStudent.get(s.uid) ?? false;
+                    const rowBg = needsAttention ? 'bg-rose-50/40' : idx % 2 === 1 ? 'bg-slate-50' : 'bg-white';
                     return (
-                      <tr key={s.uid} className={idx % 2 === 1 ? 'bg-slate-50' : 'bg-white'}>
+                      <tr key={s.uid} className={rowBg}>
                         <td className="py-3">
-                          <p className="font-medium text-slate-700">{s.name || s.email}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium text-slate-700">{s.name || s.email}</p>
+                            {needsAttention && (
+                              <span className="inline-flex items-center gap-1 rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 text-[11px] font-medium text-rose-700">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-3 w-3 shrink-0">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                </svg>
+                                Needs Attention
+                              </span>
+                            )}
+                          </div>
                           <p className="text-xs text-slate-400">{s.email}</p>
                         </td>
                         <td className="py-3">

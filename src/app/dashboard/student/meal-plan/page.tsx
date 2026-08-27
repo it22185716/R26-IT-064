@@ -114,6 +114,7 @@ function formFromProfile(profile: MealPlan['profile']): FormState {
   };
 }
 
+// Respect the OS-level reduced-motion setting so gsap animations skip for users who've opted out.
 function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
@@ -143,6 +144,7 @@ function formatDate(ms: number): string {
   return new Date(ms).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
+// Builds a friendly one-line summary of height/weight gains since the last plan.
 function growthHeadline(progress: MealPlanProgress): string {
   const wins: string[] = [];
   if (progress.heightChangeCm > 0) wins.push(`grew ${progress.heightChangeCm}cm`);
@@ -153,6 +155,7 @@ function growthHeadline(progress: MealPlanProgress): string {
   return `You ${wins.join(' and ')} since your last plan - great progress! 🎉`;
 }
 
+// Animates the stat value counting up to its final number instead of just appearing.
 function GrowthStat({ value, label }: { value: string; label: string }) {
   const ref = useCountUp(value);
   return (
@@ -186,6 +189,7 @@ function MealOptionCard({ option, cardBg, cardRing }: { option: MealOption; card
   );
 }
 
+// Confirmation modal shown when generating a new plan would replace one that's still active.
 function ConfirmDialog({
   daysRemaining,
   onCancel,
@@ -268,6 +272,7 @@ export default function MealPlanPage() {
   // existing plan on page load and a freshly generated one.
   useStaggerReveal(resultsRef, [growthCardRef, calendarCardRef], { deps: [currentPlan?.id] });
 
+  // Redirect unauthenticated users to sign in, and non-students away from this page.
   useEffect(() => {
     if (loading) return;
     if (!user) {
@@ -279,6 +284,7 @@ export default function MealPlanPage() {
     }
   }, [loading, user, profile, router]);
 
+  // Load the student's most recent plan on mount so an existing plan (and profile) shows instead of a blank form.
   useEffect(() => {
     if (!user) return;
     fetchMealPlanHistory(user.uid).then((plans) => {
@@ -312,6 +318,7 @@ export default function MealPlanPage() {
     gsap.fromTo(el, { scale: 1 }, { scale: 1.04, duration: 0.25, ease: 'power2.out', yoyo: true, repeat: 1 });
   }, [currentPlan?.id]);
 
+  // Add/remove one allergy from the form's selected list.
   function toggleAllergy(allergy: string) {
     setForm((f) => ({
       ...f,
@@ -319,6 +326,7 @@ export default function MealPlanPage() {
     }));
   }
 
+  // Submits the student's profile to the backend to create (or replace) their 14-day meal plan.
   async function doGenerate() {
     if (!user) return;
     setError('');
@@ -353,6 +361,7 @@ export default function MealPlanPage() {
     }
   }
 
+  // Warn before overwriting a still-active plan instead of generating immediately.
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (currentPlan && daysLeft(currentPlan) > 0) {
@@ -366,6 +375,7 @@ export default function MealPlanPage() {
     window.print();
   }
 
+  // Renders the print view's summary and each day into a multi-page PDF using html2canvas + jsPDF.
   async function handleDownloadPdf() {
     if (!currentPlan || dayPrintRefs.current.length === 0) return;
     setGeneratingPdf(true);
@@ -408,6 +418,7 @@ export default function MealPlanPage() {
         return y;
       };
 
+      // Same footer (branding, date, page count) drawn on every page.
       const drawPageFooter = (pageNum: number) => {
         pdf.setFontSize(8);
         pdf.setTextColor(150, 150, 150);

@@ -2,6 +2,7 @@ import { MealPlan } from './types';
 import { auth, db } from './firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
+// Fetches a student's meal plans directly from Firestore, newest first (sorted client-side to avoid needing a composite index).
 export async function fetchMealPlanHistory(studentId: string): Promise<MealPlan[]> {
   const q = query(collection(db, 'mealPlans'), where('studentId', '==', studentId));
   const snap = await getDocs(q);
