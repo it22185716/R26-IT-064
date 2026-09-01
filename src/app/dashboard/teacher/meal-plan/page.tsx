@@ -132,7 +132,6 @@ export default function TeacherMealPlanPage() {
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
-    useRef<HTMLDivElement>(null),
   ];
   useStaggerReveal(statsGridRef, statTileRefs);
 
@@ -181,43 +180,42 @@ export default function TeacherMealPlanPage() {
     return map;
   }, [mealPlans]);
 
+  // Uids of students that currently exist, so stat tiles derived from
+  // mealPlans can be cross-checked against the same source of truth the
+  // table uses instead of trusting studentIds that may be orphaned.
+  const currentStudentUids = useMemo(() => new Set((students ?? []).map((s) => s.uid)), [students]);
+
   // Distinct statuses seen across all plans, used to populate the filter pills.
   const nutritionalStatusOptions = useMemo(
     () => Array.from(new Set((mealPlans || []).map((p) => p.nutritionalStatus))).sort(),
     [mealPlans]
   );
 
-  // Tallies each student's latest status so the stat tile can show the most common one.
-  const nutritionalStatusCounts = useMemo(() => {
-    const counts = new Map<string, number>();
-    latestMealPlanByStudent.forEach((p) => {
-      counts.set(p.nutritionalStatus, (counts.get(p.nutritionalStatus) || 0) + 1);
-    });
-    return Array.from(counts.entries()).sort((a, b) => b[1] - a[1]);
-  }, [latestMealPlanByStudent]);
-  const topNutritionalStatus = nutritionalStatusCounts[0];
-  const topNutritionalStatusLabel = topNutritionalStatus
-    ? `${topNutritionalStatus[0]} (${topNutritionalStatus[1]})`
-    : '—';
-
-  const mealPlanCoverage = latestMealPlanByStudent.size;
-
-  // Counts students whose latest plan lists at least one allergy, for the "Allergy alerts" tile.
-  const allergyAlertCount = useMemo(
-    () =>
-      Array.from(latestMealPlanByStudent.values()).filter(
-        (p) => p.profile.allergies && p.profile.allergies.length > 0
-      ).length,
-    [latestMealPlanByStudent]
+  // Only counts students who are both in the current students list and have
+  // a meal plan — latestMealPlanByStudent alone can include studentIds whose
+  // account was deleted or changed role, which would inflate this beyond
+  // students.length (the denominator shown in the same tile).
+  const mealPlanCoverage = useMemo(
+    () => (students ?? []).filter((s) => latestMealPlanByStudent.has(s.uid)).length,
+    [students, latestMealPlanByStudent]
   );
 
-  // Plans expiring within the next 3 days, so teachers can nudge students to regenerate in time.
+  // Counts current students whose latest plan lists at least one allergy, for the "Allergy alerts" tile.
+  const allergyAlertCount = useMemo(
+    () =>
+      Array.from(latestMealPlanByStudent.entries()).filter(
+        ([uid, p]) => currentStudentUids.has(uid) && p.profile.allergies && p.profile.allergies.length > 0
+      ).length,
+    [latestMealPlanByStudent, currentStudentUids]
+  );
+
+  // Current students' plans expiring within the next 3 days, so teachers can nudge them to regenerate in time.
   const expiringSoonCount = useMemo(() => {
     const now = Date.now();
-    return Array.from(latestMealPlanByStudent.values()).filter(
-      (p) => p.expiresAt >= now && p.expiresAt <= now + EXPIRING_SOON_WINDOW_MS
+    return Array.from(latestMealPlanByStudent.entries()).filter(
+      ([uid, p]) => currentStudentUids.has(uid) && p.expiresAt >= now && p.expiresAt <= now + EXPIRING_SOON_WINDOW_MS
     ).length;
-  }, [latestMealPlanByStudent]);
+  }, [latestMealPlanByStudent, currentStudentUids]);
 
   // Applies the search box and the status/plan-presence filters together to the student list.
   const filteredStudents = useMemo(() => {
@@ -270,7 +268,7 @@ export default function TeacherMealPlanPage() {
           Meal plan coverage, nutritional status, and allergy monitoring across your students.
         </p>
 
-        <div ref={statsGridRef} className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div ref={statsGridRef} className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-3">
           <MealStatTile
             ref={statTileRefs[0]}
             label="Meal plans generated"
@@ -287,20 +285,6 @@ export default function TeacherMealPlanPage() {
           />
           <MealStatTile
             ref={statTileRefs[1]}
-            label="Nutritional status"
-            value={mealPlans ? topNutritionalStatusLabel : '—'}
-            tile="from-lime-500 to-green-600"
-            glow="bg-lime-400"
-            icon={
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6zM13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"
-              />
-            }
-          />
-          <MealStatTile
-            ref={statTileRefs[2]}
             label="Allergy alerts"
             value={mealPlans ? String(allergyAlertCount) : '—'}
             tile="from-amber-500 to-red-600"
@@ -314,7 +298,7 @@ export default function TeacherMealPlanPage() {
             }
           />
           <MealStatTile
-            ref={statTileRefs[3]}
+            ref={statTileRefs[2]}
             label="Plans expiring soon"
             value={mealPlans ? String(expiringSoonCount) : '—'}
             tile="from-yellow-500 to-orange-600"

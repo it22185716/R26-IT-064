@@ -16,6 +16,21 @@ const ALLERGY_OPTIONS = ['milk', 'egg', 'wheat', 'fish', 'shellfish', 'peanut', 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const PLAN_LENGTH_DAYS = 14;
 
+// Cosmetic only — falls back to slate for any status string not seen here, so
+// an unexpected value from the ML service still renders instead of breaking.
+const NUTRITIONAL_STATUS_COLORS: Record<string, string> = {
+  Normal: 'bg-emerald-50 text-emerald-700',
+  Overweight: 'bg-amber-50 text-amber-700',
+  Obesity: 'bg-red-50 text-red-700',
+  'Severe Thinness': 'bg-red-50 text-red-700',
+  Thinness: 'bg-amber-50 text-amber-700',
+};
+const DEFAULT_NUTRITIONAL_STATUS_COLOR = 'bg-slate-100 text-slate-600';
+
+function getNutritionalStatusColor(status: string): string {
+  return NUTRITIONAL_STATUS_COLORS[status] || DEFAULT_NUTRITIONAL_STATUS_COLOR;
+}
+
 type MealTypeStyle = {
   key: keyof MealOptions;
   label: string;
@@ -451,7 +466,7 @@ export default function MealPlanPage() {
         pdf.addImage(imgData, 'JPEG', imgX, y, imgWidth, imgHeight);
       };
 
-      // Page 1: summary — allergies, full meal calendar table, diagnosis row.
+      // Page 1: summary - allergies, full meal calendar table, diagnosis row.
       if (summaryPrintRef.current) {
         const y = drawPageHeader();
         await addFittedImage(summaryPrintRef.current, y);
@@ -461,7 +476,7 @@ export default function MealPlanPage() {
       for (let i = 0; i < totalDays; i++) {
         const dayEl = dayPrintRefs.current[i];
         if (!dayEl) continue;
-        // Always precede a day page with a new page now — page 1 is always
+        // Always precede a day page with a new page now - page 1 is always
         // the summary page, so even day 0 needs its own addPage() call.
         pdf.addPage();
 
@@ -543,6 +558,9 @@ export default function MealPlanPage() {
                 <span className="rounded-full bg-sky-50 px-3 py-1.5 font-medium text-sky-700">{currentPlan.profile.height_cm} cm</span>
                 <span className="rounded-full bg-sky-50 px-3 py-1.5 font-medium text-sky-700">{currentPlan.profile.weight_kg} kg</span>
                 <span className="rounded-full bg-sky-50 px-3 py-1.5 font-medium text-sky-700 capitalize">{currentPlan.profile.gender}</span>
+                <span className={`rounded-full px-3 py-1.5 font-medium ${getNutritionalStatusColor(currentPlan.nutritionalStatus)}`}>
+                  {currentPlan.nutritionalStatus}
+                </span>
                 {currentPlan.profile.allergies.length > 0 && (
                   <span className="rounded-full bg-amber-50 px-3 py-1.5 font-medium text-amber-700">
                     Avoiding: {currentPlan.profile.allergies.join(', ')}
@@ -710,7 +728,7 @@ export default function MealPlanPage() {
               <>
                 <RadialGauge
                   percent={(remaining / PLAN_LENGTH_DAYS) * 100}
-                  centerLabel={`${remaining}d`}
+                  centerLabel={remaining === 1 ? `${remaining} day` : `${remaining} days`}
                   label={remaining === 1 ? 'day left' : 'days left'}
                   colorFrom={remaining > 7 ? '#34D399' : remaining > 3 ? '#EACB53' : '#FB923C'}
                   colorTo={remaining > 7 ? '#059669' : remaining > 3 ? '#A9841C' : '#EA580C'}
@@ -834,7 +852,7 @@ export default function MealPlanPage() {
 
             {!hasCalendar ? (
               <p className="mt-5 text-sm text-slate-500">
-                This plan was created before the 14-day calendar existed — generate a new plan to get one.
+                This plan was created before the 14-day calendar existed - generate a new plan to get one.
               </p>
             ) : (
               <>
@@ -898,7 +916,7 @@ export default function MealPlanPage() {
           </p>
         </div>
 
-        {/* PDF page 1 — allergies, full meal calendar table, diagnosis row.
+        {/* PDF page 1 - allergies, full meal calendar table, diagnosis row.
             Not shown anywhere in the interactive dashboard; exists purely to
             be rasterized by html2canvas for the summary PDF page. */}
         <div ref={summaryPrintRef} className="print-summary">

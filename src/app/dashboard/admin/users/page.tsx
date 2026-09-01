@@ -362,12 +362,12 @@ function AdminUsersPageInner() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="text-left text-slate-400 border-b border-white/70">
-                        <th className="py-2 font-medium">Name</th>
-                        <th className="py-2 font-medium">Email</th>
-                        <th className="py-2 font-medium">Role</th>
-                        <th className="py-2 font-medium">Joined</th>
-                        <th className="py-2 font-medium"></th>
+                      <tr className="text-left bg-gold-100/80 border-b-2 border-gold-300">
+                        <th className="py-3 pl-2 font-semibold text-slate-800">Name</th>
+                        <th className="py-3 font-semibold text-slate-800">Email</th>
+                        <th className="py-3 font-semibold text-slate-800">Role</th>
+                        <th className="py-3 font-semibold text-slate-800">Joined</th>
+                        <th className="py-3 pr-2 font-semibold text-slate-800"></th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/50">
