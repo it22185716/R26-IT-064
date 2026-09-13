@@ -27,6 +27,7 @@ export default function TeacherReadingProgressPage() {
   const [attempts, setAttempts] = useState<ReadingAttempt[] | null>(null);
   const [search, setSearch] = useState('');
   const [levelFilter, setLevelFilter] = useState<'ALL' | 'LOW' | 'MEDIUM' | 'HIGH'>('ALL');
+  const [assessedFilter, setAssessedFilter] = useState<'ALL' | 'ASSESSED' | 'NOT_ASSESSED'>('ALL');
 
   useEffect(() => {
     if (loading) return;
@@ -141,28 +142,36 @@ export default function TeacherReadingProgressPage() {
 
   // Flagged students sort first so teachers see who needs attention without
   // scrolling; name-alphabetical order is preserved within each group.
-  // Only students with at least one recorded attempt belong in this table.
-  const assessedStudents = useMemo(() => {
+  // Every registered student belongs here, assessed or not — "has activity"
+  // is decided per-row via latestByStudent, not by pre-filtering the list.
+  const sortedStudents = useMemo(() => {
     if (!students) return [];
-    return [...students]
-      .filter((s) => latestByStudent.has(s.uid))
-      .sort((a, b) => {
-        const flaggedA = needsAttentionByStudent.get(a.uid) ?? false;
-        const flaggedB = needsAttentionByStudent.get(b.uid) ?? false;
-        if (flaggedA !== flaggedB) return flaggedA ? -1 : 1;
-        return (a.name || a.email).localeCompare(b.name || b.email);
-      });
-  }, [students, latestByStudent, needsAttentionByStudent]);
+    return [...students].sort((a, b) => {
+      const flaggedA = needsAttentionByStudent.get(a.uid) ?? false;
+      const flaggedB = needsAttentionByStudent.get(b.uid) ?? false;
+      if (flaggedA !== flaggedB) return flaggedA ? -1 : 1;
+      return (a.name || a.email).localeCompare(b.name || b.email);
+    });
+  }, [students, needsAttentionByStudent]);
 
   const filteredStudents = useMemo(() => {
     const term = search.trim().toLowerCase();
-    return assessedStudents.filter((s) => {
+    return sortedStudents.filter((s) => {
       const matchesTerm =
         !term || (s.name || '').toLowerCase().includes(term) || (s.email || '').toLowerCase().includes(term);
-      const matchesLevel = levelFilter === 'ALL' || latestByStudent.get(s.uid)?.level === levelFilter;
-      return matchesTerm && matchesLevel;
+      const hasActivity = latestByStudent.has(s.uid);
+      const matchesAssessed =
+        assessedFilter === 'ALL' ? true : assessedFilter === 'ASSESSED' ? hasActivity : !hasActivity;
+      // Level options can't match a student with no attempts; once "Not
+      // assessed" narrows the set to those students, the level filter is
+      // moot rather than a no-op that would hide every remaining row.
+      const matchesLevel =
+        levelFilter === 'ALL' || assessedFilter === 'NOT_ASSESSED'
+          ? true
+          : hasActivity && latestByStudent.get(s.uid)?.level === levelFilter;
+      return matchesTerm && matchesAssessed && matchesLevel;
     });
-  }, [assessedStudents, search, levelFilter, latestByStudent]);
+  }, [sortedStudents, search, levelFilter, assessedFilter, latestByStudent]);
 
   if (loading || !user) {
     return (
@@ -246,7 +255,8 @@ export default function TeacherReadingProgressPage() {
         <GlassCard hover={false} className="mt-6 p-6">
           <h3 className="font-semibold text-slate-900">Student Progress</h3>
           <p className="mt-1 text-sm text-slate-500">
-            Reading level, accuracy, and assessment activity for students who have completed at least one assessment.
+            Reading level, accuracy, and assessment activity for every student in your class, including those who
+            haven&apos;t started yet.
           </p>
           {needsAttentionCount > 0 && (
             <p className="mt-2 flex items-center gap-1.5 text-sm font-medium text-rose-700">
@@ -268,12 +278,22 @@ export default function TeacherReadingProgressPage() {
             <select
               value={levelFilter}
               onChange={(e) => setLevelFilter(e.target.value as 'ALL' | 'LOW' | 'MEDIUM' | 'HIGH')}
-              className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white sm:w-40"
+              disabled={assessedFilter === 'NOT_ASSESSED'}
+              className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white disabled:cursor-not-allowed disabled:opacity-50 sm:w-40"
             >
               <option value="ALL">All levels</option>
               <option value="LOW">Low</option>
               <option value="MEDIUM">Medium</option>
               <option value="HIGH">High</option>
+            </select>
+            <select
+              value={assessedFilter}
+              onChange={(e) => setAssessedFilter(e.target.value as 'ALL' | 'ASSESSED' | 'NOT_ASSESSED')}
+              className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 focus:bg-white sm:w-40"
+            >
+              <option value="ALL">All students</option>
+              <option value="ASSESSED">Assessed</option>
+              <option value="NOT_ASSESSED">Not assessed</option>
             </select>
           </div>
 
@@ -282,10 +302,12 @@ export default function TeacherReadingProgressPage() {
               <p className="text-sm text-slate-400">Loading…</p>
             ) : students.length === 0 ? (
               <p className="text-sm text-slate-500">No students registered yet.</p>
-            ) : assessedStudents.length === 0 ? (
-              <p className="text-sm text-slate-500">No students have completed a reading assessment yet.</p>
             ) : filteredStudents.length === 0 ? (
-              <p className="text-sm text-slate-500">No students match this search and filter.</p>
+              <p className="text-sm text-slate-500">
+                {assessedFilter === 'NOT_ASSESSED' && !search.trim()
+                  ? 'Every student has completed at least one reading assessment.'
+                  : 'No students match this search and filter.'}
+              </p>
             ) : (
               <table className="w-full text-sm">
                 <thead>
@@ -320,9 +342,13 @@ export default function TeacherReadingProgressPage() {
                           <p className="text-xs text-slate-400">{s.email}</p>
                         </td>
                         <td className="py-3">
-                          {latest && (
+                          {latest ? (
                             <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${levelPillStyle[latest.level]}`}>
                               {latest.level}
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-500">
+                              Not started
                             </span>
                           )}
                         </td>
